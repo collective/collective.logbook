@@ -1,0 +1,27 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="inquant.error">
+
+    <five:registerPackage package="." initialize=".initialize" />
+
+    <include package=".browser" />
+
+    <!-- Register the installation GenericSetup extension profile -->
+    <genericsetup:registerProfile
+      name="default"
+      title="inquant.error"
+      directory="profiles/default"
+      description="error log extension view"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+    <subscriber
+        for=".interfaces.IErrorRaisedEvent"
+        handler=".events.handleTraceback"
+      />
+
+</configure>
+
+<!-- vim: set ft=xml ts=2 sw=2 expandtab : -->

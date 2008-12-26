@@ -1,0 +1,29 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="inquant.error">
+
+    <browser:page
+      for="*"
+      name="error"
+      class=".error_form.ErrorForm"
+      permission="cmf.ManagePortal"
+    />
+
+    <browser:page
+      for="*"
+      name="error_atom.xml"
+      class=".error_form.ErrorAtomFeed"
+      permission="cmf.ManagePortal"
+    />
+
+    <browser:page
+      for="*"
+      name="error_rss.xml"
+      class=".error_form.ErrorRSSFeed"
+      permission="cmf.ManagePortal"
+    />
+
+</configure>
+
+<!-- vim: set ft=xml ts=2 sw=2 expandtab : -->

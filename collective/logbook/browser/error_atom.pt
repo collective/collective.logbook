@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal">
+  <author>
+    <name>Ramon Bartl</name>
+  </author>
+  <title>ERROR LOG ATOM FEED</title>
+  <!--<id tal:content="string:${context/UID}">urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>-->
+  <updated>2003-12-14T10:20:09Z</updated>
+
+  <tal:block repeat="entry view/saved_entries">
+      <entry>
+          <title tal:content="entry/id">Titel des Weblog-Eintrags</title>
+          <link href="http://example.org/2003/12/13/atom-beispiel"
+                  tal:attributes="href string:${context/absolute_url}/@@error#${entry/id}" />
+          <id tal:content="entry/id">urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+          <updated tal:content="entry/tb/time">2003-12-13T18:30:02Z</updated>
+          <summary tal:content="entry/tb/type">Zusammenfassung des Weblog-Eintrags</summary>
+          <content tal:content="entry/tb/tb_html" type="html">Volltext des Weblog-Eintrags</content>
+      </entry>
+  </tal:block>
+
+</feed>
+
+<!-- vim: set ft=xml ts=4 sw=4 expandtab : -->

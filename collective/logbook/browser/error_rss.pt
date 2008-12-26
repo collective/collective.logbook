@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+<rss version="2.0.1"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     xmlns:metal="http://xml.zope.org/namespaces/metal">
+ <channel>
+     <title>ERROR RSS FEED</title>
+     <link tal:content="string:${context/absolute_url}/@@error">
+         http://link.to.rss
+     </link>
+     <description>RECENT ERRORS</description>
+     <language>en</language>
+
+     <tal:block repeat="entry view/saved_entries">
+         <item>
+             <title tal:content="entry/id">error id</title>
+             <link tal:content="string:${context/absolute_url}/@@error#${entry/id}">link to error</link>
+             <description tal:content="entry/tb/tb_html">traceback</description>
+             <pubDate tal:content="entry/tb/time">09 Dec 2008 10:51:07 GMT</pubDate>
+         </item>
+     </tal:block>
+ </channel>
+
+</rss>
+
+<!-- vim: set ft=xml ts=4 sw=4 expandtab : -->

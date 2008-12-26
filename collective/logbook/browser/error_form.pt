@@ -1,0 +1,141 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="context/@@standard_macros/page"
+      i18n:domain="inquant.error">
+<head>
+</head>
+<body>
+  <div metal:fill-slot="body">
+
+    <form method="post"
+        tal:attributes="action string:${context/absolute_url}/@@error">
+
+      <input type="hidden" name="form.submitted:boolean" value="True" />
+
+      <div class="field">
+        <label for="errornumber" i18n:translate="label_errornumber">
+          Error Number:
+        </label>
+        <input type="text"
+            name="errornumber"
+            size="40"
+            value=""
+            class="searchField inputLabel"
+            id="errornumber-input-field" />
+        <input type="submit"
+            id="get-traceback-button"
+            name="form.button.traceback"
+            value="Get Traceback"
+            class="searchButton" />
+      </div>
+
+      <div tal:condition="view/saved_entries">
+        <div style="color:grey">
+          There are
+          <span tal:content="view/error_count" />
+          saved (unique) Tracebacks and
+          <span tal:content="view/index_count" />
+          referenced Tracebacks
+        </div>
+        <table>
+          <tal:entries repeat="entry view/saved_entries">
+            <tr>
+              <td valign="bottom">
+                <a name="entry/id" tal:attributes="name entry/id"></a>
+                <dl class="collapsible collapsedOnLoad" style="margin: 0;">
+                  <dt class="collapsibleHeader">
+                    <span tal:replace="entry/tb/type" />
+                  </dt>
+                  <dd class="collapsibleContent">
+                    <table>
+                      <tr>
+                        <th align="left" valign="top">Time</th>
+                        <td tal:content="entry/tb/time"></td>
+                      </tr>
+                      <tr>
+                        <th align="left" valign="top">User Name (User Id)</th>
+                        <td tal:content="string: ${entry/tb/username} (${entry/tb/userid})">joe (joe)</td>
+                      </tr>
+                      <tr>
+                        <th align="left" valign="top">Request URL</th>
+                        <td tal:content="entry/tb/url">http:example.com</td>
+                      </tr>
+                      <tr>
+                        <th align="left" valign="top">Exception Type</th>
+                        <td tal:content="entry/tb/type">AttributeError</td>
+                      </tr>
+                      <tr>
+                        <th align="left" valign="top">Exception Value</th>
+                        <td tal:content="entry/tb/value">zzope</td>
+                      </tr>
+                    </table>
+                    <pre tal:content="structure entry/tb/tb_text">
+                      Traceback (text)
+                    </pre>
+                  </dd>
+                </dl>
+              </td>
+              <!--<td>
+                <span tal:replace="entry/tb/value" />
+              </td>-->
+              <td valign="top">
+                <input class="noborder"
+                       type="checkbox"
+                       value="True"
+                       tal:attributes="name string:entries.id:records;
+                       value string:${entry/id}"
+                  />
+              </td>
+            </tr>
+          </tal:entries>
+        </table>
+        <input class="context" type="submit" name="form.button.deletetraceback" value="Delete selected Tracebacks" />
+        <input class="context" type="submit" name="form.button.deleterefs" value="Delete all referenced Errors" />
+        <input class="context" type="submit" name="form.button.deleteall" value="Remove All" />
+      </div>
+
+      <div tal:define="entry request/entry|nothing" tal:condition="entry" style="margin-top:50px;">
+        <table>
+          <tr>
+            <th align="left" valign="top">Time</th>
+            <td tal:content="entry/time"></td>
+          </tr>
+          <tr>
+            <th align="left" valign="top">User Name (User Id)</th>
+            <td tal:content="string: ${entry/username} (${entry/userid})">joe (joe)</td>
+          </tr>
+          <tr>
+            <th align="left" valign="top">Request URL</th>
+            <td tal:content="entry/url">http://example.com</td>
+          </tr>
+          <tr>
+            <th align="left" valign="top">Exception Type</th>
+            <td tal:content="entry/type">AttributeError</td>
+          </tr>
+          <tr>
+            <th align="left" valign="top">Exception Value</th>
+            <td tal:content="entry/value">zzope</td>
+          </tr>
+        </table>
+        <!--
+        <div tal:condition="entry/tb_html" tal:content="structure entry/tb_html">
+          Traceback (HTML)
+        </div>
+        <pre tal:condition="not:entry/tb_html" tal:content="entry/tb_text">
+          Traceback (text)
+        </pre>
+        -->
+        <pre tal:content="structure entry/tb_text">
+          Traceback (text)
+        </pre>
+        <!--
+        <input class="context" type="submit" name="form.button.savetraceback" value="Save Traceback" />
+        <input type="hidden" name="displayed_errornumber" value="" tal:attributes="value entry/id" />
+        -->
+      </div>
+    </form>
+  </div>
+</body>
+</html>
+
+<!-- vim: set ft=html ts=2 sw=2 expandtab : -->

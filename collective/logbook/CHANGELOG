@@ -1,0 +1,16 @@
+2008-12-09  ramonski <ramon.bartl@inquant.de>
+    * events.py (handleTraceback): changed to unrestrictedTraverse
+    * events.py (handleTraceback): changed to debug facility
+    * browser/configure.zcml: changed permission for feed views
+
+2008-12-08  ramonski <ramon.bartl@inquant.de>
+    * events.py (handleTraceback): added event handler
+    * monkey.py (install_monkey): monkey patches Products.SiteErrorLog
+    (raising)
+    * configure.zcml: added event subscriber
+    * events.py (handleTraceback): filter out hex numbers
+
+2008-12-05  ramonski <ramon.bartl@inquant.de>
+    * CHANGELOG: started
+
+vim: set ft=changelog ts=4 sw=4 expandtab :
