@@ -18,60 +18,27 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-__author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
+__author__    = """Ramon Bartl <ramon.bartl@inquant.de>"""
 __docformat__ = 'plaintext'
 
 import unittest
 
-from zope import interface
-
-from Products.CMFCore.utils import getToolByName
-
-from zff.jc.job.tests.base import ZFFTestCase
-from zff.jc.job.interfaces import IXMLRPCView
-from zff.jc.job.browser.xmlrpcview import XMLRPCView
+from collective.logbook.tests.base import LogBookTestCase
 
 
-class TestSetup(ZFFTestCase):
+class TestViews(LogBookTestCase):
+    """ Test View Class
+    """
 
     def afterSetUp(self):
         self.setRoles(('Manager', ))
-        self.types = getToolByName(self.portal, 'portal_types')
-        # Fake global allow for job ct
-        job_fti = getattr(self.types, 'Job')
-        job_fti.global_allow = True
-        _ = self.folder.invokeFactory('Job', 'testjob')
-        self.testjob = self.folder.get(_)
 
-    def test_view_implements_interface(self):
-        view = XMLRPCView(self.portal, None)
-        self.failUnless(IXMLRPCView.providedBy(view))
-
-    def test_view_class_fulfills_interface_contract(self):
-        self.failUnless(interface.verify.verifyClass(IXMLRPCView, XMLRPCView))
-
-    def test_view_object_fulfills_interface_contract(self):
-        view = XMLRPCView(self.portal, None)
-        self.failUnless(interface.verify.verifyObject(IXMLRPCView, view))
-
-    def test_view_registered_for_job_ct(self):
-        self.failUnless(self.testjob.restrictedTraverse('@@xmlrpc'))
-
-    # Test View Methods
-    def test_view_method_add_message(self):
-        view = self.testjob.restrictedTraverse('@@xmlrpc')
-        self.assertEqual(len(self.testjob.getMessages()), 0)
-
-        view.add_message('MUHAHAHA')
-        self.assertEqual(len(self.testjob.getMessages()), 1)
-
-        self.assertEqual(self.testjob.messages, ('MUHAHAHA',))
-
+    def testMe(self):
+        self.assertEqual(1+1, 2)
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestSetup))
+    suite.addTest(unittest.makeSuite(TestViews))
     return suite
 
 # vim: set ft=python ts=4 sw=4 expandtab :
-

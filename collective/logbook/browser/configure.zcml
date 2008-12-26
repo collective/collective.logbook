@@ -13,14 +13,14 @@
     <browser:page
       for="*"
       name="logbook_atom.xml"
-      class=".logbook.LogbookAtomFeed"
+      class=".logbook.LogBookAtomFeed"
       permission="cmf.ManagePortal"
     />
 
     <browser:page
       for="*"
       name="logbook_rss.xml"
-      class=".logbook.LogbookRSSFeed"
+      class=".logbook.LogBookRSSFeed"
       permission="cmf.ManagePortal"
     />
 
