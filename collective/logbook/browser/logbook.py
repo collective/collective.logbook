@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: browser.py
+# File: logbook.py
 #
 # Copyright (c) InQuant GmbH
 #
@@ -45,7 +45,7 @@ KEY = "ERRORS"
 INDEX_KEY = "REFINDEX"
 REGEX = re.compile(r'0x[0-9a-fA-F]+')
 
-logger = logging.getLogger("inquant.error")
+logger = logging.getLogger("collective.logbook")
 
 
 def hexfilter(text):
@@ -54,13 +54,13 @@ def hexfilter(text):
     return REGEX.sub('0x0000000', text)
 
 
-class ErrorForm(BrowserView):
-    """ Error Form
+class LogBook(BrowserView):
+    """ Logbook Form
     """
-    template = ViewPageTemplateFile('error_form.pt')
+    template = ViewPageTemplateFile('logbook.pt')
 
     def __init__(self, context, request):
-        super(ErrorForm, self).__init__(context, request)
+        super(LogBook, self).__init__(context, request)
         self.context = aq_inner(context)
         self.request = request
 
@@ -74,7 +74,8 @@ class ErrorForm(BrowserView):
     def error_log(self):
         """ portal error_log object
         """
-        error_log_path = '/'.join(['/'.join(self.portal().getPhysicalPath()), 'error_log'])
+        error_log_path = '/'.join(
+                ['/'.join(self.portal().getPhysicalPath()), 'error_log'])
         return self.context.restrictedTraverse(error_log_path)
 
     @property
@@ -105,7 +106,6 @@ class ErrorForm(BrowserView):
             annotations[INDEX_KEY] = PersistentDict()
         return annotations[INDEX_KEY]
 
-    @memoize
     def error(self, err_id):
         """ get the error object from the zope error_log
         """
@@ -275,13 +275,13 @@ class ErrorForm(BrowserView):
         return self.template()
 
 
-class ErrorAtomFeed(ErrorForm):
-    """ Error Atom Feed
+class LogBookAtomFeed(LogBook):
+    """ Logbook Atom Feed
     """
-    template = ViewPageTemplateFile('error_atom.pt')
+    template = ViewPageTemplateFile('logbook_atom.pt')
 
     def __init__(self, context, request):
-        super(ErrorAtomFeed, self).__init__(context, request)
+        super(LogBookAtomFeed, self).__init__(context, request)
         self.context = aq_inner(context)
         self.request = request
 
@@ -289,13 +289,13 @@ class ErrorAtomFeed(ErrorForm):
         return self.template()
 
 
-class ErrorRSSFeed(ErrorForm):
-    """ Error RSS Feed
+class LogBookRSSFeed(LogBook):
+    """ Logbook RSS Feed
     """
-    template = ViewPageTemplateFile('error_rss.pt')
+    template = ViewPageTemplateFile('logbook_rss.pt')
 
     def __init__(self, context, request):
-        super(ErrorRSSFeed, self).__init__(context, request)
+        super(LogBookRSSFeed, self).__init__(context, request)
         self.context = aq_inner(context)
         self.request = request
 
