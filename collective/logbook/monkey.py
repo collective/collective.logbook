@@ -29,9 +29,10 @@ from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
 
 from events import ErrorRaisedEvent
 
-logger = logging.getLogger("inquant.error")
+logger = logging.getLogger("collective.logbook")
 
 _raising = SiteErrorLog.raising
+
 
 def install_monkey():
     logger.info(">>> Installing Monkey for Products.SiteErrorLog")

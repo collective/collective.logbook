@@ -29,7 +29,7 @@ class IErrorRaisedEvent(Interface):
     """
 
 
-class INotofyTraceback(Interface):
+class INotifyTraceback(Interface):
     """ An Error occured -> notify
     """
 

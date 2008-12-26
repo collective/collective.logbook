@@ -2,7 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    i18n_domain="inquant.error">
+    i18n_domain="collective.logbook">
 
     <five:registerPackage package="." initialize=".initialize" />
 
@@ -11,9 +11,9 @@
     <!-- Register the installation GenericSetup extension profile -->
     <genericsetup:registerProfile
       name="default"
-      title="inquant.error"
+      title="collective.logbook"
       directory="profiles/default"
-      description="error log extension view"
+      description="Advanced Persistent Error Log"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 

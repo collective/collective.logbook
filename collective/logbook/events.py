@@ -29,9 +29,9 @@ from zope import interface
 from zope import event
 
 from interfaces import IErrorRaisedEvent
-from interfaces import INotofyTraceback
+from interfaces import INotifyTraceback
 
-logger = logging.getLogger("inquant.error")
+logger = logging.getLogger("collective.logbook")
 
 
 class ErrorRaisedEvent(object):
@@ -43,7 +43,7 @@ class ErrorRaisedEvent(object):
 
 
 class NotifyTraceback(object):
-    interface.implements(INotofyTraceback)
+    interface.implements(INotifyTraceback)
 
     def __init__(self, error):
         self.error = error
@@ -55,33 +55,36 @@ def handleTraceback(object):
     entry_url = object.entry_url
     if entry_url is None:
         return
+    # we don't want to produce any errors here, thus, we'll be nice and die
+    # silently if an error occurs here
     try:
-        # get our error view to use the api
-        error_form = context.unrestrictedTraverse('@@error')
+        # get our logbook view to use the api
+        logbook = context.unrestrictedTraverse('@@logbook')
         # get the generated error url from Products.SiteErrorLog
         err_id = urllib.splitvalue(entry_url)[1]
         # get the error object from error_log
-        error = error_form.error(err_id)
+        error = logbook.error(err_id)
         # get a error signature (last 5 lines of traceback)
-        error_tail = error_form.filtered_error_tail(error)
+        error_tail = logbook.filtered_error_tail(error)
 
         # check for existing entries in our annotation storage
-        for entry in error_form.saved_entries:
+        for entry in logbook.saved_entries:
             entry_id = entry.get('id')
             # get signature of existing entries
-            tail = error_form.filtered_error_tail(entry.get('tb'))
+            tail = logbook.filtered_error_tail(entry.get('tb'))
 
             if tail == error_tail:
                 logger.debug("***** Traceback '%s' already logged" % tail[-1:])
-                error_form.save_error_reference(err_id, entry_id)
+                logbook.save_error_reference(err_id, entry_id)
                 transaction.commit()
                 return
 
         # notify new error
         event.notify(NotifyTraceback(error))
         logger.debug("***** New Traceback logged with err_id=%s" % err_id)
-        error_form.save_entry(err_id)
+        logbook.save_entry(err_id)
         transaction.commit()
+    # only warning
     except Exception, e:
         logger.warning("An error occured while handling the traceback")
         logger.warning("%s" % e)

@@ -5,22 +5,22 @@
 
     <browser:page
       for="*"
-      name="error"
-      class=".error_form.ErrorForm"
+      name="logbook"
+      class=".logbook.LogBook"
       permission="cmf.ManagePortal"
     />
 
     <browser:page
       for="*"
-      name="error_atom.xml"
-      class=".error_form.ErrorAtomFeed"
+      name="logbook_atom.xml"
+      class=".logbook.LogbookAtomFeed"
       permission="cmf.ManagePortal"
     />
 
     <browser:page
       for="*"
-      name="error_rss.xml"
-      class=".error_form.ErrorRSSFeed"
+      name="logbook_rss.xml"
+      class=".logbook.LogbookRSSFeed"
       permission="cmf.ManagePortal"
     />
 
