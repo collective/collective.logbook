@@ -25,6 +25,7 @@ __docformat__ = 'plaintext'
 # 1 - references existing errors
 REFERENCE_ERRORS = 1
 
+# used for annotation storage
 STORAGE_KEY = "LOGBOOK"
 INDEX_KEY = "REFINDEX"
 
