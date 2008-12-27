@@ -51,14 +51,14 @@ These instructions assume that you already have a Plone 3 buildout that's built
 and ready to run.
 
 Edit your buildout.cfg file and look for the eggs key in the instance section.
-Add collective.allowtypes to that list. Your list will look something like this::
+Add collective.logbook to that list. Your list will look something like this::
 
     eggs =
         ${buildout:eggs}
         ${plone:eggs}
         collective.logbook
 
-In the same section, look for the zcml key. Add collective.allowtypes here,
+In the same section, look for the zcml key. Add collective.logbook here,
 too::
 
     zcml = collective.logbook
