@@ -79,13 +79,12 @@ class LogBook(BrowserView):
         """ save the error to the storage
         """
         error = self.error(err_id)
-        return self.storage.save_entry(error)
+        return self.storage.save_error(error)
 
     def delete_entry(self, err_id):
         """ deletes an error entry from the storage
         """
-        error = self.error(err_id)
-        return self.storage.delete_entry(error)
+        return self.storage.delete_error(err_id)
 
     def delete_all_errors(self):
         """ delete all errors
@@ -112,6 +111,18 @@ class LogBook(BrowserView):
                     )
         return out
 
+    @property
+    def error_count(self):
+        """ error count
+        """
+        return self.storage.error_count
+
+    @property
+    def reference_count(self):
+        """ reference count
+        """
+        return self.storage.reference_count
+
     def search_error(self, err_id):
         """ search the storage
         """
@@ -128,7 +139,7 @@ class LogBook(BrowserView):
         delete_all_button = form.get('form.button.deleteall', None) is not None
 
         if submitted:
-            if not self.request.get('REQUEST_METHOD','GET') == 'POST':
+            if not self.request.get('REQUEST_METHOD', 'GET') == 'POST':
                 raise Forbidden
 
             if traceback_button:
@@ -147,7 +158,7 @@ class LogBook(BrowserView):
 
             if delete_all_button:
                 self.delete_all_errors()
-                IStatusMessage(self.request).addStatusMessage(u"Deleted all Error Storages", type='info')
+                IStatusMessage(self.request).addStatusMessage(u"Deleted all Errors", type='info')
 
             if delete_refs_button:
                 self.delete_all_references()

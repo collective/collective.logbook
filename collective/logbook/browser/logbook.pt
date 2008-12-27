@@ -34,7 +34,7 @@
           There are
           <span tal:content="view/error_count" />
           saved (unique) Tracebacks and
-          <span tal:content="view/index_count" />
+          <span tal:content="view/reference_count" />
           referenced Tracebacks
         </div>
         <table>

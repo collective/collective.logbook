@@ -21,6 +21,7 @@
 __author__    = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
+import transaction
 import logging
 import urllib
 
@@ -62,6 +63,7 @@ def handleTraceback(object):
         err_id = urllib.splitvalue(entry_url)[1]
         # save error
         logbook.save_entry(err_id)
+        transaction.commit()
     # only warning
     except Exception, e:
         logger.warning("An error occured while handling the traceback")
