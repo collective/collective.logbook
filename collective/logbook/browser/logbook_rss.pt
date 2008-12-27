@@ -6,16 +6,16 @@
      xmlns:metal="http://xml.zope.org/namespaces/metal">
  <channel>
      <title>ERROR RSS FEED</title>
-     <link tal:content="string:${context/absolute_url}/@@error">
+     <link tal:content="string:${context/absolute_url}/@@logbook">
          http://link.to.rss
      </link>
      <description>RECENT ERRORS</description>
      <language>en</language>
 
-     <tal:block repeat="entry view/saved_entries">
+     <tal:block repeat="entry view/saved_errors">
          <item>
              <title tal:content="entry/id">error id</title>
-             <link tal:content="string:${context/absolute_url}/@@error#${entry/id}">link to error</link>
+             <link tal:content="string:${context/absolute_url}/@@logbook#${entry/id}">link to error</link>
              <description tal:content="entry/tb/tb_html">traceback</description>
              <pubDate tal:content="entry/tb/time">09 Dec 2008 10:51:07 GMT</pubDate>
          </item>

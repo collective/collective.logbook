@@ -127,6 +127,15 @@ class LogBookStorage(object):
         """
         return self._storage.items()
 
+    def get_counter(self, err_id):
+        """ see ILogBookStorage
+        """
+        out = []
+        for k, v in self._index.items():
+            if v == err_id:
+                out.append(k)
+        return len(out)
+
     def delete_all_errors(self):
         """ see ILogBookStorage
         """

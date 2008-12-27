@@ -57,16 +57,28 @@ class LogBook(BrowserView):
         self.portal = hooks.getSite()
         self.storage = ILogBookStorage(self.portal)
 
+    @property
+    def error_count(self):
+        """ see ILogBook
+        """
+        return self.storage.error_count
+
+    @property
+    def reference_count(self):
+        """ see ILogBook
+        """
+        return self.storage.reference_count
+
     @memoize
     def error_log(self):
-        """ error_log object
+        """ see ILogBook
         """
         error_log_path = '/'.join(
                 ['/'.join(self.portal.getPhysicalPath()), 'error_log'])
         return self.portal.restrictedTraverse(error_log_path)
 
     def error(self, err_id):
-        """ error object from the zope error_log
+        """ see ILogBook
         """
         error = self.error_log().getLogEntryById(err_id)
         if error is None:
@@ -75,56 +87,46 @@ class LogBook(BrowserView):
         error['time'] = DateTime(error['time'])
         return error
 
-    def save_entry(self, err_id):
-        """ save the error to the storage
+    def save_error(self, err_id):
+        """ see ILogBook
         """
         error = self.error(err_id)
         return self.storage.save_error(error)
 
-    def delete_entry(self, err_id):
-        """ deletes an error entry from the storage
+    def delete_error(self, err_id):
+        """ see ILogBook
         """
         return self.storage.delete_error(err_id)
 
     def delete_all_errors(self):
-        """ delete all errors
+        """ see ILogBook
         """
         return self.storage.delete_all_errors()
 
     def delete_all_references(self):
-        """ delete all references
+        """ see ILogBook
         """
         return self.storage.delete_all_references()
 
     @property
-    def saved_entries(self):
-        """ storage entries
+    def saved_errors(self):
+        """ see ILogBook
         """
         errors = self.storage.get_all_errors()
         out = []
         for id, tb in errors:
+            counter = self.storage.get_counter(id)
             out.append(
                     dict(
                         id = id,
                         tb = tb,
+                        counter = counter,
                         )
                     )
-        return out
-
-    @property
-    def error_count(self):
-        """ error count
-        """
-        return self.storage.error_count
-
-    @property
-    def reference_count(self):
-        """ reference count
-        """
-        return self.storage.reference_count
+        return sorted(out, key=lambda x: x["counter"], reverse=True)
 
     def search_error(self, err_id):
-        """ search the storage
+        """ see ILogBook
         """
         return self.storage.get_error(err_id)
 
@@ -151,7 +153,7 @@ class LogBook(BrowserView):
                 entries = form.get('entries', [])
                 for entry in entries:
                     err_id = entry.get('id')
-                    if self.delete_entry(err_id):
+                    if self.delete_error(err_id):
                         IStatusMessage(self.request).addStatusMessage(u"Traceback %s deleted" % err_id, type='info')
                     else:
                         IStatusMessage(self.request).addStatusMessage(u"could not delete %s" % err_id, type='warning')

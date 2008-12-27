@@ -29,7 +29,7 @@
             class="searchButton" />
       </div>
 
-      <div tal:condition="view/saved_entries">
+      <div tal:condition="view/saved_errors">
         <div style="color:grey">
           There are
           <span tal:content="view/error_count" />
@@ -38,13 +38,15 @@
           referenced Tracebacks
         </div>
         <table>
-          <tal:entries repeat="entry view/saved_entries">
+          <tal:entries repeat="entry view/saved_errors">
             <tr>
               <td valign="bottom">
                 <a name="entry/id" tal:attributes="name entry/id"></a>
                 <dl class="collapsible collapsedOnLoad" style="margin: 0;">
                   <dt class="collapsibleHeader">
                     <span tal:replace="entry/tb/type" />
+                    <!-- occured -->
+                    (Reference Count: <span tal:replace="entry/counter" />)
                   </dt>
                   <dd class="collapsibleContent">
                     <table>

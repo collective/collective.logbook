@@ -18,7 +18,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-__author__    = 'Ramon Bartl <ramon.bartl@inquant.de>'
+__author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
 from zope.interface import Interface
@@ -29,6 +29,10 @@ class ILogBook(Interface):
     """ The LogBook API
     """
 
+    error_count = Attribute(u"number of logged errors")
+    reference_count = Attribute(u"number of referenced logged errors")
+    saved_errors = Attribute(u"Saved Errors in storage")
+
     def error_log():
         """ zope error log object
         """
@@ -37,11 +41,11 @@ class ILogBook(Interface):
         """ get the error object by id
         """
 
-    def save_entry(err_id):
+    def save_error(err_id):
         """ save the error to the storage
         """
 
-    def delete_entry(err_id):
+    def delete_error(err_id):
         """ delete error from storage
         """
 
@@ -56,6 +60,7 @@ class ILogBook(Interface):
     def search_error(err_id):
         """ search error by id
         """
+
 
 class ILogBookStorage(Interface):
     """ The Logbook Storage

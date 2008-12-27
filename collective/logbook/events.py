@@ -62,7 +62,7 @@ def handleTraceback(object):
         # get the generated error url from Products.SiteErrorLog
         err_id = urllib.splitvalue(entry_url)[1]
         # save error
-        logbook.save_entry(err_id)
+        logbook.save_error(err_id)
         transaction.commit()
     # only warning
     except Exception, e:
