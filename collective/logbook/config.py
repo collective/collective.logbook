@@ -25,4 +25,7 @@ __docformat__ = 'plaintext'
 # 1 - references existing errors
 REFERENCE_ERRORS = 1
 
+STORAGE_KEY = "LOGBOOK"
+INDEX_KEY = "REFINDEX"
+
 # vim: set ft=python ts=4 sw=4 expandtab :

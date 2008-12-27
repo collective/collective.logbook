@@ -32,13 +32,12 @@ from collective.logbook.utils import hexfilter
 from collective.logbook.utils import filtered_error_tail
 from collective.logbook.events import NotifyTraceback
 from collective.logbook.interfaces import ILogBookStorage
+from collective.logbook.config import STORAGE_KEY
+from collective.logbook.config import INDEX_KEY
 
 from collective.logbook.config import REFERENCE_ERRORS
 
 logger = logging.getLogger("collective.logbook")
-
-STORAGE_KEY = "LOGBOOK"
-INDEX_KEY = "REFINDEX"
 
 
 class LogBookStorage(object):
