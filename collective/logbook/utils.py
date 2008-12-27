@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: __init__.py
+# File: utils.py
 #
 # Copyright (c) InQuant GmbH
 #
@@ -18,19 +18,26 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-__author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
+__author__    = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
-from zope.i18nmessageid import MessageFactory
+import re
 
-from monkey import install_monkey
-
-logbookMessageFactory = MessageFactory('collective.logbook')
+REGEX = re.compile(r'0x[0-9a-fA-F]+')
 
 
-def initialize(context):
-    """Initializer called when used as a Zope 2 product."""
+def hexfilter(text):
+    """ unify hex numbers
+    """
+    return REGEX.sub('0x0000000', text)
 
-    install_monkey()
+
+def filtered_error_tail(error):
+    """ last 5 lines of traceback with replaced oid's
+    """
+    tb_text = error.get('tb_text', '')
+    tail = tb_text.splitlines()[-5:]
+    filtered_tail = map(hexfilter, tail)
+    return filtered_tail
 
 # vim: set ft=python ts=4 sw=4 expandtab :

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: __init__.py
+# File: config.py
 #
 # Copyright (c) InQuant GmbH
 #
@@ -21,16 +21,8 @@
 __author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
-from zope.i18nmessageid import MessageFactory
-
-from monkey import install_monkey
-
-logbookMessageFactory = MessageFactory('collective.logbook')
-
-
-def initialize(context):
-    """Initializer called when used as a Zope 2 product."""
-
-    install_monkey()
+# 0 - all errors get saved in the log
+# 1 - references existing errors
+REFERENCE_ERRORS = 1
 
 # vim: set ft=python ts=4 sw=4 expandtab :

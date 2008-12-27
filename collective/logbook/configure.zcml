@@ -17,6 +17,12 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+    <!-- default storage adapter -->
+    <adapter
+        for="*"
+        factory=".storage.LogBookStorage"
+      />
+
     <subscriber
         for=".interfaces.IErrorRaisedEvent"
         handler=".events.handleTraceback"

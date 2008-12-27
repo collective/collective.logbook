@@ -22,6 +22,71 @@ __author__    = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
 from zope.interface import Interface
+from zope.interface import Attribute
+
+
+class ILogBook(Interface):
+    """ The LogBook API
+    """
+
+    def error_log():
+        """ zope error log object
+        """
+
+    def error(err_id):
+        """ get the error object by id
+        """
+
+    def save_entry(err_id):
+        """ save the error to the storage
+        """
+
+    def delete_entry(err_id):
+        """ delete error from storage
+        """
+
+    def delete_all_errors():
+        """ flush the logbook storage
+        """
+
+    def delete_all_references():
+        """ flush the logbook reference storage
+        """
+
+    def search_error(err_id):
+        """ search error by id
+        """
+
+class ILogBookStorage(Interface):
+    """ The Logbook Storage
+    """
+
+    error_count = Attribute(u"number of logged errors")
+    reference_count = Attribute(u"number of referenced logged errors")
+
+    def save_error(error):
+        """ save error to storage
+        """
+
+    def delete_error(err_id):
+        """ delete error from storage by id
+        """
+
+    def get_error(err_id):
+        """ get error by id
+        """
+
+    def get_all_errors():
+        """ get all errors
+        """
+
+    def delete_all_errors():
+        """ delete all errors
+        """
+
+    def delete_all_references():
+        """ delete all referenced errors
+        """
 
 
 class IErrorRaisedEvent(Interface):

@@ -21,12 +21,10 @@
 __author__    = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
-import transaction
 import logging
 import urllib
 
 from zope import interface
-from zope import event
 
 from interfaces import IErrorRaisedEvent
 from interfaces import INotifyTraceback
@@ -62,28 +60,8 @@ def handleTraceback(object):
         logbook = context.unrestrictedTraverse('@@logbook')
         # get the generated error url from Products.SiteErrorLog
         err_id = urllib.splitvalue(entry_url)[1]
-        # get the error object from error_log
-        error = logbook.error(err_id)
-        # get a error signature (last 5 lines of traceback)
-        error_tail = logbook.filtered_error_tail(error)
-
-        # check for existing entries in our annotation storage
-        for entry in logbook.saved_entries:
-            entry_id = entry.get('id')
-            # get signature of existing entries
-            tail = logbook.filtered_error_tail(entry.get('tb'))
-
-            if tail == error_tail:
-                logger.debug("***** Traceback '%s' already logged" % tail[-1:])
-                logbook.save_error_reference(err_id, entry_id)
-                transaction.commit()
-                return
-
-        # notify new error
-        event.notify(NotifyTraceback(error))
-        logger.debug("***** New Traceback logged with err_id=%s" % err_id)
+        # save error
         logbook.save_entry(err_id)
-        transaction.commit()
     # only warning
     except Exception, e:
         logger.warning("An error occured while handling the traceback")

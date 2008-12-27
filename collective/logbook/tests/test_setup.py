@@ -33,8 +33,12 @@ class TestSetup(LogBookTestCase):
     def afterSetUp(self):
         self.setRoles(('Manager', ))
 
-    def testMe(self):
-        self.assertEqual(1+1, 2)
+    def testViewAvailable(self):
+        self.failUnless(self.portal.restrictedTraverse('@@logbook'))
+
+    def testStorageAvailable(self):
+        #self.failunless(self.portal.restricted_traverse('@@logbook'))
+        pass
 
 def test_suite():
     suite = unittest.TestSuite()
