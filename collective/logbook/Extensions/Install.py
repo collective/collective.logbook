@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: test_setup.py
+# File: Install.py
 #
 # Copyright (c) InQuant GmbH
 #
@@ -18,28 +18,24 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-__author__    = """Ramon Bartl <ramon.bartl@inquant.de>"""
+__author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
-import unittest
+import logging
+from Products.CMFCore.utils import getToolByName
 
-from collective.logbook.tests.base import LogBookTestCase
+logger = logging.getLogger('collective.logbook')
 
+def install(portal):
+    setup_tool = getToolByName(portal, 'portal_setup')
+    setup_tool.runAllImportStepsFromProfile('profile-collective.logbook:default')
+    logger.info("*** INSTALL ***")
+    return "Ran all import steps."
 
-class TestSetup(LogBookTestCase):
-    """ Test Setup
-    """
-
-    def afterSetUp(self):
-        self.setRoles(('Manager', ))
-
-    def testViewAvailable(self):
-        self.failUnless(self.portal.restrictedTraverse('@@logbook'))
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestSetup))
-    return suite
+def uninstall(portal):
+    setup_tool = getToolByName(portal, 'portal_setup')
+    setup_tool.runAllImportStepsFromProfile('profile-collective.logbook:uninstall')
+    logger.info("*** UNINSTALL ***")
+    return "Ran all uninstall steps."
 
 # vim: set ft=python ts=4 sw=4 expandtab :
