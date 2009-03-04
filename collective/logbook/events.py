@@ -21,16 +21,18 @@
 __author__    = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
-import transaction
-import logging
 import urllib
+import transaction
+from thread import allocate_lock
 
 from zope import interface
 
+from config import LOGGER
 from interfaces import IErrorRaisedEvent
 from interfaces import INotifyTraceback
 
-logger = logging.getLogger("collective.logbook")
+
+cleanup_lock = allocate_lock()
 
 
 class ErrorRaisedEvent(object):
@@ -46,27 +48,35 @@ class NotifyTraceback(object):
 
     def __init__(self, error):
         self.error = error
-        logger.debug("***** Notify new error %s" % error.get('id', 0))
+        LOGGER.info("***** Notify new traceback %s" % error.get('id', 0))
 
 
 def handleTraceback(object):
     context = object.context
     entry_url = object.entry_url
+
     if entry_url is None:
         return
-    # we don't want to produce any errors here, thus, we'll be nice and die
-    # silently if an error occurs here
+
+    LOGGER.info("handle traceback [%s]" % entry_url)
+
     try:
-        # get our logbook view to use the api
-        logbook = context.unrestrictedTraverse('@@logbook')
-        # get the generated error url from Products.SiteErrorLog
-        err_id = urllib.splitvalue(entry_url)[1]
-        # save error
-        logbook.save_error(err_id)
-        transaction.commit()
+        cleanup_lock.acquire()
+        # we don't want to produce any errors here, thus, we'll be nice and die
+        # silently if an error occurs here
+        try:
+            # get our logbook view to use the api
+            logbook = context.unrestrictedTraverse('@@logbook')
+            # get the generated error url from Products.SiteErrorLog
+            err_id = urllib.splitvalue(entry_url)[1]
+            # save error
+            logbook.save_error(err_id)
+            transaction.commit()
+        finally:
+            cleanup_lock.release()
     # only warning
     except Exception, e:
-        logger.warning("An error occured while handling the traceback")
-        logger.warning("%s" % e)
+        LOGGER.warning("An error occured while handling the traceback")
+        LOGGER.warning("%s" % e)
 
 # vim: set ft=python ts=4 sw=4 expandtab :

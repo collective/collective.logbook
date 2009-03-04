@@ -21,38 +21,42 @@
 __author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
-import logging
 from zope.annotation.interfaces import IAnnotations
 from Products.CMFCore.utils import getToolByName
 from collective.logbook.config import STORAGE_KEY
 from collective.logbook.config import INDEX_KEY
 
-logger = logging.getLogger('collective.logbook')
+from collective.logbook.config import LOGGER
+from collective.logbook.monkey import install_monkey
+from collective.logbook.monkey import uninstall_monkey
+
 
 def install(portal):
     setup_tool = getToolByName(portal, 'portal_setup')
     setup_tool.runAllImportStepsFromProfile('profile-collective.logbook:default')
-    logger.info("*** INSTALL collective.logbook ***")
+    # installed monkey
+    install_monkey()
+    LOGGER.info("*** INSTALLED collective.logbook ***")
     return "Ran all import steps."
 
 def uninstall(portal):
     setup_tool = getToolByName(portal, 'portal_setup')
     setup_tool.runAllImportStepsFromProfile('profile-collective.logbook:uninstall')
-    logger.info("*** UNINSTALL collective.logbook ***")
-
+    # remove monkey
+    uninstall_monkey()
     # remove storages
     uninstall_storages(portal)
-
+    LOGGER.info("*** UNINSTALLED collective.logbook ***")
     return "Ran all uninstall steps."
 
 def uninstall_storages(portal):
     annotations = IAnnotations(portal)
     if annotations.get(STORAGE_KEY):
-        logger.info("*** UNINSTALL collective.logbook Logstorage ***")
+        LOGGER.info("*** UNINSTALL collective.logbook Logstorage ***")
         del annotations[STORAGE_KEY]
 
     if annotations.get(INDEX_KEY):
-        logger.info("*** UNINSTALL collective.logbook Indexstorage ***")
+        LOGGER.info("*** UNINSTALL collective.logbook Indexstorage ***")
         del annotations[INDEX_KEY]
 
 # vim: set ft=python ts=4 sw=4 expandtab :

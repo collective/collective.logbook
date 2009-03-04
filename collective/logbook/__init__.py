@@ -23,14 +23,10 @@ __docformat__ = 'plaintext'
 
 from zope.i18nmessageid import MessageFactory
 
-from monkey import install_monkey
-
 logbookMessageFactory = MessageFactory('collective.logbook')
 
 
 def initialize(context):
     """Initializer called when used as a Zope 2 product."""
-
-    install_monkey()
 
 # vim: set ft=python ts=4 sw=4 expandtab :

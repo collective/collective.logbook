@@ -21,8 +21,6 @@
 __author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
-import logging
-
 from DateTime import DateTime
 
 from zope import interface
@@ -37,10 +35,9 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Acquisition import aq_inner
 from zExceptions import Forbidden
 
+from collective.logbook.config import LOGGER
 from collective.logbook.interfaces import ILogBook
 from collective.logbook.interfaces import ILogBookStorage
-
-logger = logging.getLogger("collective.logbook")
 
 
 class LogBook(BrowserView):

@@ -21,6 +21,12 @@
 __author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
+import logging
+
+PACKAGENAME = "collective.logbook"
+
+LOGGER = logging.getLogger(PACKAGENAME)
+
 # 0 - all errors get saved in the log
 # 1 - references existing errors
 REFERENCE_ERRORS = 1

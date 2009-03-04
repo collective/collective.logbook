@@ -1,3 +1,18 @@
+2009-03-04  ramonski <ramon.bartl@inquant.de>
+    * profiles/default/metadata.xml: 0.2
+    * Extensions/Install.py: fixed import
+    * config.py: added LOGGER to config
+
+2009-03-02  ramonski <ramon.bartl@inquant.de>
+    * events.py: added thread lock
+
+2009-02-08  ramonski <ramon.bartl@inquant.de>
+    * monkey.py (install_monkey): added uninstall method for monkey
+
+2008-12-28  ramonski <ramon.bartl@inquant.de>
+    * interfaces.py (ILogBookStorage.get_counter): added missing interfaces
+    declaration
+
 2008-12-26  ramonski <ramon.bartl@inquant.de>
     * profiles/default/metadata.xml: moved to collective with version 0.1
     * configure.zcml: renamed package to collective.logbook

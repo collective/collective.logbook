@@ -21,22 +21,24 @@
 __author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
-import logging
 
 from zope.event import notify
 
 from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
 
+from config import LOGGER
 from events import ErrorRaisedEvent
-
-logger = logging.getLogger("collective.logbook")
 
 _raising = SiteErrorLog.raising
 
 
 def install_monkey():
-    logger.info(">>> Installing Monkey for Products.SiteErrorLog")
+    LOGGER.info(">>> Installing Monkey for Products.SiteErrorLog")
     SiteErrorLog.raising = raising
+
+def uninstall_monkey():
+    LOGGER.info(">>> Uninstalling Monkey for Products.SiteErrorLog")
+    SiteErrorLog.raising = _raising
 
 def raising(self, info):
     enty_url = _raising(self, info)
