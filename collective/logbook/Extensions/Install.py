@@ -22,7 +22,7 @@ __author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
 from zope.annotation.interfaces import IAnnotations
-from Products.CMFCore.utils import getToolByName
+#from Products.CMFCore.utils import getToolByName
 from collective.logbook.config import STORAGE_KEY
 from collective.logbook.config import INDEX_KEY
 
@@ -32,16 +32,14 @@ from collective.logbook.monkey import uninstall_monkey
 
 
 def install(portal):
-    setup_tool = getToolByName(portal, 'portal_setup')
-    setup_tool.runAllImportStepsFromProfile('profile-collective.logbook:default')
+    #setup_tool = getToolByName(portal, 'portal_setup')
+    #setup_tool.runAllImportStepsFromProfile('profile-collective.logbook:default')
     # installed monkey
     install_monkey()
     LOGGER.info("*** INSTALLED collective.logbook ***")
     return "Ran all import steps."
 
 def uninstall(portal):
-    setup_tool = getToolByName(portal, 'portal_setup')
-    setup_tool.runAllImportStepsFromProfile('profile-collective.logbook:uninstall')
     # remove monkey
     uninstall_monkey()
     # remove storages

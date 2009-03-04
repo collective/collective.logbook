@@ -3,6 +3,7 @@
     * Extensions/Install.py: fixed import
     * config.py: added LOGGER to config
     * configure.zcml: removed uninstall profile
+    * Extensions/Install.py (install): removed gs manual import step handling
 
 2009-03-02  ramonski <ramon.bartl@inquant.de>
     * events.py: added thread lock
