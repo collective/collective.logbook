@@ -17,6 +17,14 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+    <genericsetup:registerProfile
+      name="uninstall"
+      title="collective.logbook uninstall profile"
+      directory="profiles/uninstall"
+      description="Uninstall collective.logbook."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
     <!-- default storage adapter -->
     <adapter
         for="*"

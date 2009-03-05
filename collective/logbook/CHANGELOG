@@ -1,3 +1,8 @@
+2009-03-05  ramonski <ramon.bartl@inquant.de>
+    * Extensions/Install.py: added runAllImportStepsFromProfile to the
+    install/uninstall functions, again:p
+    * profiles/uninstall: added uninstall profile, again:p
+
 2009-03-04  ramonski <ramon.bartl@inquant.de>
     * profiles/default/metadata.xml: 0.2
     * Extensions/Install.py: fixed import
