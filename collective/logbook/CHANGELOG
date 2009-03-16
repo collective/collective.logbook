@@ -1,3 +1,17 @@
+2009-03-16  ramonski <ramon.bartl@inquant.de>
+    * Extensions/Install.py (install): added install handler for logbook
+    property
+    * Extensions/Install.py (uninstall): added uninstall handler for logbook
+    property
+    * browser/controlpanel.py: controlpanel for enabling/disabling logbook
+    logging
+
+2009-03-15  ramonski <ramon.bartl@inquant.de>
+    * browser/configure.zcml: added logo
+    * profiles/default/actionicons.xml: added
+    * profiles/default/controlpanel.xml: added
+    * profiles/default/propertiestool.xml: added
+
 2009-03-05  ramonski <ramon.bartl@inquant.de>
     * Extensions/Install.py: added runAllImportStepsFromProfile to the
     install/uninstall functions, again:p

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<object name="portal_controlpanel" meta_type="Plone Control Panel Tool"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="collective.logbook">
+ <configlet title="Logbook" action_id="LogbookControlPanel" appId="Logbook"
+    category="Products" condition_expr=""
+    url_expr="string:${portal_url}/@@logbook-controlpanel" visible="True">
+  <permission>Manage portal</permission>
+ </configlet>
+</object>
+
+<!-- vim: set ft=xml ts=4 sw=4 expandtab : -->

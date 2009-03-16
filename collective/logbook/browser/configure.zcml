@@ -3,6 +3,16 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="collective.logbook">
 
+    <!-- Control Panel -->
+    <adapter factory=".controlpanel.LogbookControlPanelAdapter" />
+    <browser:page
+        name="logbook-controlpanel"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".controlpanel.LogbookControlPanel"
+        permission="cmf.ManagePortal"
+    />
+
+    <!-- Logbook View -->
     <browser:page
       for="*"
       name="logbook"
@@ -10,6 +20,7 @@
       permission="cmf.ManagePortal"
     />
 
+    <!-- Logbook RSS -->
     <browser:page
       for="*"
       name="logbook_atom.xml"
@@ -17,11 +28,17 @@
       permission="cmf.ManagePortal"
     />
 
+    <!-- Logbook ATOM -->
     <browser:page
       for="*"
       name="logbook_rss.xml"
       class=".logbook.LogBookRSSFeed"
       permission="cmf.ManagePortal"
+    />
+
+    <browser:resource
+        name="logbook.png"
+        file="logbook.png"
     />
 
 </configure>

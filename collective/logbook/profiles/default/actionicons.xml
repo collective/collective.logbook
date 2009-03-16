@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<action-icons>
+ <action-icon category="controlpanel"
+              action_id="LogbookControlPanel"
+              title="Logbook Settings"
+              priority="0" icon_expr="++resource++logbook.png"/>
+</action-icons>
+
+<!-- vim: set ft=xml ts=4 sw=4 expandtab : -->

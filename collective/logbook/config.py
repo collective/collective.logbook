@@ -35,4 +35,7 @@ REFERENCE_ERRORS = 1
 STORAGE_KEY = "LOGBOOK"
 INDEX_KEY = "REFINDEX"
 
+# Property to define if the logbook logging is enabled
+PROP_KEY = 'logbook_enabled'
+
 # vim: set ft=python ts=4 sw=4 expandtab :

@@ -21,12 +21,25 @@
 __author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
+import Zope2
 from zope.i18nmessageid import MessageFactory
+
+from collective.logbook import monkey
+from collective.logbook.config import LOGGER
 
 logbookMessageFactory = MessageFactory('collective.logbook')
 
 
 def initialize(context):
-    """Initializer called when used as a Zope 2 product."""
+    """ Initializer called when used as a Zope 2 product. """
+
+    app = Zope2.app()
+    enabled = app.getProperty("logbook_enabled", False)
+
+    if enabled:
+        monkey.install_monkey()
+        LOGGER.info(">>> logging **enabled**")
+    else:
+        LOGGER.info(">>> logging **disabled**")
 
 # vim: set ft=python ts=4 sw=4 expandtab :

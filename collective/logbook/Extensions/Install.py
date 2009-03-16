@@ -21,11 +21,15 @@
 __author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
+import Zope2
+
 from zope.annotation.interfaces import IAnnotations
+
 from Products.CMFCore.utils import getToolByName
+
 from collective.logbook.config import STORAGE_KEY
 from collective.logbook.config import INDEX_KEY
-
+from collective.logbook.config import PROP_KEY
 from collective.logbook.config import LOGGER
 from collective.logbook.monkey import install_monkey
 from collective.logbook.monkey import uninstall_monkey
@@ -34,20 +38,37 @@ from collective.logbook.monkey import uninstall_monkey
 def install(portal):
     setup_tool = getToolByName(portal, 'portal_setup')
     setup_tool.runAllImportStepsFromProfile('profile-collective.logbook:default')
-    # installed monkey
+
+    # add logbook property
+    app = Zope2.app()
+    if PROP_KEY not in app.propertyIds():
+        app.manage_addProperty(PROP_KEY, True, 'boolean')
+
+    # install monkey
     install_monkey()
+
     LOGGER.info("*** INSTALLED collective.logbook ***")
     return "Ran all import steps."
+
 
 def uninstall(portal):
     setup_tool = getToolByName(portal, 'portal_setup')
     setup_tool.runAllImportStepsFromProfile('profile-collective.logbook:uninstall')
+
     # remove monkey
     uninstall_monkey()
+
     # remove storages
     uninstall_storages(portal)
+
+    # remove logbook property
+    app = Zope2.app()
+    if PROP_KEY in app.propertyIds():
+        app.manage_delProperties([PROP_KEY])
+
     LOGGER.info("*** UNINSTALLED collective.logbook ***")
     return "Ran all uninstall steps."
+
 
 def uninstall_storages(portal):
     annotations = IAnnotations(portal)
