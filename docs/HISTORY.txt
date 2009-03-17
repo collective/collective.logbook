@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.2.1 (2009-03-17)
+------------------
+
+  * removed the return of the setter methods [ramonski]
+
 0.2 (2009-03-17)
 ----------------
 

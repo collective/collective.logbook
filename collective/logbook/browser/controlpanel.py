@@ -78,11 +78,12 @@ class LogbookControlPanelAdapter(SchemaAdapterBase):
             return app.getProperty(PROP_KEY_LOG_ENABLED)
 
         def set(self, value):
+            app.manage_changeProperties(logbook_enabled = value)
+
             if value:
                 install_monkey()
             else:
                 uninstall_monkey()
-            return app.manage_changeProperties(logbook_enabled = value)
 
         return property(get, set)
 
@@ -93,7 +94,7 @@ class LogbookControlPanelAdapter(SchemaAdapterBase):
             return app.getProperty(PROP_KEY_LOG_MAILS) or ()
 
         def set(self, value):
-            return app.manage_changeProperties(logbook_log_mails = value)
+            app.manage_changeProperties(logbook_log_mails = value)
 
         return property(get, set)
 
