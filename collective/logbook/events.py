@@ -25,8 +25,6 @@ import urllib
 import transaction
 from thread import allocate_lock
 
-import Zope2
-
 from zope import interface
 from zope.app.component import hooks
 
@@ -72,10 +70,13 @@ class NotifyTraceback(object):
 def mailHandler(event):
     """ notify this error
     """
-    app = Zope2.app()
     error = event.error
     portal = hooks.getSite()
+    app = portal.getParentNode()
     emails = app.getProperty(PROP_KEY_LOG_MAILS)
+
+    if not emails:
+        return
 
     recipients = [mail for mail in emails]
     subject = "[collective.logbook] NEW TRACEBACK: '%s'" % error.get("value")

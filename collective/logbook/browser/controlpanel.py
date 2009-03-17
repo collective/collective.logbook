@@ -21,12 +21,11 @@
 __author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
-import Zope2
-
 from zope import interface
 from zope import schema
 from zope import component
 from zope.formlib import form
+from zope.app.component import hooks
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
@@ -70,31 +69,34 @@ class LogbookControlPanelAdapter(SchemaAdapterBase):
     def __init__(self, context):
         super(LogbookControlPanelAdapter, self).__init__(context)
         self.context = getToolByName(self.context, "portal_properties").site_properties
+        self.portal = hooks.getSite()
+        self.app = self.portal.getParentNode()
 
     @apply
     def logbook_enabled():
-        app = Zope2.app()
+
         def get(self):
-            return app.getProperty(PROP_KEY_LOG_ENABLED)
+            return self.app.getProperty(PROP_KEY_LOG_ENABLED)
 
         def set(self, value):
-            app.manage_changeProperties(logbook_enabled = value)
 
             if value:
                 install_monkey()
             else:
                 uninstall_monkey()
 
+            return self.app.manage_changeProperties(logbook_enabled = value)
+
         return property(get, set)
 
     @apply
     def logbook_log_mails():
-        app = Zope2.app()
+
         def get(self):
-            return app.getProperty(PROP_KEY_LOG_MAILS) or ()
+            return self.app.getProperty(PROP_KEY_LOG_MAILS) or ()
 
         def set(self, value):
-            app.manage_changeProperties(logbook_log_mails = value)
+            self.app.manage_changeProperties(logbook_log_mails = value)
 
         return property(get, set)
 

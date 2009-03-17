@@ -8,8 +8,11 @@
     * browser/controlpanel.py
     (LogbookControlPanelAdapter.logbook_enabled.set): removed return in set
     method. This caused some unexpected Database Conflict Errors
-    * browser/controlpanel.py
-    (LogbookControlPanelAdapter.logbook_log_mails.set): removed return in set
+    * events.py (mailHandler): return when no emails given
+    * Extensions/Install.py (install_properties): fixed uninstall method of
+    properties
+    * browser/controlpanel.py (ILogbookSchema): removed the unique attribute
+    * __init__.py (initialize): removed Zope2.app()
 
 2009-03-16  ramonski <ramon.bartl@inquant.de>
     * Extensions/Install.py (install): added install handler for logbook

@@ -21,7 +21,6 @@
 __author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
-import Zope2
 from zope.i18nmessageid import MessageFactory
 
 from collective.logbook import monkey
@@ -33,7 +32,7 @@ logbookMessageFactory = MessageFactory('collective.logbook')
 def initialize(context):
     """ Initializer called when used as a Zope 2 product. """
 
-    app = Zope2.app()
+    app = context._ProductContext__app
     enabled = app.getProperty("logbook_enabled", False)
 
     if enabled:

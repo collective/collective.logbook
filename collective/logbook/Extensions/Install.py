@@ -92,7 +92,12 @@ def uninstall_properties():
     app = Zope2.app()
 
     # remove logbook properties
-    app.manage_delProperties([PROP_KEY_LOG_ENABLED, PROP_KEY_LOG_MAILS])
+    if PROP_KEY_LOG_ENABLED in app.propertyIds():
+        app.manage_delProperties([PROP_KEY_LOG_ENABLED, ])
+
+    if PROP_KEY_LOG_MAILS in app.propertyIds():
+        app.manage_delProperties([PROP_KEY_LOG_MAILS, ])
+
     LOGGER.info("*** UNINSTALL collective.logbook properties ***")
 
 
