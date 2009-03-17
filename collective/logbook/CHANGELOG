@@ -1,3 +1,11 @@
+2009-03-17  ramonski <ramon.bartl@inquant.de>
+    * browser/controlpanel.py (LogbookControlPanelAdapter.logbook_log_mails):
+    added logbook_log_mails property to the controlpanel
+    * Extensions/Install.py (uninstall): added install method for properties
+    * Extensions/Install.py (uninstall): added uninstll method for properties
+    * events.py (mailHandler): implemented
+    * utils.py: taken send function from Products.eXtremeManagement, thx;)
+
 2009-03-16  ramonski <ramon.bartl@inquant.de>
     * Extensions/Install.py (install): added install handler for logbook
     property

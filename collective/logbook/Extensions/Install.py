@@ -29,23 +29,23 @@ from Products.CMFCore.utils import getToolByName
 
 from collective.logbook.config import STORAGE_KEY
 from collective.logbook.config import INDEX_KEY
-from collective.logbook.config import PROP_KEY
 from collective.logbook.config import LOGGER
 from collective.logbook.monkey import install_monkey
 from collective.logbook.monkey import uninstall_monkey
+
+from collective.logbook.config import PROP_KEY_LOG_ENABLED
+from collective.logbook.config import PROP_KEY_LOG_MAILS
 
 
 def install(portal):
     setup_tool = getToolByName(portal, 'portal_setup')
     setup_tool.runAllImportStepsFromProfile('profile-collective.logbook:default')
 
-    # add logbook property
-    app = Zope2.app()
-    if PROP_KEY not in app.propertyIds():
-        app.manage_addProperty(PROP_KEY, True, 'boolean')
-
     # install monkey
     install_monkey()
+
+    # install properties
+    install_properties()
 
     LOGGER.info("*** INSTALLED collective.logbook ***")
     return "Ran all import steps."
@@ -61,13 +61,39 @@ def uninstall(portal):
     # remove storages
     uninstall_storages(portal)
 
-    # remove logbook property
-    app = Zope2.app()
-    if PROP_KEY in app.propertyIds():
-        app.manage_delProperties([PROP_KEY])
+    # remove properties
+    uninstall_properties()
 
     LOGGER.info("*** UNINSTALLED collective.logbook ***")
     return "Ran all uninstall steps."
+
+
+def install_properties():
+    """ install logbook properties to the Zope root
+    """
+
+    app = Zope2.app()
+
+    # add logbook log enabled property
+    if PROP_KEY_LOG_ENABLED not in app.propertyIds():
+        app.manage_addProperty(PROP_KEY_LOG_ENABLED, True, 'boolean')
+
+    # add logbook log mails property
+    if PROP_KEY_LOG_MAILS not in app.propertyIds():
+        app.manage_addProperty(PROP_KEY_LOG_MAILS, (), 'lines')
+
+    LOGGER.info("*** INSTALL collective.logbook properties ***")
+
+
+def uninstall_properties():
+    """ uninstall logbook properties to the Zope root
+    """
+
+    app = Zope2.app()
+
+    # remove logbook properties
+    app.manage_delProperties([PROP_KEY_LOG_ENABLED, PROP_KEY_LOG_MAILS])
+    LOGGER.info("*** UNINSTALL collective.logbook properties ***")
 
 
 def uninstall_storages(portal):

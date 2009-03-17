@@ -34,10 +34,13 @@ from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from plone.app.controlpanel.form import ControlPanelForm
 
-from collective.logbook.config import PROP_KEY
+from collective.logbook.utils import check_email
 from collective.logbook.monkey import install_monkey
 from collective.logbook.monkey import uninstall_monkey
 from collective.logbook import logbookMessageFactory as _
+
+from collective.logbook.config import PROP_KEY_LOG_ENABLED
+from collective.logbook.config import PROP_KEY_LOG_MAILS
 
 
 class ILogbookSchema(interface.Interface):
@@ -45,10 +48,19 @@ class ILogbookSchema(interface.Interface):
     """
 
     logbook_enabled = schema.Bool(
-                        title = _(u'label_logbook_enabled', default = u'Enable Logbook logging'),
-                        description = _(u"help_logbook_enabled", default = u'This installs or uninstalls the logbook patch for Products.SiteErrorLog'),
+                        title = _(u'Enable Logbook logging'),
+                        description = _(u'This installs or uninstalls the logbook patch for Products.SiteErrorLog'),
                         default = True,
                         required = True)
+
+    logbook_log_mails = schema.Tuple(
+                        title = _(u'Notify Email'),
+                        description = _(u'Notify these Email Adresses when a new error occurs'),
+                        unique = True,
+                        default = (),
+                        value_type = schema.TextLine(
+                                     constraint = check_email, ),
+                        )
 
 
 class LogbookControlPanelAdapter(SchemaAdapterBase):
@@ -63,7 +75,7 @@ class LogbookControlPanelAdapter(SchemaAdapterBase):
     def logbook_enabled():
         app = Zope2.app()
         def get(self):
-            return app.getProperty(PROP_KEY)
+            return app.getProperty(PROP_KEY_LOG_ENABLED)
 
         def set(self, value):
             if value:
@@ -71,6 +83,17 @@ class LogbookControlPanelAdapter(SchemaAdapterBase):
             else:
                 uninstall_monkey()
             return app.manage_changeProperties(logbook_enabled = value)
+
+        return property(get, set)
+
+    @apply
+    def logbook_log_mails():
+        app = Zope2.app()
+        def get(self):
+            return app.getProperty(PROP_KEY_LOG_MAILS) or ()
+
+        def set(self, value):
+            return app.manage_changeProperties(logbook_log_mails = value)
 
         return property(get, set)
 

@@ -23,6 +23,16 @@ __docformat__ = 'plaintext'
 
 import re
 
+from email.MIMEText import MIMEText
+from email.Header import Header
+from email.Utils import parseaddr, formataddr
+from socket import gaierror
+
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
+
+from config import LOGGER
+
 REGEX = re.compile(r'0x[0-9a-fA-F]+')
 
 
@@ -39,5 +49,82 @@ def filtered_error_tail(error):
     tail = tb_text.splitlines()[-5:]
     filtered_tail = map(hexfilter, tail)
     return filtered_tail
+
+# this is stolen from http://grok.zope.org/documentation/how-to/automatic-form-generation
+expr = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+"
+                  r"@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}"
+                  r"\.){3}[0-9]{1,3})$", re.IGNORECASE)
+
+check_email = expr.match
+
+
+def send(portal, message, subject, recipients=[]):
+    """Send an email.
+
+    this is taken from Products.eXtremeManagement
+    """
+    # Weed out any empty strings.
+    recipients = [r for r in recipients if r]
+    if not recipients:
+        LOGGER.warn("No recipients to send the mail to, not sending.")
+        return
+
+    charset = portal.getProperty('email_charset', 'ISO-8859-1')
+    # Header class is smart enough to try US-ASCII, then the charset we
+    # provide, then fall back to UTF-8.
+    header_charset = charset
+
+    # We must choose the body charset manually
+    for body_charset in 'US-ASCII', charset, 'UTF-8':
+        try:
+            message = message.encode(body_charset)
+        except UnicodeError:
+            pass
+        else:
+            break
+
+    # Get the 'From' address.
+    sender_name = portal.getProperty('email_from_name')
+    sender_addr = portal.getProperty('email_from_address')
+
+    # We must always pass Unicode strings to Header, otherwise it will
+    # use RFC 2047 encoding even on plain ASCII strings.
+    sender_name = str(Header(safe_unicode(sender_name), header_charset))
+    # Make sure email addresses do not contain non-ASCII characters
+    sender_addr = sender_addr.encode('ascii')
+    email_from = formataddr((sender_name, sender_addr))
+
+    formatted_recipients = []
+    for recipient in recipients:
+        # Split real name (which is optional) and email address parts
+        recipient_name, recipient_addr = parseaddr(recipient)
+        recipient_name = str(Header(safe_unicode(recipient_name),
+                                    header_charset))
+        recipient_addr = recipient_addr.encode('ascii')
+        formatted = formataddr((recipient_name, recipient_addr))
+        formatted_recipients.append(formatted)
+    email_to = ', '.join(formatted_recipients)
+
+    # Make the subject a nice header
+    subject = Header(safe_unicode(subject), header_charset)
+
+    # Create the message ('plain' stands for Content-Type: text/plain)
+    msg = MIMEText(message, 'plain', body_charset)
+    msg['From'] = email_from
+    msg['To'] = email_to
+    msg['Subject'] = subject
+    msg = msg.as_string()
+
+    # Finally send it out.
+    mailhost = getToolByName(portal, 'MailHost')
+    try:
+        LOGGER.info("Begin sending email to %r " % formatted_recipients)
+        LOGGER.info("Subject: %s " % subject)
+        mailhost.send(message=msg)
+    except gaierror, exc:
+        LOGGER.error("Failed sending email to %r" % formatted_recipients)
+        LOGGER.error("Reason: %s: %r" % (exc.__class__.__name__, str(exc)))
+    else:
+        LOGGER.info("Succesfully sent email to %r" % formatted_recipients)
 
 # vim: set ft=python ts=4 sw=4 expandtab :

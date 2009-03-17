@@ -36,10 +36,10 @@
         handler=".events.handleTraceback"
       />
 
-    <!--<subscriber
+    <subscriber
         for=".interfaces.INotifyTraceback"
-        handler=".events.mailNewTraceback"
-      />-->
+        handler=".events.mailHandler"
+      />
 
 </configure>
 

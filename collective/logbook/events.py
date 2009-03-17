@@ -25,14 +25,32 @@ import urllib
 import transaction
 from thread import allocate_lock
 
+import Zope2
+
 from zope import interface
+from zope.app.component import hooks
 
 from config import LOGGER
+from config import PROP_KEY_LOG_MAILS
+from utils import send
+
 from interfaces import IErrorRaisedEvent
 from interfaces import INotifyTraceback
 
 
 cleanup_lock = allocate_lock()
+
+MAIL_TEMPLATE = """
+A new error occured on %(date)s
+
+%(traceback)s
+
+This error is saved under the number %(error_number)s
+
+The error occured here %(error_url)s
+
+Please check the logbook entry %(logbook_url)s
+"""
 
 
 class ErrorRaisedEvent(object):
@@ -49,6 +67,32 @@ class NotifyTraceback(object):
     def __init__(self, error):
         self.error = error
         LOGGER.info("***** Notify new traceback %s" % error.get('id', 0))
+
+
+def mailHandler(event):
+    """ notify this error
+    """
+    app = Zope2.app()
+    error = event.error
+    portal = hooks.getSite()
+    emails = app.getProperty(PROP_KEY_LOG_MAILS)
+
+    recipients = [mail for mail in emails]
+    subject = "[collective.logbook] NEW TRACEBACK: '%s'" % error.get("value")
+    data = dict(
+            date = error.get("time").strftime("%Y-%m-%d %H:%M:%S"),
+            traceback = error.get("tb_text"),
+            error_number = error.get("id"),
+            error_url = error.get("url"),
+            logbook_url = portal.absolute_url() + "/@@logbook?errornumber=%s" % error.get("id"),
+            )
+
+    try:
+        message = MAIL_TEMPLATE % data
+        send(portal, message, subject, recipients)
+    except:
+        LOGGER.info("An error occured while notifying recipients")
+
 
 
 def handleTraceback(object):

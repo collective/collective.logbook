@@ -28,6 +28,8 @@ PACKAGENAME = "collective.logbook"
 LOGGER = logging.getLogger(PACKAGENAME)
 
 # 0 - all errors get saved in the log
+#     (WARNING: this might cause an NotifyTraceback event flooding)
+#
 # 1 - references existing errors
 REFERENCE_ERRORS = 1
 
@@ -35,7 +37,8 @@ REFERENCE_ERRORS = 1
 STORAGE_KEY = "LOGBOOK"
 INDEX_KEY = "REFINDEX"
 
-# Property to define if the logbook logging is enabled
-PROP_KEY = 'logbook_enabled'
+# Logbook properties
+PROP_KEY_LOG_ENABLED = 'logbook_enabled'
+PROP_KEY_LOG_MAILS = 'logbook_log_mails'
 
 # vim: set ft=python ts=4 sw=4 expandtab :

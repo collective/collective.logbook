@@ -20,6 +20,7 @@
             name="errornumber"
             size="40"
             value=""
+            tal:attributes="value request/errornumber|nothing"
             class="searchField inputLabel"
             id="errornumber-input-field" />
         <input type="submit"
