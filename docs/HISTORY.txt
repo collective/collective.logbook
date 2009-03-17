@@ -1,8 +1,14 @@
 Changelog
 =========
 
-0.2
+0.2 (2009-03-17)
 ----------------
+
+  * added a configlet for plone control panel [ramonski]
+  * added a default notify traceback email handler [ramonski]
+  * added propert install/uninstall methods for the SiteErrorLog patch
+    [ramonski]
+  * added 2 properties in the application root [ramonski]
 
 0.1 - Unreleased
 ----------------
