@@ -21,8 +21,6 @@
 __author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
-import Zope2
-
 from zope.annotation.interfaces import IAnnotations
 
 from Products.CMFCore.utils import getToolByName
@@ -45,7 +43,7 @@ def install(portal):
     install_monkey()
 
     # install properties
-    install_properties()
+    install_properties(portal)
 
     LOGGER.info("*** INSTALLED collective.logbook ***")
     return "Ran all import steps."
@@ -62,17 +60,17 @@ def uninstall(portal):
     uninstall_storages(portal)
 
     # remove properties
-    uninstall_properties()
+    uninstall_properties(portal)
 
     LOGGER.info("*** UNINSTALLED collective.logbook ***")
     return "Ran all uninstall steps."
 
 
-def install_properties():
+def install_properties(portal):
     """ install logbook properties to the Zope root
     """
 
-    app = Zope2.app()
+    app = portal.getParentNode()
 
     # add logbook log enabled property
     if PROP_KEY_LOG_ENABLED not in app.propertyIds():
@@ -85,11 +83,11 @@ def install_properties():
     LOGGER.info("*** INSTALL collective.logbook properties ***")
 
 
-def uninstall_properties():
+def uninstall_properties(portal):
     """ uninstall logbook properties to the Zope root
     """
 
-    app = Zope2.app()
+    app = portal.getParentNode()
 
     # remove logbook properties
     if PROP_KEY_LOG_ENABLED in app.propertyIds():

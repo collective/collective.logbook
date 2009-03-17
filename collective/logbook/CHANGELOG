@@ -13,6 +13,8 @@
     properties
     * browser/controlpanel.py (ILogbookSchema): removed the unique attribute
     * __init__.py (initialize): removed Zope2.app()
+    * Extensions/Install.py (uninstall_properties): removed Zope2.app() stuff
+    * Extensions/Install.py (uninstall_properties): - " -
 
 2009-03-16  ramonski <ramon.bartl@inquant.de>
     * Extensions/Install.py (install): added install handler for logbook
