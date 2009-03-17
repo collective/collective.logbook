@@ -4,6 +4,7 @@ Changelog
 0.3 (2009-03-17)
 ----------------
 
+  * 0.2 release was broken, sorry for this re-release [ramonski]
   * fixed issues which caused some ugly Database Conflict errors [ramonski]
   * removed all Zope2.app() stuff [ramonski]
   * mail handler stops when no emails specified [ramonski]
