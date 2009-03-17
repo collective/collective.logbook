@@ -85,7 +85,7 @@ adapter will win. Maybe an SQL storage with SQLAlchemy would be nice here:)
 
 
 Notify Event
-~~~~~~~~~~~
+~~~~~~~~~~~~~
 
 When a new unique error occurs, an INotifyTraceback event gets fired. An
 email event handler is already registered with collective.logbook::
