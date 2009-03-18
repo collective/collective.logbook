@@ -110,6 +110,7 @@ def handleTraceback(object):
         # we don't want to produce any errors here, thus, we'll be nice and die
         # silently if an error occurs here
         try:
+            transaction.begin()
             # get our logbook view to use the api
             logbook = context.unrestrictedTraverse('@@logbook')
             # get the generated error url from Products.SiteErrorLog

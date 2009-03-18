@@ -1,3 +1,6 @@
+2009-03-18  ramonski <ramon.bartl@inquant.de>
+    * events.py (handleTraceback): the handler now begins a new transaction
+
 2009-03-17  ramonski <ramon.bartl@inquant.de>
     * browser/controlpanel.py (LogbookControlPanelAdapter.logbook_log_mails):
     added logbook_log_mails property to the controlpanel

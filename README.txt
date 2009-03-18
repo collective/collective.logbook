@@ -116,7 +116,7 @@ your instance::
     def initialize(context):
         """ Initializer called when used as a Zope 2 product. """
 
-        app = Zope2.app()
+        app = context._ProductContext__app
         enabled = app.getProperty("logbook_enabled", False)
 
         if enabled:
