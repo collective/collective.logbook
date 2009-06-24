@@ -91,8 +91,8 @@ def mailHandler(event):
     try:
         message = MAIL_TEMPLATE % data
         send(portal, message, subject, recipients)
-    except:
-        LOGGER.info("An error occured while notifying recipients")
+    except Exception, e:
+        LOGGER.warning("An error occured while notifying recipients: %s" % str(e))
 
 
 
