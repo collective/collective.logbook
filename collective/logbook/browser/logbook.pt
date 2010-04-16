@@ -4,7 +4,9 @@
       i18n:domain="collective.logbook">
 <head>
 </head>
+
 <body>
+
   <div metal:fill-slot="body">
 
     <form method="post"
