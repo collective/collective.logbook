@@ -7,11 +7,11 @@ Advanced persistent Error Logging for Plone.
 Motivation
 ----------
 
-Plone generates for anonymous users an Error Page which contains an error
+For anonymous users Plone generates an Error Page which contains an error
 number. But what to do with this error number?
 
 You have to log into your plone site, go to the ZMI, check the error_log
-object and probably construct the url by hand to get ther proper error with
+object and probably construct the url by hand to get the proper error with
 this error number, like::
 
     http://your-plone-site/error_log/showEntry?id=1237283091.10.529903983894
@@ -34,7 +34,7 @@ If you think that this would be cool, collective.logbook is what you want:)
 Under the Hood
 --------------
 
-No, you won't get DOOOOMED when you install collective.logbook:)
+No, you won't get DOOOOMED when you install collective.logbook :)
 
 
 SiteErrorLog Patch
@@ -146,7 +146,7 @@ more to come...
 Usage
 -----
 
-After insall, go to http://your-plone-site/@@logbook
+After install, go to http://your-plone-site/@@logbook
 
 
 Installation
@@ -164,9 +164,9 @@ Add collective.logbook to that list. Your list will look something like this::
         collective.logbook
 
 In the same section, look for the zcml key. Add collective.logbook here,
-too::
+too (not needed for plone versions  > 3.3 which ship with z3c.autoinclude)::
 
     zcml = collective.logbook
 
-::
+..
  vim: set ft=rst ts=4 sw=4 expandtab tw=78 :
