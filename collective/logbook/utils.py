@@ -109,6 +109,9 @@ def send(portal, message, subject, recipients=[]):
     subject = Header(safe_unicode(subject), header_charset)
 
     # Create the message ('plain' stands for Content-Type: text/plain)
+
+    # plone4 should use 'text/plain' according to the docs, but this should work for us
+    # http://plone.org/documentation/manual/upgrade-guide/version/upgrading-plone-3-x-to-4.0/updating-add-on-products-for-plone-4.0/mailhost.securesend-is-now-deprecated-use-send-instead/
     msg = MIMEText(message, 'plain', body_charset)
     msg['From'] = email_from
     msg['To'] = email_to
@@ -120,7 +123,7 @@ def send(portal, message, subject, recipients=[]):
     try:
         LOGGER.info("Begin sending email to %r " % formatted_recipients)
         LOGGER.info("Subject: %s " % subject)
-        mailhost.send(message=msg)
+        mailhost.send(msg)
     except gaierror, exc:
         LOGGER.error("Failed sending email to %r" % formatted_recipients)
         LOGGER.error("Reason: %s: %r" % (exc.__class__.__name__, str(exc)))
