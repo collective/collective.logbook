@@ -112,12 +112,13 @@ class LogBook(BrowserView):
         errors = self.storage.get_all_errors()
         out = []
         for id, tb in errors:
-            counter = self.storage.get_counter(id)
+            refs = self.storage.get_referenced_errordata(id)
             out.append(
                     dict(
                         id = id,
                         tb = tb,
-                        counter = counter,
+                        counter = len(refs),
+                        refs = refs
                         )
                     )
         return sorted(out, key=lambda x: x["counter"], reverse=True)

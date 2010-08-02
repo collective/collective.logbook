@@ -117,7 +117,10 @@ class LogBookStorage(object):
         if err_id in storage:
             return storage.get(err_id)
         elif err_id in index:
-            return storage.get(index.get(err_id))
+            reference = index.get(err_id)
+            if type(reference)==str:
+                return storage.get(reference)
+            return storage.get(reference.get('referencedError'))
         else:
             return False
 
@@ -129,11 +132,22 @@ class LogBookStorage(object):
     def get_counter(self, err_id):
         """ see ILogBookStorage
         """
+        return len(self.get_referenced_errordata(err_id))
+
+    def get_referenced_errordata(self, err_id):
+        """ see ILogBookStorage
+        """
         out = []
         for k, v in self._index.items():
-            if v == err_id:
-                out.append(k)
-        return len(out)
+            if type(v)==str:
+                #stay backward compatible with simple ref storage
+                refId = v
+            else:
+                refId = v.get('referencedError', None)
+
+            if refId == err_id:
+                out.append(v)
+        return out
 
     def delete_all_errors(self):
         """ see ILogBookStorage
@@ -177,14 +191,16 @@ class LogBookStorage(object):
         # this is a kind of signature of the error
         tail = filtered_error_tail(error)
 
-
         # check all errors in the storage
         for existing_id, existing_error in self._storage.items():
             error_tail = filtered_error_tail(existing_error)
 
             # error signature is the same
             if error_tail == tail:
-                self._index[err_id] = existing_id
+                info = dict(referencedError = existing_id,
+                            time = error.get('time'),
+                            userid = error.get('userid') or 'anon')
+                self._index[err_id] = info
                 return True
 
         # save it

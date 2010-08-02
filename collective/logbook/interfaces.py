@@ -78,7 +78,7 @@ class ILogBookStorage(Interface):
         """
 
     def get_error(err_id):
-        """ get error by id
+        """ get error by id, for error references return their referred error
         """
 
     def get_all_errors():
@@ -87,6 +87,10 @@ class ILogBookStorage(Interface):
 
     def get_counter(err_id):
         """ get the count of referenced errors
+        """
+
+    def get_referenced_errordata(err_id):
+        """ get data for referenced errors
         """
 
     def delete_all_errors():

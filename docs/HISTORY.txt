@@ -17,7 +17,9 @@ Changelog
 
     .. _`Upgrade Information`: http://plone.org/documentation/manual/upgrade-guide/version/upgrading-plone-3-x-to-4.0/updating-add-on-products-for-plone-4.0/mailhost.securesend-is-now-deprecated-use-send-instead/
 
-
+  * store and show user and date for referenced errors too
+    this fixes http://plone.org/products/collective.logbook/issues/2
+    [fRiSi]
 
 0.3.1 (2009-03-18)
 ------------------

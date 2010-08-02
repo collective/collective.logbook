@@ -61,6 +61,13 @@
                         <th align="left" valign="top">User Name (User Id)</th>
                         <td tal:content="string: ${entry/tb/username} (${entry/tb/userid})">joe (joe)</td>
                       </tr>
+                      <tr tal:condition="entry/counter">
+                        <th align="left" valign="top">References</th>
+                    <td><ul>
+                            <li tal:repeat="ref entry/refs"
+                                tal:content="string:${ref/userid|nothing} / ${ref/time|nothing},"></li></ul>
+                        </td>
+                      </tr>
                       <tr>
                         <th align="left" valign="top">Request URL</th>
                         <td tal:content="entry/tb/url">http:example.com</td>
