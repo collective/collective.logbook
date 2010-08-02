@@ -1,13 +1,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       lang="en"
-      metal:use-macro="context/@@standard_macros/page"
+      metal:use-macro="context/main_template/macros/master"
       i18n:domain="collective.logbook">
 <head>
 </head>
 
 <body>
 
-  <div metal:fill-slot="body">
+  <metal:main metal:fill-slot="main">
 
     <form method="post"
         tal:attributes="action string:${context/absolute_url}/@@logbook">
@@ -33,7 +33,7 @@
       </div>
 
       <div tal:condition="view/saved_errors">
-        <div style="color:grey">
+        <div style="color:grey;margin-bottom:1em;">
           There are
           <span tal:content="view/error_count" />
           saved (unique) Tracebacks and
@@ -146,7 +146,7 @@
         -->
       </div>
     </form>
-  </div>
+  </metal:main>
 </body>
 </html>
 
