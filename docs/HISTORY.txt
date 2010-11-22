@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.5 (Unreleased)
+----------------
+
+  * Include the REQUEST HTML for more useful debugging and
+    troubleshooting.
+    [rossp]
+
 0.4 (2010-08-02)
 ----------------
 

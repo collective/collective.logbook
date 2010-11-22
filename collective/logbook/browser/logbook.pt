@@ -84,6 +84,10 @@
                     <pre tal:content="structure entry/tb/tb_text">
                       Traceback (text)
                     </pre>
+                    <div>
+                      <h2>REQUEST</h2>
+                      <div tal:content="structure entry/tb/req_html"></div>
+                    </div>
                   </dd>
                 </dl>
               </td>
@@ -140,6 +144,10 @@
         <pre tal:content="structure entry/tb_text">
           Traceback (text)
         </pre>
+        <div>
+          <h2>REQUEST</h2>
+          <div tal:content="structure entry/req_html"></div>
+        </div>
         <!--
         <input class="context" type="submit" name="form.button.savetraceback" value="Save Traceback" />
         <input type="hidden" name="displayed_errornumber" value="" tal:attributes="value entry/id" />

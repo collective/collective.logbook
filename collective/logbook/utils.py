@@ -112,7 +112,7 @@ def send(portal, message, subject, recipients=[]):
 
     # plone4 should use 'text/plain' according to the docs, but this should work for us
     # http://plone.org/documentation/manual/upgrade-guide/version/upgrading-plone-3-x-to-4.0/updating-add-on-products-for-plone-4.0/mailhost.securesend-is-now-deprecated-use-send-instead/
-    msg = MIMEText(message, 'plain', body_charset)
+    msg = MIMEText(message, 'html', body_charset)
     msg['From'] = email_from
     msg['To'] = email_to
     msg['Subject'] = subject

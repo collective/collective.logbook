@@ -39,15 +39,17 @@ from interfaces import INotifyTraceback
 cleanup_lock = allocate_lock()
 
 MAIL_TEMPLATE = """
-A new error occured on %(date)s
+<p>A new error occured on %(date)s</p>
 
-%(traceback)s
+<pre>%(traceback)s</pre>
 
-This error is saved under the number %(error_number)s
+<p>This error is saved under the number %(error_number)s</p>
 
-The error occured here %(error_url)s
+<p>The error occured here <a href="%(error_url)s">%(error_url)s</a> with the following request data:</p>
 
-Please check the logbook entry %(logbook_url)s
+%(request)s
+
+<p>Please check the logbook entry <a href="%(logbook_url)s">%(logbook_url)s</a></p>
 """
 
 
@@ -86,6 +88,7 @@ def mailHandler(event):
             error_number = error.get("id"),
             error_url = error.get("url"),
             logbook_url = portal.absolute_url() + "/@@logbook?errornumber=%s" % error.get("id"),
+        request=error.get("req_html"),
             )
 
     try:
