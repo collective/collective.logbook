@@ -17,6 +17,7 @@
       for="*"
       name="logbook_mail"
       class=".mail.MailView"
+      template="mail.pt"
       permission="zope2.Public"
     />
 

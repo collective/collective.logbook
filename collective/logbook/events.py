@@ -26,7 +26,8 @@ import transaction
 from thread import allocate_lock
 
 from zope import interface
-from zope.app.component import hooks
+
+from Acquisition import aq_parent
 
 from config import LOGGER
 
@@ -57,9 +58,10 @@ def mailHandler(event):
     """ notify this error
     """
     try:
-        return hooks.getSite().restrictedTraverse('@@logbook_mail')(event)
+        return event.error['context'].restrictedTraverse(
+            '@@logbook_mail')(event)
     except Exception, e:
-        LOGGER.warning(
+        LOGGER.error(
             "An error occured while notifying recipients: %s" % str(e))
 
 
@@ -83,7 +85,7 @@ def handleTraceback(object):
             # get the generated error url from Products.SiteErrorLog
             err_id = urllib.splitvalue(entry_url)[1]
             # save error
-            logbook.save_error(err_id)
+            logbook.save_error(err_id, context=aq_parent(context))
             transaction.commit()
         finally:
             cleanup_lock.release()

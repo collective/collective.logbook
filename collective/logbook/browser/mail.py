@@ -1,3 +1,5 @@
+from Products.CMFCore.utils import getToolByName
+
 from collective.logbook.config import PROP_KEY_LOG_MAILS
 from collective.logbook.utils import send
 
@@ -6,8 +8,8 @@ class MailView(object):
 
     def __call__(self, event):
         error = event.error
-        portal = self.context
-        app = portal.getParentNode()
+        portal = getToolByName(self.context, 'portal_url').getPortalObject()
+        app = portal.getPhysicalRoot()
         emails = app.getProperty(PROP_KEY_LOG_MAILS)
 
         if not emails:
@@ -24,8 +26,8 @@ class MailView(object):
             logbook_url=(
                 portal.absolute_url() + "/@@logbook?errornumber=%s" %
                 error.get("id")),
-            request=error.get("req_html"),
+            req_html=error.get("req_html"),
             )
 
-        message = super(MailView, self).__call__()
+        message = self.index()
         send(portal, message, subject, recipients)

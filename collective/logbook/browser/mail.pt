@@ -1,5 +1,4 @@
-<tal:root xmlns="http://www.w3.org/1999/xhtml"
-          xmlns:tal="http://xml.zope.org/namespaces/tal">
+<tal:root xmlns:tal="http://xml.zope.org/namespaces/tal">
 
 <p>A new error occured
 on <span tal:content="view/date">1/1/1970</span></p>
@@ -14,7 +13,7 @@ tal:attributes="href view/error_url"
 tal:content="view/error_url">Error URL</a> with the following request
 data:</p>
 
-<tal:request content="structure view/request" />
+<tal:req_html content="structure view/req_html" />
 
 <p>Please check the logbook entry
 <a href="" tal:attributes="href view/logbook_url"

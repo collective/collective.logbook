@@ -84,10 +84,12 @@ class LogBook(BrowserView):
         error['time'] = DateTime(error['time'])
         return error
 
-    def save_error(self, err_id):
+    def save_error(self, err_id, context=None):
         """ see ILogBook
         """
         error = self.error(err_id)
+        if context is not None:
+            error['context'] = context
         return self.storage.save_error(error)
 
     def delete_error(self, err_id):
