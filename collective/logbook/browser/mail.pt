@@ -1,0 +1,23 @@
+<tal:root xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:tal="http://xml.zope.org/namespaces/tal">
+
+<p>A new error occured
+on <span tal:content="view/date">1/1/1970</span></p>
+
+<pre tal:content="view/traceback">traceback</pre>
+
+<p>This error is saved under the
+number <span tal:content="view/error_number">#</span></p>
+
+<p>The error occured here <a href="view/error_url"
+tal:attributes="href view/error_url"
+tal:content="view/error_url">Error URL</a> with the following request
+data:</p>
+
+<tal:request content="structure view/request" />
+
+<p>Please check the logbook entry
+<a href="" tal:attributes="href view/logbook_url"
+tal:content="view/logbook_url">Logbook URL</a></p>
+
+</tal:root>

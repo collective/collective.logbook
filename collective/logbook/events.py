@@ -29,28 +29,12 @@ from zope import interface
 from zope.app.component import hooks
 
 from config import LOGGER
-from config import PROP_KEY_LOG_MAILS
-from utils import send
 
 from interfaces import IErrorRaisedEvent
 from interfaces import INotifyTraceback
 
 
 cleanup_lock = allocate_lock()
-
-MAIL_TEMPLATE = """
-<p>A new error occured on %(date)s</p>
-
-<pre>%(traceback)s</pre>
-
-<p>This error is saved under the number %(error_number)s</p>
-
-<p>The error occured here <a href="%(error_url)s">%(error_url)s</a> with the following request data:</p>
-
-%(request)s
-
-<p>Please check the logbook entry <a href="%(logbook_url)s">%(logbook_url)s</a></p>
-"""
 
 
 class ErrorRaisedEvent(object):
@@ -72,31 +56,11 @@ class NotifyTraceback(object):
 def mailHandler(event):
     """ notify this error
     """
-    error = event.error
-    portal = hooks.getSite()
-    app = portal.getParentNode()
-    emails = app.getProperty(PROP_KEY_LOG_MAILS)
-
-    if not emails:
-        return
-
-    recipients = [mail for mail in emails]
-    subject = "[collective.logbook] NEW TRACEBACK: '%s'" % error.get("value")
-    data = dict(
-            date = error.get("time").strftime("%Y-%m-%d %H:%M:%S"),
-            traceback = error.get("tb_text"),
-            error_number = error.get("id"),
-            error_url = error.get("url"),
-            logbook_url = portal.absolute_url() + "/@@logbook?errornumber=%s" % error.get("id"),
-        request=error.get("req_html"),
-            )
-
     try:
-        message = MAIL_TEMPLATE % data
-        send(portal, message, subject, recipients)
+        return hooks.getSite().restrictedTraverse('@@logbook_mail')(event)
     except Exception, e:
-        LOGGER.warning("An error occured while notifying recipients: %s" % str(e))
-
+        LOGGER.warning(
+            "An error occured while notifying recipients: %s" % str(e))
 
 
 def handleTraceback(object):

@@ -12,6 +12,14 @@
         permission="cmf.ManagePortal"
     />
 
+    <!-- Logbook mail template -->
+    <browser:page
+      for="*"
+      name="logbook_mail"
+      class=".mail.MailView"
+      permission="zope2.Public"
+    />
+
     <!-- Logbook View -->
     <browser:page
       for="*"

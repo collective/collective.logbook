@@ -4,6 +4,10 @@ Changelog
 0.5 (Unreleased)
 ----------------
 
+  * Move the mail notifier into a view to use a template for better
+    HTML email handling.
+    [rossp]
+
   * Include the REQUEST HTML for more useful debugging and
     troubleshooting.
     [rossp]
