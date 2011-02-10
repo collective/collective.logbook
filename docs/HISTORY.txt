@@ -4,6 +4,12 @@ Changelog
 0.5 (Unreleased)
 ----------------
 
+  * Added support for i18n 
+    [macagua]
+
+  * Added support for Spanisn translation 
+    [macagua]
+
   * Move the mail notifier into a view to use a template for better
     HTML email handling.
     [rossp]

@@ -39,6 +39,8 @@ from collective.logbook.config import LOGGER
 from collective.logbook.interfaces import ILogBook
 from collective.logbook.interfaces import ILogBookStorage
 
+from collective.logbook import logbookMessageFactory as _
+
 
 class LogBook(BrowserView):
     """ Logbook Form
@@ -154,17 +156,17 @@ class LogBook(BrowserView):
                 for entry in entries:
                     err_id = entry.get('id')
                     if self.delete_error(err_id):
-                        IStatusMessage(self.request).addStatusMessage(u"Traceback %s deleted" % err_id, type='info')
+                        IStatusMessage(self.request).addStatusMessage(_(u"Traceback %s deleted") % err_id, type='info')
                     else:
-                        IStatusMessage(self.request).addStatusMessage(u"could not delete %s" % err_id, type='warning')
+                        IStatusMessage(self.request).addStatusMessage(_(u"could not delete %s") % err_id, type='warning')
 
             if delete_all_button:
                 self.delete_all_errors()
-                IStatusMessage(self.request).addStatusMessage(u"Deleted all Errors", type='info')
+                IStatusMessage(self.request).addStatusMessage(_(u"Deleted all Errors"), type='info')
 
             if delete_refs_button:
                 self.delete_all_references()
-                IStatusMessage(self.request).addStatusMessage(u"Deleted all referenced Error", type='info')
+                IStatusMessage(self.request).addStatusMessage(_(u"Deleted all referenced Error"), type='info')
 
         return self.template()
 

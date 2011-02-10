@@ -1,22 +1,24 @@
-<tal:root xmlns:tal="http://xml.zope.org/namespaces/tal">
+<tal:root xmlns:tal="http://xml.zope.org/namespaces/tal" 
+          xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+          i18n:domain="collective.logbook">
 
-<p>A new error occured
-on <span tal:content="view/date">1/1/1970</span></p>
+<p i18n:translate="">A new error occured
+on <span tal:content="view/date" i18n:name="date"><tal:comment replace="nothing">1/1/1970</tal:comment></span></p>
 
-<pre tal:content="view/traceback">traceback</pre>
+<pre tal:content="view/traceback"><tal:comment replace="nothing">traceback</tal:comment></pre>
 
-<p>This error is saved under the
-number <span tal:content="view/error_number">#</span></p>
+<p i18n:translate="">This error is saved under the
+number <span tal:content="view/error_number" i18n:name="error_number"><tal:comment replace="nothing">#</tal:comment></span></p>
 
-<p>The error occured here <a href="view/error_url"
+<p i18n:translate="">The error occured here <a href="view/error_url"
 tal:attributes="href view/error_url"
-tal:content="view/error_url">Error URL</a> with the following request
+tal:content="view/error_url" i18n:name="error_url"><tal:comment replace="nothing">Error URL</tal:comment></a> with the following request
 data:</p>
 
 <tal:req_html content="structure view/req_html" />
 
-<p>Please check the logbook entry
+<p i18n:translate="">Please check the logbook entry
 <a href="" tal:attributes="href view/logbook_url"
-tal:content="view/logbook_url">Logbook URL</a></p>
+tal:content="view/logbook_url" i18n:name="logbook_url"><tal:comment replace="nothing">Logbook URL</tal:comment></a></p>
 
 </tal:root>

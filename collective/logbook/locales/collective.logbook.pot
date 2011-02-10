@@ -1,0 +1,132 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2011-02-10 13:44+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: collective.logbook\n"
+
+#: ../browser/logbook.pt:52
+msgid "(Reference Count: ${counter})"
+msgstr ""
+
+#: ../browser/mail.pt:6
+msgid "A new error occured on ${date}"
+msgstr ""
+
+#: ../browser/logbook.pt:109
+msgid "Delete all referenced Errors"
+msgstr ""
+
+#: ../browser/logbook.pt:108
+msgid "Delete selected Tracebacks"
+msgstr ""
+
+#: ../browser/logbook.py:165
+msgid "Deleted all Errors"
+msgstr ""
+
+#: ../browser/logbook.py:169
+msgid "Deleted all referenced Error"
+msgstr ""
+
+#: ../browser/controlpanel.py:50
+msgid "Enable Logbook logging"
+msgstr ""
+
+#: ../browser/logbook.pt:76
+msgid "Exception Type"
+msgstr ""
+
+#: ../browser/logbook.pt:80
+msgid "Exception Value"
+msgstr ""
+
+#: ../browser/logbook.pt:28
+msgid "Get Traceback"
+msgstr ""
+
+#: ../browser/controlpanel.py:106
+msgid "Logbook settings"
+msgstr ""
+
+#: ../browser/controlpanel.py:107
+msgid "Logbook settings."
+msgstr ""
+
+#: ../browser/controlpanel.py:56
+msgid "Notify Email"
+msgstr ""
+
+#: ../browser/controlpanel.py:57
+msgid "Notify these Email Adresses when a new error occurs"
+msgstr ""
+
+#: ../browser/mail.pt:21
+msgid "Please check the logbook entry ${logbook_url}"
+msgstr ""
+
+#: ../browser/logbook.pt:88
+msgid "REQUEST"
+msgstr ""
+
+#: ../browser/logbook.pt:65
+msgid "References"
+msgstr ""
+
+#: ../browser/logbook.pt:110
+msgid "Remove All"
+msgstr ""
+
+#: ../browser/logbook.pt:72
+msgid "Request URL"
+msgstr ""
+
+#: ../browser/mail.pt:13
+msgid "The error occured here ${error_url} with the following request data:"
+msgstr ""
+
+#: ../browser/logbook.pt:40
+msgid "There are ${error_count} saved (unique) Tracebacks and ${reference_count} referenced Tracebacks"
+msgstr ""
+
+#: ../browser/mail.pt:11
+msgid "This error is saved under the number ${error_number}"
+msgstr ""
+
+#: ../browser/controlpanel.py:51
+msgid "This installs or uninstalls the logbook patch for Products.SiteErrorLog"
+msgstr ""
+
+#: ../browser/logbook.pt:57
+msgid "Time"
+msgstr ""
+
+#: ../browser/logbook.py:159
+msgid "Traceback %s deleted"
+msgstr ""
+
+#: ../browser/logbook.pt:61
+msgid "User Name (User Id)"
+msgstr ""
+
+#: ../browser/logbook.py:161
+msgid "could not delete %s"
+msgstr ""
+
+#. Default: "Error Number:"
+#: ../browser/logbook.pt:18
+msgid "label_errornumber"
+msgstr ""
+
