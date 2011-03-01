@@ -33,7 +33,7 @@ def initialize(context):
     """ Initializer called when used as a Zope 2 product. """
 
     app = context._ProductContext__app
-    enabled = app.getProperty("logbook_enabled", False)
+    enabled = app is not None and app.getProperty("logbook_enabled", False)
 
     if enabled:
         monkey.install_monkey()
