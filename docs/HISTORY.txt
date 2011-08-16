@@ -9,6 +9,12 @@ Changelog
     Add upgradehandler accordingly.
     [gotcha]
 
+  * Fix saving configuration.
+    [gotcha]
+
+  * Logging initialization at startup time was broken with Zope 2.13 at least.
+    [gotcha]
+
   * Added support for i18n 
     [macagua]
 
