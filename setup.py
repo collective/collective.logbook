@@ -8,7 +8,6 @@ setup(name='collective.logbook',
       description="Advanced Persistent Error Log",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
@@ -25,7 +24,7 @@ setup(name='collective.logbook',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          # -*- Extra requirements: -*-
+          'Plone',
       ],
       entry_points="""
       # -*- Entry points: -*-
