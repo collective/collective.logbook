@@ -47,18 +47,20 @@ class ILogbookSchema(interface.Interface):
     """
 
     logbook_enabled = schema.Bool(
-                        title = _(u'Enable Logbook logging'),
-                        description = _(u'This installs or uninstalls the logbook patch for Products.SiteErrorLog'),
-                        default = True,
-                        required = True)
+                        title=_(u'Enable Logbook logging'),
+                        description=_(u'This installs or uninstalls '
+                            'the logbook patch for Products.SiteErrorLog'),
+                        default=True,
+                        required=True)
 
     logbook_log_mails = schema.Tuple(
-                        title = _(u'Notify Email'),
-                        description = _(u'Notify these Email Adresses when a new error occurs'),
-                        unique = True,
-                        default = (),
-                        value_type = schema.TextLine(
-                                     constraint = check_email, ),
+                        title=_(u'Notify Email'),
+                        description=_(u'Notify these Email Adresses '
+                            'when a new error occurs'),
+                        unique=True,
+                        default=(),
+                        value_type=schema.TextLine(
+                                     constraint=check_email, ),
                         )
 
 
@@ -68,9 +70,10 @@ class LogbookControlPanelAdapter(SchemaAdapterBase):
 
     def __init__(self, context):
         super(LogbookControlPanelAdapter, self).__init__(context)
-        self.context = getToolByName(self.context, "portal_properties").site_properties
+        self.context = getToolByName(self.context,
+                "portal_properties").site_properties
         self.portal = hooks.getSite()
-        self.app = self.portal.getParentNode()
+        self.app = self.portal.getPhysicalRoot()
 
     @apply
     def logbook_enabled():
@@ -84,8 +87,13 @@ class LogbookControlPanelAdapter(SchemaAdapterBase):
                 install_monkey()
             else:
                 uninstall_monkey()
-
-            return self.app.manage_changeProperties(logbook_enabled = value)
+            if not self.app.hasProperty(PROP_KEY_LOG_ENABLED):
+                self.app.manage_addProperty(PROP_KEY_LOG_ENABLED, value,
+                        'boolean')
+            else:
+                mapping = {}
+                mapping[PROP_KEY_LOG_ENABLED] = value
+                self.app.manage_changeProperties(**mapping)
 
         return property(get, set)
 
@@ -96,7 +104,12 @@ class LogbookControlPanelAdapter(SchemaAdapterBase):
             return self.app.getProperty(PROP_KEY_LOG_MAILS) or ()
 
         def set(self, value):
-            self.app.manage_changeProperties(logbook_log_mails = value)
+            if not self.app.hasProperty(PROP_KEY_LOG_MAILS):
+                self.app.manage_addProperty(PROP_KEY_LOG_MAILS, value, 'lines')
+            else:
+                mapping = {}
+                mapping[PROP_KEY_LOG_MAILS] = value
+                self.app.manage_changeProperties(**mapping)
 
         return property(get, set)
 
