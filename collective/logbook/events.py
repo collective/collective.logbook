@@ -18,7 +18,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-__author__    = 'Ramon Bartl <ramon.bartl@inquant.de>'
+__author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
 __docformat__ = 'plaintext'
 
 import urllib
@@ -86,6 +86,8 @@ def handleTraceback(object):
             err_id = urllib.splitvalue(entry_url)[1]
             # save error
             logbook.save_error(err_id, context=aq_parent(context))
+            transaction.get().note('collective.logbook traceback [%s]' %
+                    entry_url)
             transaction.commit()
         finally:
             cleanup_lock.release()
