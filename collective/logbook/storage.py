@@ -26,9 +26,8 @@ from zope import event
 from zope import interface
 from zope.annotation.interfaces import IAnnotations
 
-from persistent.dict import PersistentDict
+from BTrees.OOBTree import OOBTree
 
-from collective.logbook.utils import hexfilter
 from collective.logbook.utils import filtered_error_tail
 from collective.logbook.events import NotifyTraceback
 from collective.logbook.interfaces import ILogBookStorage
@@ -60,7 +59,7 @@ class LogBookStorage(object):
         annotations = IAnnotations(self.portal)
         # create the logbook storage
         if annotations.get(STORAGE_KEY) is None:
-            annotations[STORAGE_KEY] = PersistentDict()
+            annotations[STORAGE_KEY] = OOBTree()
         return annotations[STORAGE_KEY]
 
     @property
@@ -74,7 +73,7 @@ class LogBookStorage(object):
         annotations = IAnnotations(self.portal)
         # create the error reference storage
         if annotations.get(INDEX_KEY) is None:
-            annotations[INDEX_KEY] = PersistentDict()
+            annotations[INDEX_KEY] = OOBTree()
         return annotations[INDEX_KEY]
 
     @property
@@ -118,7 +117,7 @@ class LogBookStorage(object):
             return storage.get(err_id)
         elif err_id in index:
             reference = index.get(err_id)
-            if type(reference)==str:
+            if type(reference) == str:
                 return storage.get(reference)
             return storage.get(reference.get('referencedError'))
         else:
@@ -139,7 +138,7 @@ class LogBookStorage(object):
         """
         out = []
         for k, v in self._index.items():
-            if type(v)==str:
+            if type(v) == str:
                 #stay backward compatible with simple ref storage
                 refId = v
             else:
@@ -197,9 +196,9 @@ class LogBookStorage(object):
 
             # error signature is the same
             if error_tail == tail:
-                info = dict(referencedError = existing_id,
-                            time = error.get('time'),
-                            userid = error.get('userid') or 'anon')
+                info = dict(referencedError=existing_id,
+                            time=error.get('time'),
+                            userid=error.get('userid') or 'anon')
                 self._index[err_id] = info
                 return True
 

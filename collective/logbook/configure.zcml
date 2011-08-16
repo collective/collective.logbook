@@ -29,6 +29,15 @@
       description="Uninstall collective.logbook."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+    
+    <genericsetup:upgradeStep
+      title="Migrate storage"
+      description="Migrate storage from PersistentDict to OOBTree"
+      handler=".upgradehandlers.migrate_storage"
+      source="0.3.1"
+      destination="2"
+      profile="collective.logbook:default"
+      />
 
     <!-- default storage adapter -->
     <adapter
