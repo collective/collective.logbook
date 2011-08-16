@@ -31,8 +31,9 @@ logbookMessageFactory = MessageFactory('collective.logbook')
 
 def initialize(context):
     """ Initializer called when used as a Zope 2 product. """
+    from Zope2 import bobo_application
+    app = bobo_application()
 
-    app = context._ProductContext__app
     enabled = app is not None and app.getProperty("logbook_enabled", False)
 
     if enabled:
