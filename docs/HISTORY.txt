@@ -10,76 +10,76 @@ Changelog
 0.5 (2011-08-16)
 ----------------
 
-  * Move storage to OOBTree to avoid that logging error transactions get
-    bigger and bigger.
-    Add upgradehandler accordingly.
-    [gotcha]
+- Move storage to OOBTree to avoid that logging error transactions get
+  bigger and bigger.
+  Add upgradehandler accordingly.
+  [gotcha]
 
-  * Fix saving configuration.
-    [gotcha]
+- Fix saving configuration.
+  [gotcha]
 
-  * Logging initialization at startup time was broken with Zope 2.13 at least.
-    [gotcha]
+- Logging initialization at startup time was broken with Zope 2.13 at least.
+  [gotcha]
 
-  * Added support for i18n 
-    [macagua]
+- Added support for i18n 
+  [macagua]
 
-  * Added support for Spanisn translation 
-    [macagua]
+- Added support for Spanisn translation 
+  [macagua]
 
-  * Move the mail notifier into a view to use a template for better
-    HTML email handling.
-    [rossp]
+- Move the mail notifier into a view to use a template for better
+  HTML email handling.
+  [rossp]
 
-  * Include the REQUEST HTML for more useful debugging and
-    troubleshooting.
-    [rossp]
+- Include the REQUEST HTML for more useful debugging and
+  troubleshooting.
+  [rossp]
 
 0.4 (2010-08-02)
 ----------------
 
-  * Add "z3c.autoinclude.plugin" entry point, so in Plone 3.3+ you can avoid
-    loading the ZCML file. [WouterVH]
+- Add "z3c.autoinclude.plugin" entry point, so in Plone 3.3+ you can avoid
+  loading the ZCML file. [WouterVH]
 
-  * expose send mail exception to the log message
-    this fixes http://plone.org/products/collective.logbook/issues/3
-    [naro]
+- expose send mail exception to the log message
+  this fixes http://plone.org/products/collective.logbook/issues/3
+  [naro]
 
-  * fixed email notification for plone4 since MailHost.send signature changed
-    (see `Upgrade Information`_)
-    [fRiSi]
+- fixed email notification for plone4 since MailHost.send signature changed
+  (see `Upgrade Information`_)
+  [fRiSi]
 
-    .. _`Upgrade Information`: http://plone.org/documentation/manual/upgrade-guide/version/upgrading-plone-3-x-to-4.0/updating-add-on-products-for-plone-4.0/mailhost.securesend-is-now-deprecated-use-send-instead/
+  .. _`Upgrade Information`: http://plone.org/documentation/manual/upgrade-guide/version/upgrading-plone-3-x-to-4.0/updating-add-on-products-for-plone-4.0/mailhost.securesend-is-now-deprecated-use-send-instead/
 
-  * store and show user and date for referenced errors too
-    this fixes http://plone.org/products/collective.logbook/issues/2
-    [fRiSi]
+- store and show user and date for referenced errors too
+  this fixes http://plone.org/products/collective.logbook/issues/2
+  [fRiSi]
 
 0.3.1 (2009-03-18)
 ------------------
 
-  * the error handler now starts a new transaction before saving it into the
-    logbook [ramonski]
+- the error handler now starts a new transaction before saving it into the
+  logbook [ramonski]
 
 0.3 (2009-03-17)
 ----------------
 
-  * 0.2 release was broken, sorry for this re-release [ramonski]
-  * fixed issues which caused some ugly Database Conflict errors [ramonski]
-  * removed all Zope2.app() stuff [ramonski]
-  * mail handler stops when no emails specified [ramonski]
-  * fixed uninstall method of properties [ramonski]
+- 0.2 release was broken, sorry for this re-release [ramonski]
+- fixed issues which caused some ugly Database Conflict errors [ramonski]
+- removed all Zope2.app() stuff [ramonski]
+- mail handler stops when no emails specified [ramonski]
+- fixed uninstall method of properties [ramonski]
 
 0.2 (2009-03-17)
 ----------------
 
-  * added a configlet for plone control panel [ramonski]
-  * added a default notify traceback email handler [ramonski]
-  * added propert install/uninstall methods for the SiteErrorLog patch
-    [ramonski]
-  * added 2 properties in the application root [ramonski]
+- added a configlet for plone control panel [ramonski]
+- added a default notify traceback email handler [ramonski]
+- added propert install/uninstall methods for the SiteErrorLog patch
+  [ramonski]
+- added 2 properties in the application root [ramonski]
 
 0.1 - Unreleased
 ----------------
 
-  * Initial release [ramonski]
+- Initial release [ramonski]
