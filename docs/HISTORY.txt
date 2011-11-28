@@ -4,6 +4,9 @@ Changelog
 0.6 (unreleased)
 ----------------
 
+- Move delete all button, add show all button, show error message if error was not found.
+  [jfroche]
+
 - Add option that disable browsing stored errors. This option become useful if you have a site with many errors.
   [jfroche]
 
