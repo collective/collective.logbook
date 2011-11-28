@@ -73,6 +73,10 @@ def handleTraceback(object):
         return
 
     LOGGER.info("handle traceback [%s]" % entry_url)
+    try:
+        raise IOError('wuhu')
+    except Exception, e:
+        LOGGER.exception(e)
 
     try:
         cleanup_lock.acquire()
@@ -95,5 +99,6 @@ def handleTraceback(object):
     except Exception, e:
         LOGGER.warning("An error occured while handling the traceback")
         LOGGER.warning("%s" % e)
+        LOGGER.exception(e)
 
 # vim: set ft=python ts=4 sw=4 expandtab :

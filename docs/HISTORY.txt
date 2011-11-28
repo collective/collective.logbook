@@ -4,6 +4,9 @@ Changelog
 0.6 (unreleased)
 ----------------
 
+- Log exceptions within exception handler
+  [jfroche]
+
 - Move delete all button, add show all button, show error message if error was not found.
   [jfroche]
 
