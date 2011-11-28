@@ -35,11 +35,11 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Acquisition import aq_inner
 from zExceptions import Forbidden
 
-from collective.logbook.config import LOGGER
 from collective.logbook.interfaces import ILogBook
 from collective.logbook.interfaces import ILogBookStorage
 
 from collective.logbook import logbookMessageFactory as _
+from collective.logbook.config import PROP_KEY_LARGE_SITE
 
 
 class LogBook(BrowserView):
@@ -55,6 +55,10 @@ class LogBook(BrowserView):
         self.request = request
         self.portal = hooks.getSite()
         self.storage = ILogBookStorage(self.portal)
+
+    def is_large_site_enabled(self):
+        app = self.portal.getPhysicalRoot()
+        return app.getProperty(PROP_KEY_LARGE_SITE, False)
 
     @property
     def error_count(self):
@@ -109,6 +113,9 @@ class LogBook(BrowserView):
         """
         return self.storage.delete_all_references()
 
+    def has_errors(self):
+        return self.storage.error_count
+
     @property
     def saved_errors(self):
         """ see ILogBook
@@ -119,10 +126,10 @@ class LogBook(BrowserView):
             refs = self.storage.get_referenced_errordata(id)
             out.append(
                     dict(
-                        id = id,
-                        tb = tb,
-                        counter = len(refs),
-                        refs = refs
+                        id=id,
+                        tb=tb,
+                        counter=len(refs),
+                        refs=refs
                         )
                     )
         return sorted(out, key=lambda x: x["counter"], reverse=True)

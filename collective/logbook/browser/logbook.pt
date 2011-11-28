@@ -32,7 +32,7 @@
             class="searchButton" />
       </div>
 
-      <div tal:condition="view/saved_errors">
+      <div tal:condition="python:not view.is_large_site_enabled() and view.has_errors()">
         <div style="color:grey;margin-bottom:1em;" i18n:translate="">
           There are
           <span tal:content="view/error_count" i18n:name="error_count" />

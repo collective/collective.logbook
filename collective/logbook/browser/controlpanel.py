@@ -40,6 +40,7 @@ from collective.logbook import logbookMessageFactory as _
 
 from collective.logbook.config import PROP_KEY_LOG_ENABLED
 from collective.logbook.config import PROP_KEY_LOG_MAILS
+from collective.logbook.config import PROP_KEY_LARGE_SITE
 
 
 class ILogbookSchema(interface.Interface):
@@ -51,6 +52,14 @@ class ILogbookSchema(interface.Interface):
                         description=_(u'This installs or uninstalls '
                             'the logbook patch for Products.SiteErrorLog'),
                         default=True,
+                        required=True)
+
+    logbook_large_site = schema.Bool(
+                        title=_(u'Enable large site'),
+                        description=_(u'If you have a large site, the number '
+                            'of errors might increase quickly. This will change '
+                            'some functionalities so that logbook remains usable.'),
+                        default=False,
                         required=True)
 
     logbook_log_mails = schema.Tuple(
@@ -74,6 +83,28 @@ class LogbookControlPanelAdapter(SchemaAdapterBase):
                 "portal_properties").site_properties
         self.portal = hooks.getSite()
         self.app = self.portal.getPhysicalRoot()
+
+    @apply
+    def logbook_large_site():
+
+        def get(self):
+            return self.app.getProperty(PROP_KEY_LARGE_SITE)
+
+        def set(self, value):
+
+            if value:
+                install_monkey()
+            else:
+                uninstall_monkey()
+            if not self.app.hasProperty(PROP_KEY_LARGE_SITE):
+                self.app.manage_addProperty(PROP_KEY_LARGE_SITE, value,
+                        'boolean')
+            else:
+                mapping = {}
+                mapping[PROP_KEY_LARGE_SITE] = value
+                self.app.manage_changeProperties(**mapping)
+
+        return property(get, set)
 
     @apply
     def logbook_enabled():

@@ -40,5 +40,7 @@ INDEX_KEY = "REFINDEX"
 # Logbook properties
 PROP_KEY_LOG_ENABLED = 'logbook_enabled'
 PROP_KEY_LOG_MAILS = 'logbook_log_mails'
+PROP_KEY_LARGE_SITE = 'logbook_large_site'
+
 
 # vim: set ft=python ts=4 sw=4 expandtab :
