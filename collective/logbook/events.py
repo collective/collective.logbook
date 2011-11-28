@@ -74,11 +74,6 @@ def handleTraceback(object):
 
     LOGGER.info("handle traceback [%s]" % entry_url)
     try:
-        raise IOError('wuhu')
-    except Exception, e:
-        LOGGER.exception(e)
-
-    try:
         cleanup_lock.acquire()
         # we don't want to produce any errors here, thus, we'll be nice and die
         # silently if an error occurs here
