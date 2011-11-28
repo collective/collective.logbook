@@ -60,6 +60,14 @@ class LogBook(BrowserView):
         app = self.portal.getPhysicalRoot()
         return app.getProperty(PROP_KEY_LARGE_SITE, False)
 
+    def show_all_tracebacks(self):
+        if self.has_errors():
+            if 'form.button.showall' in self.request.form:
+                return True
+            elif not self.is_large_site_enabled():
+                return True
+        return False
+
     @property
     def error_count(self):
         """ see ILogBook
@@ -156,6 +164,8 @@ class LogBook(BrowserView):
             if traceback_button:
                 err_id = form.get('errornumber', None)
                 error = self.search_error(err_id)
+                if not error:
+                    IStatusMessage(self.request).addStatusMessage(_(u"Could not find error"), type='warning')
                 self.request.set('entry', error)
 
             if delete_traceback_button:

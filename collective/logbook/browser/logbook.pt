@@ -31,8 +31,10 @@
             value="Get Traceback" i18n:attributes="value"
             class="searchButton" />
       </div>
-
-      <div tal:condition="python:not view.is_large_site_enabled() and view.has_errors()">
+      <div tal:condition="view/is_large_site_enabled">
+        <input class="context" type="submit" name="form.button.showall" value="Show all" i18n:attributes="value" />
+      </div>
+      <div tal:condition="view/show_all_tracebacks">
         <div style="color:grey;margin-bottom:1em;" i18n:translate="">
           There are
           <span tal:content="view/error_count" i18n:name="error_count" />
@@ -107,9 +109,9 @@
         </table>
         <input class="context" type="submit" name="form.button.deletetraceback" value="Delete selected Tracebacks" i18n:attributes="value" />
         <input class="context" type="submit" name="form.button.deleterefs" value="Delete all referenced Errors" i18n:attributes="value" />
-        <input class="context" type="submit" name="form.button.deleteall" value="Remove All" i18n:attributes="value" />
       </div>
 
+        <input class="context" type="submit" name="form.button.deleteall" value="Remove All" i18n:attributes="value" />
       <div tal:define="entry request/entry|nothing" tal:condition="entry" style="margin-top:50px;">
         <table>
           <tr>
