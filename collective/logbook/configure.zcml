@@ -55,6 +55,11 @@
         handler=".events.mailHandler"
       />
 
+    <subscriber
+        for=".interfaces.INotifyTraceback"
+        handler=".events.webhookHandler"
+      />
+
 </configure>
 
 <!-- vim: set ft=xml ts=2 sw=2 expandtab : -->

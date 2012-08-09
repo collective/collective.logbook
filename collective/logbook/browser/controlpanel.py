@@ -41,6 +41,7 @@ from collective.logbook import logbookMessageFactory as _
 from collective.logbook.config import PROP_KEY_LOG_ENABLED
 from collective.logbook.config import PROP_KEY_LOG_MAILS
 from collective.logbook.config import PROP_KEY_LARGE_SITE
+from collective.logbook.config import PROP_KEY_WEBHOOK_URLS
 
 
 class ILogbookSchema(interface.Interface):
@@ -70,6 +71,15 @@ class ILogbookSchema(interface.Interface):
                         default=(),
                         value_type=schema.TextLine(
                                      constraint=check_email, ),
+                        )
+
+    logbook_webhook_urls = schema.Tuple(
+                        title=_(u'Webhook Urls'),
+                        description=_(u'Call these urls '
+                            'when a new error occurs'),
+                        unique=True,
+                        default=(),
+                        value_type=schema.TextLine(),
                         )
 
 
@@ -140,6 +150,22 @@ class LogbookControlPanelAdapter(SchemaAdapterBase):
             else:
                 mapping = {}
                 mapping[PROP_KEY_LOG_MAILS] = value
+                self.app.manage_changeProperties(**mapping)
+
+        return property(get, set)
+
+    @apply
+    def logbook_webhook_urls():
+
+        def get(self):
+            return self.app.getProperty(PROP_KEY_WEBHOOK_URLS) or ()
+
+        def set(self, value):
+            if not self.app.hasProperty(PROP_KEY_WEBHOOK_URLS):
+                self.app.manage_addProperty(PROP_KEY_WEBHOOK_URLS, value, 'lines')
+            else:
+                mapping = {}
+                mapping[PROP_KEY_WEBHOOK_URLS] = value
                 self.app.manage_changeProperties(**mapping)
 
         return property(get, set)

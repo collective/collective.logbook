@@ -65,6 +65,17 @@ def mailHandler(event):
             "An error occured while notifying recipients: %s" % str(e))
 
 
+def webhookHandler(event):
+    """ notify this error
+    """
+    try:
+        return event.error['context'].restrictedTraverse(
+            '@@logbook_webhook')(event)
+    except Exception, e:
+        LOGGER.error(
+            "An error occured while notifying with webhooks: %s" % str(e))
+
+
 def handleTraceback(object):
     context = object.context
     entry_url = object.entry_url

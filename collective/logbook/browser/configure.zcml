@@ -21,6 +21,14 @@
       permission="zope2.Public"
     />
 
+    <!-- Logbook webhook template -->
+    <browser:page
+      for="*"
+      name="logbook_webhook"
+      class=".webhook.WebhookView"
+      permission="zope2.Public"
+    />
+
     <!-- Logbook View -->
     <browser:page
       for="*"
