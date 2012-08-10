@@ -75,8 +75,8 @@ class ILogbookSchema(interface.Interface):
 
     logbook_webhook_urls = schema.Tuple(
                         title=_(u'Webhook Urls'),
-                        description=_(u'Call these urls '
-                            'when a new error occurs'),
+                        description=_(u'HTTP POST these URLs '
+                            'when a new error occurs. One URL per line.'),
                         unique=True,
                         default=(),
                         value_type=schema.TextLine(),
