@@ -4,7 +4,7 @@ Changelog
 0.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Added Web Hook support [miohtama, sevanteri]
 
 
 0.6 (2011-11-28)
@@ -34,10 +34,10 @@ Changelog
 - Logging initialization at startup time was broken with Zope 2.13 at least.
   [gotcha]
 
-- Added support for i18n 
+- Added support for i18n
   [macagua]
 
-- Added support for Spanisn translation 
+- Added support for Spanisn translation
   [macagua]
 
 - Move the mail notifier into a view to use a template for better

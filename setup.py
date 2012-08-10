@@ -6,7 +6,7 @@ version = '0.7dev'
 setup(name='collective.logbook',
       version=version,
       description="Advanced Persistent Error Log",
-      long_description=open("README.txt").read() + "\n" +
+      long_description=open("README.rst").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
         "Framework :: Plone",
