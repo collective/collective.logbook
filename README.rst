@@ -36,6 +36,19 @@ After install, go to http://your-plone-site/@@logbook
 
 The errors are logged there. You can tune some parameters.
 
+Testing
+~~~~~~~~~~~~~~~~~~
+
+``collective.logbook`` provides a view ``error-test`` which Site managers can access to
+generate a test traceback.
+
+First visit ``@@error-test`` and make sure the error appears in ``@@logbook`` view.
+
+.. note ::
+
+    You might need to turn on both Logbook enabled and Large site in Logbook Site Setup.
+    This may be a bug regarding new Plone versions and production mode.
+
 Web hooks
 -----------
 
@@ -59,11 +72,6 @@ containing a link for further information.
     You will receive message only once unless until you clear logbook contents in
     @@logbook management view.
 
-Testing
-----------
-
-``collective.logbook`` provides a view ``error-test`` which Site managers can access to
-generate a test traceback.
 
 Motivation
 ----------
