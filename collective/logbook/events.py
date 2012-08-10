@@ -66,7 +66,7 @@ def mailHandler(event):
 
 
 def webhookHandler(event):
-    """ notify this error
+    """ Travese to webhook handler and let it deal with the error.
     """
     try:
         return event.error['context'].restrictedTraverse(

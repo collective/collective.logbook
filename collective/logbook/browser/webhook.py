@@ -10,6 +10,11 @@ import urllib2
 
 
 class WebhookView(object):
+    """
+    Perform web hook HTTP POSTs.
+
+    This view is called from events.py
+    """
 
     def __call__(self, event):
         error = event.error
@@ -38,12 +43,22 @@ class WebhookView(object):
         LOGGER.info("Calling webhooks")
         LOGGER.info("Webhook urls:\n%s" % ("\n".join(urls)))
 
-        for i in range(len(urls)):
-            t = UrlThread(urls[i], {'data': message})
+        for url in urls:
+
+            url = url.strip()
+
+            # Emptry url
+            if not url:
+                continue
+
+            t = UrlThread(url, {'data': message})
             t.start()
 
 
 class UrlThread(threading.Thread):
+    """
+    Separate thread doing HTTP POST so we won't block
+    """
     def __init__(self, url, data):
         threading.Thread.__init__(self)
         self.url = url

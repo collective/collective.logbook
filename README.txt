@@ -1,8 +1,69 @@
 Introduction
-============
+------------
 
-Advanced persistent Error Logging for Plone.
 
+``collective.logbook`` add-on provides
+advanced persistent error logging for `open source Plone CMS <http://plone.org>`_.
+
+.. contents :: :local:
+
+Installation
+------------
+
+These instructions assume that you already have a Plone 3 buildout that's built
+and ready to run.
+
+Edit your buildout.cfg file and look for the eggs key in the instance section.
+Add collective.logbook to that list. Your list will look something like this::
+
+    eggs =
+        collective.logbook
+
+Enable via Site Setup > Add ons.
+
+Usage
+-----
+
+Settings
+~~~~~~~~~~~~~~~~~~
+
+See Site Setup for log book settings.
+
+Inspecting errors
+~~~~~~~~~~~~~~~~~~
+
+After install, go to http://your-plone-site/@@logbook
+
+The errors are logged there. You can tune some parameters.
+
+Web hooks
+-----------
+
+``collective.logbook`` provides ability to HTTP POST
+error message to any web service when an error happens in Plone.
+This behavior is called a web hook.
+
+Use cases
+
+* `Showing Plone errors real-time in Skype chat <https://github.com/opensourcehacker/sevabot>`_
+
+* `Routing errors to different websites and services via Zapier <https://zapier.com/>`_
+
+In Site Setup > Logbook you can enter URLs where HTTP POST will be asynchronously
+performed on a traceback. HTTP POST payload is an message from Logbook,
+containing a link for further information.
+
+.. note ::
+
+    Currently repeated errros (same traceback signature) are not POST'ed again.
+    You will receive message only once unless until you clear logbook contents in
+    @@logbook management view.
+
+Testing
+----------
+
+``collective.logbook`` provides a view ``error-test`` which Site managers can access to
+generate a test traceback.
 
 Motivation
 ----------
@@ -132,41 +193,9 @@ quickinstaller tool.
 Unit Tests
 ~~~~~~~~~~
 
-There are some unit tests which can be run with::
-
-    ./bin/instance test collective.logbook
-
-    Running:
-    ..............
-    Ran 14 tests with 0 failures and 0 errors in 0.145 seconds.
+The product contains some unit tests.
 
 more to come...
-
-
-Usage
------
-
-After install, go to http://your-plone-site/@@logbook
-
-
-Installation
-------------
-
-These instructions assume that you already have a Plone 3 buildout that's built
-and ready to run.
-
-Edit your buildout.cfg file and look for the eggs key in the instance section.
-Add collective.logbook to that list. Your list will look something like this::
-
-    eggs =
-        ${buildout:eggs}
-        ${plone:eggs}
-        collective.logbook
-
-In the same section, look for the zcml key. Add collective.logbook here,
-too (not needed for plone versions  > 3.3 which ship with z3c.autoinclude)::
-
-    zcml = collective.logbook
 
 ..
  vim: set ft=rst ts=4 sw=4 expandtab tw=78 :

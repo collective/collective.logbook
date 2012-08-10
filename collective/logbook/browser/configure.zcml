@@ -21,7 +21,7 @@
       permission="zope2.Public"
     />
 
-    <!-- Logbook webhook template -->
+    <!-- Logbook webhook -->
     <browser:page
       for="*"
       name="logbook_webhook"
@@ -50,6 +50,14 @@
       for="*"
       name="logbook_rss.xml"
       class=".logbook.LogBookRSSFeed"
+      permission="cmf.ManagePortal"
+    />
+
+    <!-- A view generating a traceback -->
+    <browser:page
+      for="*"
+      name="error-test"
+      class=".errortest.ErrorTestView"
       permission="cmf.ManagePortal"
     />
 
