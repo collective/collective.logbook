@@ -25,7 +25,13 @@ from zope import interface
 from zope import schema
 from zope import component
 from zope.formlib import form
-from zope.app.component import hooks
+
+try:
+    # Plone < 4.3
+    from zope.app.component.hooks import getSite
+except ImportError:
+    # Plone >= 4.3
+    from zope.component.hooks import getSite  # NOQA 
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
@@ -91,7 +97,7 @@ class LogbookControlPanelAdapter(SchemaAdapterBase):
         super(LogbookControlPanelAdapter, self).__init__(context)
         self.context = getToolByName(self.context,
                 "portal_properties").site_properties
-        self.portal = hooks.getSite()
+        self.portal = getSite()
         self.app = self.portal.getPhysicalRoot()
 
     @apply

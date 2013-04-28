@@ -24,7 +24,13 @@ __docformat__ = 'plaintext'
 from DateTime import DateTime
 
 from zope import interface
-from zope.app.component import hooks
+
+try:
+    # Plone < 4.3
+    from zope.app.component.hooks import setSite
+except ImportError:
+    # Plone >= 4.3
+    from zope.component.hooks import setSite  # NOQA 
 
 from plone.memoize.instance import memoize
 
@@ -53,7 +59,7 @@ class LogBook(BrowserView):
         super(LogBook, self).__init__(context, request)
         self.context = aq_inner(context)
         self.request = request
-        self.portal = hooks.getSite()
+        self.portal = getSite()
         self.storage = ILogBookStorage(self.portal)
 
     def is_large_site_enabled(self):

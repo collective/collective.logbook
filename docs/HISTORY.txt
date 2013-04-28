@@ -4,7 +4,11 @@ Changelog
 0.7 (unreleased)
 ----------------
 
-- Added Web Hook support [miohtama, sevanteri]
+- Add Plone4.3-compatibility.
+  [WouterVH]
+
+- Added Web Hook support 
+  [miohtama, sevanteri]
 
 
 0.6 (2011-11-28)
