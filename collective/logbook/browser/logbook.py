@@ -27,10 +27,10 @@ from zope import interface
 
 try:
     # Plone < 4.3
-    from zope.app.component.hooks import setSite
+    from zope.app.component.hooks import getSite
 except ImportError:
     # Plone >= 4.3
-    from zope.component.hooks import setSite  # NOQA 
+    from zope.component.hooks import getSite  # NOQA
 
 from plone.memoize.instance import memoize
 
