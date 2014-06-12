@@ -1,59 +1,65 @@
 # -*- coding: utf-8 -*-
-#
-# File: base.py
-#
-# Copyright (c) InQuant GmbH
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-__author__    = """Ramon Bartl <ramon.bartl@inquant.de>"""
-__docformat__ = 'plaintext'
+import doctest
 
-from Products.Five import zcml
-from Products.Five import fiveconfigure
+import unittest2 as unittest
+
+from plone.testing.z2 import Browser
+
+from plone.app.testing import login
+from plone.app.testing import setRoles
+from plone.app.testing import PloneSandboxLayer
+from plone.app.testing import PLONE_FIXTURE
+from plone.app.testing.layers import IntegrationTesting
+from plone.app.testing import quickInstallProduct
+from zope.configuration import xmlconfig
 
 from Testing import ZopeTestCase as ztc
 
-from Products.PloneTestCase import PloneTestCase as ptc
-from Products.PloneTestCase.layer import onsetup
 
-import collective.logbook
+class TestLayer(PloneSandboxLayer):
+    defaultBases = (PLONE_FIXTURE,)
 
+    def setUpZope(self, app, configurationContext):
+        import collective.logbook
+        xmlconfig.file('configure.zcml', collective.logbook,
+                       context=configurationContext)
 
-@onsetup
-def setup_logbook():
-    """ Set up
-    """
-
-    fiveconfigure.debug_mode = True
-    zcml.load_config('configure.zcml', collective.logbook)
-    fiveconfigure.debug_mode = False
-
-    ztc.installPackage('collective.logbook')
+    def setUpPloneSite(self, portal):
+        quickInstallProduct(portal, "collective.logbook")
 
 
-setup_logbook()
-ptc.setupPloneSite(products=['collective.logbook', ])
+TEST_FIXTURE = TestLayer()
+INTEGRATION_TESTING = IntegrationTesting(bases=(TEST_FIXTURE,),
+                          name="collective.logbook:Integration")
 
 
-class LogBookTestCase(ptc.PloneTestCase):
-    """ Base class used for test cases
-    """
+class LogBookTestCase(unittest.TestCase):
+    layer = INTEGRATION_TESTING
 
-class LogBookFunctionalTestCase(ptc.FunctionalTestCase):
-    """ Test case class used for functional (doc-)tests
-    """
+    def setUp(self):
+        self.app    = self.layer.get("app")
+        self.portal = portal = self.layer.get("portal")
+        portal.acl_users.userFolderAddUser('admin', 'secret', ['Manager',], [])
+        setRoles(portal, 'admin', ['Manager'])
+        login(portal, 'admin')
+
+    def getBrowser(self, handleErrors=False):
+        browser = Browser(self.app)
+        if handleErrors:
+            browser.handleErrors = True
+        return browser
+
+
+def test_suite():
+    suite = unittest.TestSuite()
+    suite.addTests([
+        ztc.ZopeDocFileSuite(
+            '../README.rst',
+            test_class=LogBookTestCase,
+            optionflags=doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE,
+        ),
+    ])
+    return suite
 
 # vim: set ft=python ts=4 sw=4 expandtab :

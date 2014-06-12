@@ -15,7 +15,7 @@ setup(name='collective.logbook',
         ],
       keywords='',
       author='Ramon Bartl',
-      author_email='ramon.bartl@inquant.de',
+      author_email='ramon.bartl@nexiles.de',
       url='https://svn.plone.org/svn/collective/collective.logbook',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
@@ -26,6 +26,12 @@ setup(name='collective.logbook',
           'setuptools',
           'Plone',
       ],
+      extras_require={
+          'test': [
+               'plone.app.testing',
+               'unittest2',
+           ]
+      },
       entry_points="""
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]

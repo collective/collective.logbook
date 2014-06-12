@@ -1,25 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# File: test_storage.py
-#
-# Copyright (c) InQuant GmbH
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-__author__    = """Ramon Bartl <ramon.bartl@inquant.de>"""
-__docformat__ = 'plaintext'
 
 import unittest
 
@@ -38,6 +17,7 @@ MockError3 = dict(id=333, tb_text="Traceback3")
 MockError11 = dict(id=444, tb_text="Traceback1")
 MockError22 = dict(id=555, tb_text="Traceback2")
 MockError33 = dict(id=666, tb_text="Traceback3")
+
 
 class TestStorage(LogBookTestCase):
     """ Test View Class

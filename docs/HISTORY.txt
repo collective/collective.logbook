@@ -1,8 +1,12 @@
 Changelog
 =========
 
+
 0.7 (2014-06-12)
 ----------------
+
+- Fixed tests
+  [ramonski]
 
 - Add Plone4.3-compatibility.
   [WouterVH]
