@@ -25,7 +25,7 @@ Usage
 -----
 
 Settings
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~
 
 See Site Setup for log book settings.
 
@@ -37,7 +37,7 @@ After install, go to http://your-plone-site/@@logbook
 The errors are logged there. You can tune some parameters.
 
 Testing
-~~~~~~~~~~~~~~~~~~
+~~~~~~~
 
 ``collective.logbook`` provides a view ``error-test`` which Site managers can access to
 generate a test traceback.
@@ -50,7 +50,7 @@ First visit ``@@error-test`` and make sure the error appears in ``@@logbook`` vi
     This may be a bug regarding new Plone versions and production mode.
 
 Web hooks
------------
+---------
 
 ``collective.logbook`` provides ability to HTTP POST
 error message to any web service when an error happens in Plone.
@@ -154,7 +154,7 @@ adapter will win. Maybe an SQL storage with SQLAlchemy would be nice here:)
 
 
 Notify Event
-~~~~~~~~~~~~~
+~~~~~~~~~~~~
 
 When a new unique error occurs, an INotifyTraceback event gets fired. An
 email event handler is already registered with collective.logbook::
