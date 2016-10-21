@@ -1,6 +1,6 @@
 from Products.CMFCore.utils import getToolByName
-
-from collective.logbook.config import PROP_KEY_WEBHOOK_URLS
+from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
 
 from collective.logbook.config import LOGGER
 
@@ -19,8 +19,8 @@ class WebhookView(object):
     def __call__(self, event):
         error = event.error
         portal = getToolByName(self.context, 'portal_url').getPortalObject()
-        app = portal.getPhysicalRoot()
-        urls = app.getProperty(PROP_KEY_WEBHOOK_URLS)
+        registry = getUtility(IRegistry)
+        urls = registry.get('logbook.logbook_webhook_urls')
 
         if not urls:
             return

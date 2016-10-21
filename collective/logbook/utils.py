@@ -28,6 +28,9 @@ from email.Header import Header
 from email.Utils import parseaddr, formataddr
 from socket import gaierror
 
+from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 
@@ -82,10 +85,11 @@ def send(portal, message, subject, recipients=[]):
             pass
         else:
             break
-
+        
     # Get the 'From' address.
-    sender_name = portal.getProperty('email_from_name')
-    sender_addr = portal.getProperty('email_from_address')
+    registry = getUtility(IRegistry)
+    sender_name = registry.get('plone.email_from_name')
+    sender_addr = registry.get('plone.email_from_address')
 
     # We must always pass Unicode strings to Header, otherwise it will
     # use RFC 2047 encoding even on plain ASCII strings.
