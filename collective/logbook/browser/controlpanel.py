@@ -45,12 +45,13 @@ class ILogbookSchema(interface.Interface):
     """ Combined schema for the adapter lookup.
     """
 
-    logbook_enabled = schema.Bool(
-                        title=_(u'Enable Logbook logging'),
-                        description=_(u'This installs or uninstalls '
-                            'the logbook patch for Products.SiteErrorLog'),
-                        default=True,
-                        required=True)
+    # logbook_enabled = schema.Bool(
+    #                     title=_(u'Enable Logbook logging'),
+    #                     description=_(u'This installs or uninstalls '
+    #                     'the logbook patch for Products.SiteErrorLog.'
+    #                     'Please restart your Zope instance after changing it.'),
+    #                     default=True,
+    #                     required=True)
 
     logbook_large_site = schema.Bool(
                         title=_(u'Enable large site'),
