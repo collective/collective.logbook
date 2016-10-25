@@ -30,7 +30,7 @@ Settings
 See Site Setup for log book settings.
 
 Inspecting errors
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 After install, go to http://your-plone-site/@@logbook
 
