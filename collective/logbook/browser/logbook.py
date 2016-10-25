@@ -41,11 +41,13 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Acquisition import aq_inner
 from zExceptions import Forbidden
 
+from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
+
 from collective.logbook.interfaces import ILogBook
 from collective.logbook.interfaces import ILogBookStorage
 
 from collective.logbook import logbookMessageFactory as _
-from collective.logbook.config import PROP_KEY_LARGE_SITE
 
 
 class LogBook(BrowserView):
@@ -63,8 +65,8 @@ class LogBook(BrowserView):
         self.storage = ILogBookStorage(self.portal)
 
     def is_large_site_enabled(self):
-        app = self.portal.getPhysicalRoot()
-        return app.getProperty(PROP_KEY_LARGE_SITE, False)
+        registry = getUtility(IRegistry)
+        return registry.get('logbook.logbook_large_site')
 
     def show_all_tracebacks(self):
         if self.has_errors():

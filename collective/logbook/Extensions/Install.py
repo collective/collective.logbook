@@ -31,9 +31,6 @@ from collective.logbook.config import LOGGER
 from collective.logbook.monkey import install_monkey
 from collective.logbook.monkey import uninstall_monkey
 
-from collective.logbook.config import PROP_KEY_LOG_ENABLED
-from collective.logbook.config import PROP_KEY_LOG_MAILS
-
 
 def install(portal):
     setup_tool = getToolByName(portal, 'portal_setup')
@@ -41,9 +38,6 @@ def install(portal):
 
     # install monkey
     install_monkey()
-
-    # install properties
-    install_properties(portal)
 
     LOGGER.info("*** INSTALLED collective.logbook ***")
     return "Ran all import steps."
@@ -59,44 +53,8 @@ def uninstall(portal):
     # remove storages
     uninstall_storages(portal)
 
-    # remove properties
-    uninstall_properties(portal)
-
     LOGGER.info("*** UNINSTALLED collective.logbook ***")
     return "Ran all uninstall steps."
-
-
-def install_properties(portal):
-    """ install logbook properties to the Zope root
-    """
-
-    app = portal.getParentNode()
-
-    # add logbook log enabled property
-    if PROP_KEY_LOG_ENABLED not in app.propertyIds():
-        app.manage_addProperty(PROP_KEY_LOG_ENABLED, True, 'boolean')
-
-    # add logbook log mails property
-    if PROP_KEY_LOG_MAILS not in app.propertyIds():
-        app.manage_addProperty(PROP_KEY_LOG_MAILS, (), 'lines')
-
-    LOGGER.info("*** INSTALL collective.logbook properties ***")
-
-
-def uninstall_properties(portal):
-    """ uninstall logbook properties to the Zope root
-    """
-
-    app = portal.getParentNode()
-
-    # remove logbook properties
-    if PROP_KEY_LOG_ENABLED in app.propertyIds():
-        app.manage_delProperties([PROP_KEY_LOG_ENABLED, ])
-
-    if PROP_KEY_LOG_MAILS in app.propertyIds():
-        app.manage_delProperties([PROP_KEY_LOG_MAILS, ])
-
-    LOGGER.info("*** UNINSTALL collective.logbook properties ***")
 
 
 def uninstall_storages(portal):

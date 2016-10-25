@@ -1,6 +1,17 @@
 Changelog
 =========
 
+0.8b2 (2016-10-24)
+----------------
+
+- Cleanup/doc update for Plone 5 version
+  [glemignot]
+
+0.8b1 (2016-10-21)
+----------------
+
+- Initial port to Plone 5
+  [glemignot]
 
 0.7 (2014-06-12)
 ----------------

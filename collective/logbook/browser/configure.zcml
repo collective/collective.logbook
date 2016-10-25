@@ -4,11 +4,10 @@
     i18n_domain="collective.logbook">
 
     <!-- Control Panel -->
-    <adapter factory=".controlpanel.LogbookControlPanelAdapter" />
     <browser:page
         name="logbook-controlpanel"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        class=".controlpanel.LogbookControlPanel"
+        class=".controlpanel.LogbookControlPanelView"
         permission="cmf.ManagePortal"
     />
 

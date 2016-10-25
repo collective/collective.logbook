@@ -168,35 +168,24 @@ This handler will email new tracebacks to the list of email adresses
 specified in the logbook configlet of the plone control panel.
 
 
-Properties
-~~~~~~~~~~
+Configuration
+~~~~~~~~~~~~~
 
-collective.logbook installs 2 Properties in your application root:
+collective.logbook now uses Plone 5's registry to store its configuration.
+It has 3 configuration keys:
 
-  - logbook_enabled
-  - logbook_log_mails
+  - logbook.logbook_log_mails
+  - logbook.logbook_large_site
+  - logbook.logbook_webhook_urls    
 
 These properties take the values you enter in logbook configlet in the plone
 control panel.
 
-The first one checks if logbook logging is disabled or not when you restart
-your instance::
+The first one is used to email new tracebacks to these email addresses.
 
-    def initialize(context):
-        """ Initializer called when used as a Zope 2 product. """
+The second one changes some behaviour for large sites.
 
-        app = context._ProductContext__app
-        enabled = app.getProperty("logbook_enabled", False)
-
-        if enabled:
-            monkey.install_monkey()
-
-
-The latter one is used to email new tracebacks to these email addresses.
-
-The properties get uninstalled when you uninstall collective.logbook via the
-quickinstaller tool.
-
+The third one does an HTTP POST to some URLs when an error occurs.
 
 Unit Tests
 ~~~~~~~~~~

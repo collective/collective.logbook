@@ -26,40 +26,32 @@ from zope import schema
 from zope import component
 from zope.formlib import form
 
-try:
-    # Plone < 4.3
-    from zope.app.component.hooks import getSite
-except ImportError:
-    # Plone >= 4.3
-    from zope.component.hooks import getSite  # NOQA 
+from plone.z3cform import layout
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from plone.app.controlpanel.form import ControlPanelForm
+from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
+from plone.app.registry.browser.controlpanel import RegistryEditForm
 
 from collective.logbook.utils import check_email
 from collective.logbook.monkey import install_monkey
 from collective.logbook.monkey import uninstall_monkey
 from collective.logbook import logbookMessageFactory as _
 
-from collective.logbook.config import PROP_KEY_LOG_ENABLED
-from collective.logbook.config import PROP_KEY_LOG_MAILS
-from collective.logbook.config import PROP_KEY_LARGE_SITE
-from collective.logbook.config import PROP_KEY_WEBHOOK_URLS
-
 
 class ILogbookSchema(interface.Interface):
     """ Combined schema for the adapter lookup.
     """
 
-    logbook_enabled = schema.Bool(
-                        title=_(u'Enable Logbook logging'),
-                        description=_(u'This installs or uninstalls '
-                            'the logbook patch for Products.SiteErrorLog'),
-                        default=True,
-                        required=True)
+    # logbook_enabled = schema.Bool(
+    #                     title=_(u'Enable Logbook logging'),
+    #                     description=_(u'This installs or uninstalls '
+    #                     'the logbook patch for Products.SiteErrorLog.'
+    #                     'Please restart your Zope instance after changing it.'),
+    #                     default=True,
+    #                     required=True)
 
     logbook_large_site = schema.Bool(
                         title=_(u'Enable large site'),
@@ -77,6 +69,7 @@ class ILogbookSchema(interface.Interface):
                         default=(),
                         value_type=schema.TextLine(
                                      constraint=check_email, ),
+                        required=False,
                         )
 
     logbook_webhook_urls = schema.Tuple(
@@ -86,101 +79,26 @@ class ILogbookSchema(interface.Interface):
                         unique=True,
                         default=(),
                         value_type=schema.TextLine(),
+                        required=False,
                         )
 
+    # @apply
+    # def logbook_enabled():
 
-class LogbookControlPanelAdapter(SchemaAdapterBase):
-    component.adapts(IPloneSiteRoot)
-    interface.implements(ILogbookSchema)
-
-    def __init__(self, context):
-        super(LogbookControlPanelAdapter, self).__init__(context)
-        self.context = getToolByName(self.context,
-                "portal_properties").site_properties
-        self.portal = getSite()
-        self.app = self.portal.getPhysicalRoot()
-
-    @apply
-    def logbook_large_site():
-
-        def get(self):
-            return self.app.getProperty(PROP_KEY_LARGE_SITE)
-
-        def set(self, value):
-
-            if value:
-                install_monkey()
-            else:
-                uninstall_monkey()
-            if not self.app.hasProperty(PROP_KEY_LARGE_SITE):
-                self.app.manage_addProperty(PROP_KEY_LARGE_SITE, value,
-                        'boolean')
-            else:
-                mapping = {}
-                mapping[PROP_KEY_LARGE_SITE] = value
-                self.app.manage_changeProperties(**mapping)
-
-        return property(get, set)
-
-    @apply
-    def logbook_enabled():
-
-        def get(self):
-            return self.app.getProperty(PROP_KEY_LOG_ENABLED)
-
-        def set(self, value):
-
-            if value:
-                install_monkey()
-            else:
-                uninstall_monkey()
-            if not self.app.hasProperty(PROP_KEY_LOG_ENABLED):
-                self.app.manage_addProperty(PROP_KEY_LOG_ENABLED, value,
-                        'boolean')
-            else:
-                mapping = {}
-                mapping[PROP_KEY_LOG_ENABLED] = value
-                self.app.manage_changeProperties(**mapping)
-
-        return property(get, set)
-
-    @apply
-    def logbook_log_mails():
-
-        def get(self):
-            return self.app.getProperty(PROP_KEY_LOG_MAILS) or ()
-
-        def set(self, value):
-            if not self.app.hasProperty(PROP_KEY_LOG_MAILS):
-                self.app.manage_addProperty(PROP_KEY_LOG_MAILS, value, 'lines')
-            else:
-                mapping = {}
-                mapping[PROP_KEY_LOG_MAILS] = value
-                self.app.manage_changeProperties(**mapping)
-
-        return property(get, set)
-
-    @apply
-    def logbook_webhook_urls():
-
-        def get(self):
-            return self.app.getProperty(PROP_KEY_WEBHOOK_URLS) or ()
-
-        def set(self, value):
-            if not self.app.hasProperty(PROP_KEY_WEBHOOK_URLS):
-                self.app.manage_addProperty(PROP_KEY_WEBHOOK_URLS, value, 'lines')
-            else:
-                mapping = {}
-                mapping[PROP_KEY_WEBHOOK_URLS] = value
-                self.app.manage_changeProperties(**mapping)
-
-        return property(get, set)
+    #         if value:
+    #             install_monkey()
+    #         else:
+    #             uninstall_monkey()
 
 
-class LogbookControlPanel(ControlPanelForm):
-    form_fields = form.FormFields(ILogbookSchema)
+class LogbookControlPanelForm(RegistryEditForm):
+    schema = ILogbookSchema
+    schema_prefix = "logbook"
     label = _(u"Logbook settings")
     description = _(u"Logbook settings.")
     form_name = _(u"Logbook settings")
 
+LogbookControlPanelView = layout.wrap_form(
+    LogbookControlPanelForm, ControlPanelFormWrapper)
+    
 # vim: set ft=python ts=4 sw=4 expandtab :

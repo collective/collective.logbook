@@ -1,6 +1,7 @@
 from Products.CMFCore.utils import getToolByName
+from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
 
-from collective.logbook.config import PROP_KEY_LOG_MAILS
 from collective.logbook.utils import send
 
 
@@ -9,13 +10,13 @@ class MailView(object):
     def __call__(self, event):
         error = event.error
         portal = getToolByName(self.context, 'portal_url').getPortalObject()
-        app = portal.getPhysicalRoot()
-        emails = app.getProperty(PROP_KEY_LOG_MAILS)
+        registry = getUtility(IRegistry)
+        emails = registry.get('logbook.logbook_log_mails')
 
         if not emails:
             return
 
-        recipients = [mail for mail in emails]
+        recipients = [mail for mail in emails if mail]
         subject = "[collective.logbook] NEW TRACEBACK: '%s'" % (
             error.get("value"))
         self.__dict__.update(
