@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.8 (unreleased)
+----------------
+
+- add Plone 5.0 pypi classifier, update README.rst to mention Plone 5 compatibility
+  [tkimnguyen]
+
 0.8b2 (2016-10-24)
 ----------------
 

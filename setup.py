@@ -10,6 +10,7 @@ setup(name='collective.logbook',
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
         "Framework :: Plone",
+        "Framework :: Plone :: 5.0",
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
         ],
