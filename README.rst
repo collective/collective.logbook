@@ -3,23 +3,31 @@ Introduction
 
 
 ``collective.logbook`` add-on provides
-advanced persistent error logging for `open source Plone CMS <http://plone.org>`_.
+advanced persistent error logging for the `open source Plone CMS <http://plone.org>`_.
 
 .. contents :: :local:
+
+Plone version compatibility
+---------------------------
+
+collective.logbook works with Plone 5
 
 Installation
 ------------
 
-These instructions assume that you already have a Plone 3 buildout that's built
+These instructions assume that you already have a Plone buildout that's built
 and ready to run.
 
 Edit your buildout.cfg file and look for the eggs key in the instance section.
 Add collective.logbook to that list. Your list will look something like this::
 
     eggs =
+        ...
         collective.logbook
 
-Enable via Site Setup > Add ons.
+Run buildout.
+
+Activate the add-on via Site Setup > Add ons.
 
 Usage
 -----
