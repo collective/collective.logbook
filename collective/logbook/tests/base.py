@@ -26,6 +26,7 @@ except (pkg_resources.DistributionNotFound, ImportError):
 else:
     HAS_PLONE_PROTECT = True
 
+
 class TestLayer(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
