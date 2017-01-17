@@ -184,7 +184,7 @@ It has 3 configuration keys:
 
   - logbook.logbook_log_mails
   - logbook.logbook_large_site
-  - logbook.logbook_webhook_urls    
+  - logbook.logbook_webhook_urls
 
 These properties take the values you enter in logbook configlet in the plone
 control panel.
@@ -194,13 +194,3 @@ The first one is used to email new tracebacks to these email addresses.
 The second one changes some behaviour for large sites.
 
 The third one does an HTTP POST to some URLs when an error occurs.
-
-Unit Tests
-~~~~~~~~~~
-
-The product contains some unit tests.
-
-more to come...
-
-..
- vim: set ft=rst ts=4 sw=4 expandtab tw=78 :

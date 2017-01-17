@@ -1,19 +1,26 @@
+# -*- coding: utf-8 -*-
+
 from setuptools import setup, find_packages
 import os
 
-version = '0.8b2'
+version = '0.8'
+
+long_description = (
+    open('README.rst').read() +
+    '\n' +
+    open(os.path.join('docs', 'HISTORY.txt')).read() +
+    '\n')
 
 setup(name='collective.logbook',
       version=version,
       description="Advanced Persistent Error Log",
-      long_description=open("README.rst").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+      long_description=long_description,
       classifiers=[
-        "Framework :: Plone",
-        "Framework :: Plone :: 5.0",
-        "Programming Language :: Python",
-        "Topic :: Software Development :: Libraries :: Python Modules",
-        ],
+          "Framework :: Plone",
+          "Framework :: Plone :: 5.0",
+          "Programming Language :: Python",
+          "Topic :: Software Development :: Libraries :: Python Modules",
+      ],
       keywords='',
       author='Ramon Bartl',
       author_email='ramon.bartl@nexiles.de',
@@ -29,9 +36,9 @@ setup(name='collective.logbook',
       ],
       extras_require={
           'test': [
-               'plone.app.testing',
-               'unittest2',
-           ]
+              'plone.app.testing',
+              'unittest2',
+          ]
       },
       entry_points="""
       # -*- Entry points: -*-
