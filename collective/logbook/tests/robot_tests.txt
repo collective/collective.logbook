@@ -23,7 +23,6 @@ Logbook View
     [Tags]  logbook_view
     Enable autologin as  Manager
     Go to  ${PLONE_URL}/@@logbook
-    debug
     Page should contain  Error Number:
 
 *** Keywords ***
