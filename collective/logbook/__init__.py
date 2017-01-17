@@ -18,7 +18,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-__author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
+__author__ = 'Ramon Bartl <rb@ridingbytes.com>'
 __docformat__ = 'plaintext'
 
 from zope.i18nmessageid import MessageFactory
@@ -37,7 +37,7 @@ def initialize(context):
 
     # The registry isn't available at that time, so for
     # now assume it's always enabled.
-    
+
     #registry = getUtility(IRegistry)
     #enabled = registry.get('logbook.logbook_enabled')
     enabled = True
