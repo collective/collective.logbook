@@ -6,6 +6,10 @@ PACKAGENAME = "collective.logbook"
 
 LOGGER = logging.getLogger(PACKAGENAME)
 
+
+# Gets True when the SiteErrorLog monkey patch gets applied
+PATCH_APPLIED = False
+
 # 0 - all errors get saved in the log
 #     (WARNING: this might cause an NotifyTraceback event flooding)
 #

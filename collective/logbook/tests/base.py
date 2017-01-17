@@ -1,17 +1,30 @@
 # -*- coding: utf-8 -*-
 
+import pkg_resources
+
 import unittest2 as unittest
 
+from plone.testing import z2
 from plone.testing.z2 import Browser
 
 from plone.app.testing import login
 from plone.app.testing import setRoles
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import PLONE_FIXTURE
+from plone.app.testing import FunctionalTesting
 from plone.app.testing.layers import IntegrationTesting
 from plone.app.testing import quickInstallProduct
 from zope.configuration import xmlconfig
 
+from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
+
+try:
+    pkg_resources.get_distribution('plone.protect')
+    import plone.protect.auto
+except (pkg_resources.DistributionNotFound, ImportError):
+    HAS_PLONE_PROTECT = False
+else:
+    HAS_PLONE_PROTECT = True
 
 class TestLayer(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
@@ -26,8 +39,13 @@ class TestLayer(PloneSandboxLayer):
 
 
 TEST_FIXTURE = TestLayer()
-INTEGRATION_TESTING = IntegrationTesting(bases=(TEST_FIXTURE,),
-                                         name="collective.logbook:Integration")
+INTEGRATION_TESTING = IntegrationTesting(
+    bases=(TEST_FIXTURE,),
+    name="collective.logbook:Integration")
+
+ROBOT_TESTING = FunctionalTesting(
+    bases=(TEST_FIXTURE, AUTOLOGIN_LIBRARY_FIXTURE, z2.ZSERVER_FIXTURE),
+    name="collective.logbook:Robot")
 
 
 class LogBookTestCase(unittest.TestCase):
@@ -40,8 +58,21 @@ class LogBookTestCase(unittest.TestCase):
         setRoles(portal, 'admin', ['Manager'])
         login(portal, 'admin')
 
+        # Disable auto protection for tests
+        if HAS_PLONE_PROTECT:
+            plone.protect.auto.CSRF_DISABLED = True
+
     def getBrowser(self, handleErrors=False):
         browser = Browser(self.app)
         if handleErrors:
             browser.handleErrors = True
         return browser
+
+    def getApp(self):
+        return self.layer.get("app")
+
+    def getPortal(self):
+        return self.layer.get("portal")
+
+    def getRequest(self):
+        return self.layer.get("request")

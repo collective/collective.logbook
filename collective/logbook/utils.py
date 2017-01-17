@@ -15,8 +15,6 @@ from Products.CMFPlone.utils import safe_unicode
 
 from config import LOGGER
 
-__author__ = 'Ramon Bartl <rb@ridingbytes.com>'
-__docformat__ = 'plaintext'
 
 REGEX = re.compile(r'0x[0-9a-fA-F]+')
 

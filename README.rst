@@ -37,7 +37,14 @@ With `collective.logbook` enabled, it is simple to see all errors occured in you
     >>> browser = self.getBrowser()
     >>> browser.addHeader('Authorization', 'Basic admin:secret')
 
-    >>> 1 + 1
+Remember some URLs::
+
+    >>> portal_url = portal.absolute_url()
+    >>> logbook_url = portal_url + "/@@logbook"
+
+Browse to the `@@logbook` view::
+
+    >>> browser.open(logbook_url)
 
 
 Settings

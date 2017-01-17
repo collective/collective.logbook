@@ -23,8 +23,8 @@ setup(name='collective.logbook',
       ],
       keywords='',
       author='Ramon Bartl',
-      author_email='ramon.bartl@nexiles.de',
-      url='https://svn.plone.org/svn/collective/collective.logbook',
+      author_email='rb@ridingbytes.com',
+      url='https://github.com/collective/collective.logbook',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['collective'],
@@ -32,12 +32,16 @@ setup(name='collective.logbook',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'Plone',
+          'plone.api',
       ],
       extras_require={
           'test': [
               'plone.app.testing',
               'unittest2',
+              'robotsuite',
+              'robotframework-selenium2library',
+              'plone.app.robotframework',
+              'robotframework-debuglibrary',
           ]
       },
       entry_points="""

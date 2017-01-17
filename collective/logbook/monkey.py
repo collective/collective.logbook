@@ -7,17 +7,30 @@ from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
 from config import LOGGER
 from events import ErrorRaisedEvent
 
+
 _raising = SiteErrorLog.raising
 
 
 def install_monkey():
-    LOGGER.info(">>> Installing Monkey for Products.SiteErrorLog")
-    SiteErrorLog.raising = raising
+    from collective.logbook.config import PATCH_APPLIED
+
+    if not PATCH_APPLIED:
+        LOGGER.info(">>> Installing Monkey Patch for Products.SiteErrorLog")
+        SiteErrorLog.raising = raising
+        PATCH_APPLIED = True
+    else:
+        LOGGER.info(">>> Monkey Patch for Products.SiteErrorLog already applied")
 
 
 def uninstall_monkey():
-    LOGGER.info(">>> Uninstalling Monkey for Products.SiteErrorLog")
-    SiteErrorLog.raising = _raising
+    from collective.logbook.config import PATCH_APPLIED
+
+    if PATCH_APPLIED:
+        LOGGER.info(">>> Uninstalling Monkey for Products.SiteErrorLog")
+        SiteErrorLog.raising = _raising
+        PATCH_APPLIED = False
+    else:
+        LOGGER.info(">>> Monkey Patch for Products.SiteErrorLog already already deactivated")
 
 
 def raising(self, info):
