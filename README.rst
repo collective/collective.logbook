@@ -1,7 +1,6 @@
 Introduction
 ------------
 
-
 ``collective.logbook`` add-on provides
 advanced persistent error logging for the `open source Plone CMS <http://plone.org>`_.
 
@@ -31,6 +30,15 @@ Activate the add-on via Site Setup > Add ons.
 
 Usage
 -----
+
+With `collective.logbook` enabled, it is simple to see all errors occured in your Plone site::
+
+    >>> portal = self.getPortal()
+    >>> browser = self.getBrowser()
+    >>> browser.addHeader('Authorization', 'Basic admin:secret')
+
+    >>> 1 + 1
+
 
 Settings
 ~~~~~~~~

@@ -13,12 +13,10 @@ class TestSetup(LogBookTestCase):
         self.setRoles(('Manager', ))
 
     def testViewAvailable(self):
-        self.failUnless(self.portal.restrictedTraverse('@@logbook'))
+        self.assertTrue(self.portal.restrictedTraverse('@@logbook'))
 
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestSetup))
     return suite
-
-# vim: set ft=python ts=4 sw=4 expandtab :

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import doctest
-
 import unittest2 as unittest
 
 from plone.testing.z2 import Browser
@@ -13,8 +11,6 @@ from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing.layers import IntegrationTesting
 from plone.app.testing import quickInstallProduct
 from zope.configuration import xmlconfig
-
-from Testing import ZopeTestCase as ztc
 
 
 class TestLayer(PloneSandboxLayer):
@@ -31,16 +27,16 @@ class TestLayer(PloneSandboxLayer):
 
 TEST_FIXTURE = TestLayer()
 INTEGRATION_TESTING = IntegrationTesting(bases=(TEST_FIXTURE,),
-                          name="collective.logbook:Integration")
+                                         name="collective.logbook:Integration")
 
 
 class LogBookTestCase(unittest.TestCase):
     layer = INTEGRATION_TESTING
 
     def setUp(self):
-        self.app    = self.layer.get("app")
+        self.app = self.layer.get("app")
         self.portal = portal = self.layer.get("portal")
-        portal.acl_users.userFolderAddUser('admin', 'secret', ['Manager',], [])
+        portal.acl_users.userFolderAddUser('admin', 'secret', ['Manager', ], [])
         setRoles(portal, 'admin', ['Manager'])
         login(portal, 'admin')
 
@@ -49,17 +45,3 @@ class LogBookTestCase(unittest.TestCase):
         if handleErrors:
             browser.handleErrors = True
         return browser
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTests([
-        ztc.ZopeDocFileSuite(
-            '../README.rst',
-            test_class=LogBookTestCase,
-            optionflags=doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE,
-        ),
-    ])
-    return suite
-
-# vim: set ft=python ts=4 sw=4 expandtab :

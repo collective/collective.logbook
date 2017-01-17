@@ -1,25 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# File: utils.py
-#
-# Copyright (c) InQuant GmbH
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-__author__    = 'Ramon Bartl <rb@ridingbytes.com>'
-__docformat__ = 'plaintext'
 
 import re
 
@@ -35,6 +14,9 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 
 from config import LOGGER
+
+__author__ = 'Ramon Bartl <rb@ridingbytes.com>'
+__docformat__ = 'plaintext'
 
 REGEX = re.compile(r'0x[0-9a-fA-F]+')
 
@@ -52,6 +34,7 @@ def filtered_error_tail(error):
     tail = tb_text.splitlines()[-5:]
     filtered_tail = map(hexfilter, tail)
     return filtered_tail
+
 
 # this is stolen from http://grok.zope.org/documentation/how-to/automatic-form-generation
 expr = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+"
@@ -85,7 +68,7 @@ def send(portal, message, subject, recipients=[]):
             pass
         else:
             break
-        
+
     # Get the 'From' address.
     registry = getUtility(IRegistry)
     sender_name = registry.get('plone.email_from_name')
@@ -133,5 +116,3 @@ def send(portal, message, subject, recipients=[]):
         LOGGER.error("Reason: %s: %r" % (exc.__class__.__name__, str(exc)))
     else:
         LOGGER.info("Succesfully sent email to %r" % formatted_recipients)
-
-# vim: set ft=python ts=4 sw=4 expandtab :

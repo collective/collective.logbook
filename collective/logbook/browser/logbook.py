@@ -1,53 +1,26 @@
 # -*- coding: utf-8 -*-
-#
-# File: logbook.py
-#
-# Copyright (c) InQuant GmbH
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-__author__ = 'Ramon Bartl <rb@ridingbytes.com>'
-__docformat__ = 'plaintext'
 
 from DateTime import DateTime
-
-from zope import interface
-
-try:
-    # Plone < 4.3
-    from zope.app.component.hooks import getSite
-except ImportError:
-    # Plone >= 4.3
-    from zope.component.hooks import getSite  # NOQA
-
-from plone.memoize.instance import memoize
-
-from Products.statusmessages.interfaces import IStatusMessage
-from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
 from Acquisition import aq_inner
 from zExceptions import Forbidden
 
-from plone.registry.interfaces import IRegistry
+from zope import interface
 from zope.component import getUtility
+
+from plone import api as ploneapi
+from plone.memoize.instance import memoize
+from plone.registry.interfaces import IRegistry
+
+from Products.Five.browser import BrowserView
+from Products.statusmessages.interfaces import IStatusMessage
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from collective.logbook.interfaces import ILogBook
 from collective.logbook.interfaces import ILogBookStorage
-
 from collective.logbook import logbookMessageFactory as _
+
+__author__ = 'Ramon Bartl <rb@ridingbytes.com>'
+__docformat__ = 'plaintext'
 
 
 class LogBook(BrowserView):
@@ -61,7 +34,7 @@ class LogBook(BrowserView):
         super(LogBook, self).__init__(context, request)
         self.context = aq_inner(context)
         self.request = request
-        self.portal = getSite()
+        self.portal = ploneapi.portal.get()
         self.storage = ILogBookStorage(self.portal)
 
     def is_large_site_enabled(self):
@@ -93,7 +66,7 @@ class LogBook(BrowserView):
         """ see ILogBook
         """
         error_log_path = '/'.join(
-                ['/'.join(self.portal.getPhysicalPath()), 'error_log'])
+            ['/'.join(self.portal.getPhysicalPath()), 'error_log'])
         return self.portal.restrictedTraverse(error_log_path)
 
     def error(self, err_id):
@@ -141,13 +114,13 @@ class LogBook(BrowserView):
         for id, tb in errors:
             refs = self.storage.get_referenced_errordata(id)
             out.append(
-                    dict(
-                        id=id,
-                        tb=tb,
-                        counter=len(refs),
-                        refs=refs
-                        )
-                    )
+                dict(
+                    id=id,
+                    tb=tb,
+                    counter=len(refs),
+                    refs=refs
+                )
+            )
         return sorted(out, key=lambda x: x["counter"], reverse=True)
 
     def search_error(self, err_id):
@@ -222,5 +195,3 @@ class LogBookRSSFeed(LogBook):
 
     def __call__(self):
         return self.template()
-
-# vim: set ft=python ts=4 sw=4 expandtab :

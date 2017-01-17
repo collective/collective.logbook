@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
@@ -29,12 +31,12 @@ class WebhookView(object):
             error.get("value"))
         date = error.get("time").strftime("%Y-%m-%d %H:%M:%S"),
         traceback = "\n".join(error.get("tb_text").split("\n")[-3:])
-        #error_number = error.get("id")
+        # error_number = error.get("id")
         error_url = error.get("url")
         logbook_url = (
             portal.absolute_url() + "/@@logbook?errornumber=%s" %
             error.get("id"))
-        #req_html = error.get("req_html")
+        # req_html = error.get("req_html")
 
         message = "%s\n%s\n%s\n%s\n%s\n" % (
             subject, date, traceback,

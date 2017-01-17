@@ -27,30 +27,30 @@ class TestStorage(LogBookTestCase):
         self.setRoles(('Manager', ))
 
     def test_storage_adapter_registered(self):
-        self.failUnless(ILogBookStorage(self.portal))
+        self.assertTrue(ILogBookStorage(self.portal))
 
     def test_adapter_implements_interface(self):
         adapter = ILogBookStorage(self.portal)
-        self.failUnless(ILogBookStorage.providedBy(adapter))
+        self.assertTrue(ILogBookStorage.providedBy(adapter))
 
     def test_adapter_class_fulfills_interface_contract(self):
-        self.failUnless(interface.verify.verifyClass(ILogBookStorage, LogBookStorage))
+        self.assertTrue(interface.verify.verifyClass(ILogBookStorage, LogBookStorage))
 
     def test_save_error(self):
         adapter = ILogBookStorage(self.portal)
-        self.failUnless(adapter.save_error(MockError1))
+        self.assertTrue(adapter.save_error(MockError1))
 
     def test_delete_error(self):
         adapter = ILogBookStorage(self.portal)
         adapter.save_error(MockError1)
         self.assertEqual(adapter.error_count, 1)
-        self.failUnless(adapter.delete_error(MockError1.get("id")))
+        self.assertTrue(adapter.delete_error(MockError1.get("id")))
         self.assertEqual(adapter.error_count, 0)
 
     def test_get_error(self):
         adapter = ILogBookStorage(self.portal)
         adapter.save_error(MockError1)
-        self.failUnless(adapter.get_error(MockError1.get("id")))
+        self.assertTrue(adapter.get_error(MockError1.get("id")))
 
     def test_get_all_errors(self):
         adapter = ILogBookStorage(self.portal)
@@ -98,7 +98,7 @@ class TestStorage(LogBookTestCase):
         self.assertEqual(adapter.reference_count, 1)
 
         # delete referenced error
-        self.failUnless(adapter.delete_error(MockError1.get("id")))
+        self.assertTrue(adapter.delete_error(MockError1.get("id")))
 
         # check
         self.assertEqual(adapter.error_count, 2)
@@ -126,9 +126,8 @@ class TestStorage(LogBookTestCase):
         self.assertEqual(adapter.error_count, 3)
         self.assertEqual(adapter.reference_count, 0)
 
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestStorage))
     return suite
-
-# vim: set ft=python ts=4 sw=4 expandtab :

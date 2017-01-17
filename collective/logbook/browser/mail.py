@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
@@ -28,7 +30,7 @@ class MailView(object):
                 portal.absolute_url() + "/@@logbook?errornumber=%s" %
                 error.get("id")),
             req_html=error.get("req_html"),
-            )
+        )
 
         message = self.index()
         send(portal, message, subject, recipients)

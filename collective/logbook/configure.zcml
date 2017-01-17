@@ -29,7 +29,7 @@
       description="Uninstall collective.logbook."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-    
+
     <genericsetup:upgradeStep
       title="Migrate storage"
       description="Migrate storage from PersistentDict to OOBTree"
@@ -61,5 +61,3 @@
       />
 
 </configure>
-
-<!-- vim: set ft=xml ts=2 sw=2 expandtab : -->

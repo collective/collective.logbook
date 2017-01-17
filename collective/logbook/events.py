@@ -1,25 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# File: events.py
-#
-# Copyright (c) InQuant GmbH
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-__author__ = 'Ramon Bartl <rb@ridingbytes.com>'
-__docformat__ = 'plaintext'
 
 import urllib
 import transaction
@@ -97,7 +76,7 @@ def handleTraceback(object):
             # save error
             logbook.save_error(err_id, context=aq_parent(context))
             transaction.get().note('collective.logbook traceback [%s]' %
-                    entry_url)
+                                   entry_url)
             transaction.commit()
         finally:
             cleanup_lock.release()
@@ -106,5 +85,3 @@ def handleTraceback(object):
         LOGGER.warning("An error occured while handling the traceback")
         LOGGER.warning("%s" % e)
         LOGGER.exception(e)
-
-# vim: set ft=python ts=4 sw=4 expandtab :
