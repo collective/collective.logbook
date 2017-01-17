@@ -45,6 +45,9 @@ class ILogbookSchema(interface.Interface):
     """ Combined schema for the adapter lookup.
     """
 
+    # FIXME: When adding Plone 5 support in
+    # https://github.com/collective/collective.logbook/commit/6266e36893f0e76b099fedbbf41394198977ee73
+    # this options still needs fixing, that's why it's commented and not removed.
     # logbook_enabled = schema.Bool(
     #                     title=_(u'Enable Logbook logging'),
     #                     description=_(u'This installs or uninstalls '
@@ -81,7 +84,8 @@ class ILogbookSchema(interface.Interface):
                         value_type=schema.TextLine(),
                         required=False,
                         )
-
+    
+    # FIXME: check logbook_enabled option above.
     # @apply
     # def logbook_enabled():
 
