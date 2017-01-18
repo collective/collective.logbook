@@ -61,11 +61,7 @@
 
             <div tal:condition="view/show_all_tracebacks">
                 <div style="color:grey;margin-bottom:1em;" i18n:translate="">
-                    There are
-                    <span tal:replace="view/error_count" i18n:name="error_count" />
-                    saved (unique) Tracebacks and
-                    <span tal:replace="view/reference_count" i18n:name="reference_count" />
-                    referenced Tracebacks
+                    There are <span tal:replace="view/error_count" i18n:name="error_count" /> saved (unique) Tracebacks and <span tal:replace="view/reference_count" i18n:name="reference_count" /> referenced Tracebacks
                 </div>
 
                 <table class="logboogErrorListing">
