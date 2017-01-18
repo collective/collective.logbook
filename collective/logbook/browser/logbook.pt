@@ -55,12 +55,16 @@
                 <input class="context" type="submit" name="form.button.showall" value="Show all" i18n:attributes="value" />
             </div>
 
+            <div tal:condition="not: view/error_count" i18n:translate="">
+                Congratulations, there are 0 Errors in your Plone Site!
+            </div>
+
             <div tal:condition="view/show_all_tracebacks">
                 <div style="color:grey;margin-bottom:1em;" i18n:translate="">
                     There are
-                    <span tal:content="view/error_count" i18n:name="error_count" />
+                    <span tal:replace="view/error_count" i18n:name="error_count" />
                     saved (unique) Tracebacks and
-                    <span tal:content="view/reference_count" i18n:name="reference_count" />
+                    <span tal:replace="view/reference_count" i18n:name="reference_count" />
                     referenced Tracebacks
                 </div>
 

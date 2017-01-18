@@ -40,11 +40,56 @@ With `collective.logbook` enabled, it is simple to see all errors occured in you
 Remember some URLs::
 
     >>> portal_url = portal.absolute_url()
+    >>> logbook_controlpanel_url = portal_url + "/@@logbook-controlpanel"
+    >>> logbook_test_error_url = portal_url + "/@@error-test"
     >>> logbook_url = portal_url + "/@@logbook"
 
 Browse to the `@@logbook` view::
 
     >>> browser.open(logbook_url)
+    >>> 'Congratulations, there are 0 Errors in your Plone Site!' in browser.contents
+    True
+
+Now lets create an error with the `@@error-test` view::
+
+    >>> browser.open(logbook_test_error_url)
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 500: Internal Server Error
+
+    >>> browser.open(logbook_url)
+    >>> "There are 1 saved (unique) Tracebacks and 0 referenced Tracebacks" in browser.contents
+    True
+
+The same error will be referenced::
+
+    >>> browser.open(logbook_test_error_url)
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 500: Internal Server Error
+
+    >>> browser.open(logbook_url)
+    >>> "There are 1 saved (unique) Tracebacks and 1 referenced Tracebacks" in browser.contents
+    True
+
+.. Note:: There is also a `@@random-error-test` view, which randomly selects different tracebacks for testing.
+
+Logbook logging can be deactivated on purpose in the `@@logbook-controlpanel` view::
+
+    >>> browser.open(logbook_controlpanel_url)
+    >>> browser.getControl(name="form.widgets.logbook_enabled:list").value = []
+    >>> browser.getControl(name="form.buttons.save").click()
+
+Errors should not be logged anymore::
+
+    >>> browser.open(logbook_test_error_url)
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 500: Internal Server Error
+
+    >>> browser.open(logbook_url)
+    >>> "There are 1 saved (unique) Tracebacks and 1 referenced Tracebacks" in browser.contents
+    True
 
 
 Settings
