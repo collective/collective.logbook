@@ -17,7 +17,7 @@ install:
 - bin/buildout -Nq
 script:
 - bin/code-analysis
-- bin/test
+- bin/test \!robot
 after_success:
 - bin/createcoverage
 - pip install -q coveralls
