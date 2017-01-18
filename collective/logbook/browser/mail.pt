@@ -1,4 +1,4 @@
-<tal:root xmlns:tal="http://xml.zope.org/namespaces/tal" 
+<tal:root xmlns:tal="http://xml.zope.org/namespaces/tal"
           xmlns:i18n="http://xml.zope.org/namespaces/i18n"
           i18n:domain="collective.logbook">
 

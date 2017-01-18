@@ -57,3 +57,4 @@ settings.py
 Skype4Py
 bin
 var
+docs/_build

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from persistent.dict import PersistentDict
 from BTrees.OOBTree import OOBTree
 

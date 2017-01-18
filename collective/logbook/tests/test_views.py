@@ -17,14 +17,13 @@ class TestViews(LogBookTestCase):
 
     def test_view_implements_interface(self):
         view = LogBook(self.portal, None)
-        self.failUnless(ILogBook.providedBy(view))
+        self.assertTrue(ILogBook.providedBy(view))
 
     def test_view_class_fulfills_interface_contract(self):
-        self.failUnless(interface.verify.verifyClass(ILogBook, LogBook))
+        self.assertTrue(interface.verify.verifyClass(ILogBook, LogBook))
+
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestViews))
     return suite
-
-# vim: set ft=python ts=4 sw=4 expandtab :

@@ -1,25 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# File: storage.py
-#
-# Copyright (c) InQuant GmbH
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-__author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
-__docformat__ = 'plaintext'
 
 import logging
 from zope import event
@@ -103,7 +82,7 @@ class LogBookStorage(object):
             del self._storage[err_id]
             self._cleanup_index()
             return True
-        except:
+        except KeyError:
             return False
 
     def get_error(self, err_id):
@@ -139,7 +118,7 @@ class LogBookStorage(object):
         out = []
         for k, v in self._index.items():
             if type(v) == str:
-                #stay backward compatible with simple ref storage
+                # stay backward compatible with simple ref storage
                 refId = v
             else:
                 refId = v.get('referencedError', None)
@@ -220,5 +199,3 @@ class LogBookStorage(object):
             for k in orphane_keys:
                 logger.info("- Erasing orphaned Index %s" % k)
                 del self._index[k]
-
-# vim: set ft=python ts=4 sw=4 expandtab :

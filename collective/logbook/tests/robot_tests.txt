@@ -1,0 +1,31 @@
+*** Settings ***
+
+Library  BuiltIn
+Library  Selenium2Library  timeout=10  implicit_wait=0.5
+
+Resource  plone/app/robotframework/selenium.robot
+
+Library  Remote  ${PLONE_URL}/RobotRemote
+Library  DebugLibrary
+
+Variables  plone/app/testing/interfaces.py
+
+Suite Setup  Start browser
+Suite Teardown  Close All Browsers
+
+*** Variables ***
+
+${BROWSER} =  Chrome
+
+*** Test Cases ***
+
+Logbook View
+    [Tags]  logbook_view
+    Enable autologin as  Manager
+    Go to  ${PLONE_URL}/@@logbook
+    Page should contain  Error Number:
+
+*** Keywords ***
+
+Start browser
+    Open browser  http://localhost:55001/plone/  browser=${BROWSER}

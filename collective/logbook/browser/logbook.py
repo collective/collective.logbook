@@ -1,53 +1,22 @@
 # -*- coding: utf-8 -*-
-#
-# File: logbook.py
-#
-# Copyright (c) InQuant GmbH
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-__author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
-__docformat__ = 'plaintext'
 
 from DateTime import DateTime
-
-from zope import interface
-
-try:
-    # Plone < 4.3
-    from zope.app.component.hooks import getSite
-except ImportError:
-    # Plone >= 4.3
-    from zope.component.hooks import getSite  # NOQA
-
-from plone.memoize.instance import memoize
-
-from Products.statusmessages.interfaces import IStatusMessage
-from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
 from Acquisition import aq_inner
 from zExceptions import Forbidden
 
-from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
+from zope import interface
+
+from plone import api as ploneapi
+from plone.memoize.instance import memoize
+
+from Products.Five.browser import BrowserView
+from Products.statusmessages.interfaces import IStatusMessage
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from collective.logbook.interfaces import ILogBook
 from collective.logbook.interfaces import ILogBookStorage
-
 from collective.logbook import logbookMessageFactory as _
+from collective.logbook.utils import is_logbook_large_site_enabled
 
 
 class LogBook(BrowserView):
@@ -61,12 +30,11 @@ class LogBook(BrowserView):
         super(LogBook, self).__init__(context, request)
         self.context = aq_inner(context)
         self.request = request
-        self.portal = getSite()
+        self.portal = ploneapi.portal.get()
         self.storage = ILogBookStorage(self.portal)
 
     def is_large_site_enabled(self):
-        registry = getUtility(IRegistry)
-        return registry.get('logbook.logbook_large_site')
+        return is_logbook_large_site_enabled()
 
     def show_all_tracebacks(self):
         if self.has_errors():
@@ -78,22 +46,22 @@ class LogBook(BrowserView):
 
     @property
     def error_count(self):
-        """ see ILogBook
+        """ number of logged errors
         """
         return self.storage.error_count
 
     @property
     def reference_count(self):
-        """ see ILogBook
+        """ number of referenced logged errors
         """
         return self.storage.reference_count
 
     @memoize
     def error_log(self):
-        """ see ILogBook
+        """ zope error log object
         """
         error_log_path = '/'.join(
-                ['/'.join(self.portal.getPhysicalPath()), 'error_log'])
+            ['/'.join(self.portal.getPhysicalPath()), 'error_log'])
         return self.portal.restrictedTraverse(error_log_path)
 
     def error(self, err_id):
@@ -107,7 +75,7 @@ class LogBook(BrowserView):
         return error
 
     def save_error(self, err_id, context=None):
-        """ see ILogBook
+        """ save error to the storage
         """
         error = self.error(err_id)
         if context is not None:
@@ -115,43 +83,45 @@ class LogBook(BrowserView):
         return self.storage.save_error(error)
 
     def delete_error(self, err_id):
-        """ see ILogBook
+        """ delete error from storage by id
         """
         return self.storage.delete_error(err_id)
 
     def delete_all_errors(self):
-        """ see ILogBook
+        """ delete all errors
         """
         return self.storage.delete_all_errors()
 
     def delete_all_references(self):
-        """ see ILogBook
+        """ delete all referenced errors
         """
         return self.storage.delete_all_references()
 
     def has_errors(self):
+        """ checks for existing errors
+        """
         return self.storage.error_count
 
     @property
     def saved_errors(self):
-        """ see ILogBook
+        """ saved errors in the storage
         """
         errors = self.storage.get_all_errors()
         out = []
         for id, tb in errors:
             refs = self.storage.get_referenced_errordata(id)
             out.append(
-                    dict(
-                        id=id,
-                        tb=tb,
-                        counter=len(refs),
-                        refs=refs
-                        )
-                    )
+                dict(
+                    id=id,
+                    tb=tb,
+                    counter=len(refs),
+                    refs=refs
+                )
+            )
         return sorted(out, key=lambda x: x["counter"], reverse=True)
 
     def search_error(self, err_id):
-        """ see ILogBook
+        """ search an error by id
         """
         return self.storage.get_error(err_id)
 
@@ -222,5 +192,3 @@ class LogBookRSSFeed(LogBook):
 
     def __call__(self):
         return self.template()
-
-# vim: set ft=python ts=4 sw=4 expandtab :

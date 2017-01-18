@@ -1,23 +1,30 @@
+# -*- coding: utf-8 -*-
+
 from setuptools import setup, find_packages
 import os
 
-version = '0.8b2'
+version = '0.8'
+
+long_description = (
+    open('README.rst').read() +
+    '\n' +
+    open(os.path.join('docs', 'HISTORY.txt')).read() +
+    '\n')
 
 setup(name='collective.logbook',
       version=version,
       description="Advanced Persistent Error Log",
-      long_description=open("README.rst").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+      long_description=long_description,
       classifiers=[
-        "Framework :: Plone",
-        "Framework :: Plone :: 5.0",
-        "Programming Language :: Python",
-        "Topic :: Software Development :: Libraries :: Python Modules",
-        ],
+          "Framework :: Plone",
+          "Framework :: Plone :: 5.0",
+          "Programming Language :: Python",
+          "Topic :: Software Development :: Libraries :: Python Modules",
+      ],
       keywords='',
       author='Ramon Bartl',
-      author_email='ramon.bartl@nexiles.de',
-      url='https://svn.plone.org/svn/collective/collective.logbook',
+      author_email='rb@ridingbytes.com',
+      url='https://github.com/collective/collective.logbook',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['collective'],
@@ -25,13 +32,17 @@ setup(name='collective.logbook',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'Plone',
+          'plone.api',
       ],
       extras_require={
           'test': [
-               'plone.app.testing',
-               'unittest2',
-           ]
+              'plone.app.testing',
+              'unittest2',
+              'robotsuite',
+              'robotframework-selenium2library',
+              'plone.app.robotframework',
+              'robotframework-debuglibrary',
+          ]
       },
       entry_points="""
       # -*- Entry points: -*-

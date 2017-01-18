@@ -1,48 +1,39 @@
 # -*- coding: utf-8 -*-
-#
-# File: monkey.py
-#
-# Copyright (c) InQuant GmbH
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-__author__ = 'Ramon Bartl <ramon.bartl@inquant.de>'
-__docformat__ = 'plaintext'
-
 
 from zope.event import notify
 
 from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
 
-from config import LOGGER
-from events import ErrorRaisedEvent
+from collective.logbook.utils import log
+from collective.logbook.utils import is_patch_applied
+from collective.logbook.events import ErrorRaisedEvent
+from collective.logbook.utils import is_logbook_enabled
 
 _raising = SiteErrorLog.raising
 
 
 def install_monkey():
-    LOGGER.info(">>> Installing Monkey for Products.SiteErrorLog")
-    SiteErrorLog.raising = raising
+    if not is_patch_applied():
+        log(">>> Installing Monkey Patch for Products.SiteErrorLog")
+        SiteErrorLog.raising = raising
+    else:
+        log(">>> Monkey Patch for Products.SiteErrorLog already applied")
+
 
 def uninstall_monkey():
-    LOGGER.info(">>> Uninstalling Monkey for Products.SiteErrorLog")
-    SiteErrorLog.raising = _raising
+    if is_patch_applied():
+        log(">>> Uninstalling Monkey for Products.SiteErrorLog")
+        SiteErrorLog.raising = _raising
+    else:
+        log(">>> Monkey Patch for Products.SiteErrorLog already deactivated")
+
 
 def raising(self, info):
+    # Uninstall the monkey if logbook logging is disabled to avoid any kind of
+    # performance issues when this package is installed only to avoid any kind
+    # of performance issues when logging is disabled.
+    if not is_logbook_enabled():
+        return uninstall_monkey()
     enty_url = _raising(self, info)
     notify(ErrorRaisedEvent(self, enty_url))
     return enty_url
-
-# vim: set ft=python ts=4 sw=4 expandtab :
