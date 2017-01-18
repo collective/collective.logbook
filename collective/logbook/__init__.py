@@ -3,7 +3,6 @@
 from zope.i18nmessageid import MessageFactory
 
 from collective.logbook import monkey
-from collective.logbook.utils import log
 
 logbookMessageFactory = MessageFactory('collective.logbook')
 
