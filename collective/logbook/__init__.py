@@ -3,10 +3,7 @@
 from zope.i18nmessageid import MessageFactory
 
 from collective.logbook import monkey
-from collective.logbook.config import LOGGER
-
-# from plone.registry.interfaces import IRegistry
-# from zope.component import getUtility
+from collective.logbook.utils import log
 
 logbookMessageFactory = MessageFactory('collective.logbook')
 
@@ -14,15 +11,7 @@ logbookMessageFactory = MessageFactory('collective.logbook')
 def initialize(context):
     """ Initializer called when used as a Zope 2 product. """
 
-    # The registry isn't available at that time, so for
-    # now assume it's always enabled.
-
-    # registry = getUtility(IRegistry)
-    # enabled = registry.get('logbook.logbook_enabled')
-    enabled = True
-
-    if enabled:
-        monkey.install_monkey()
-        LOGGER.info(">>> logging **enabled**")
-    else:
-        LOGGER.info(">>> logging **disabled**")
+    # Install the monkeypatch always, as we can not ask the Plone registry if
+    # logbook logging is enabled or not. The patched raising event will check
+    # this and uninstall the monkey patch if logging is disabled (see monkey.py).
+    monkey.install_monkey()

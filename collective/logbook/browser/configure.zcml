@@ -60,6 +60,13 @@
       permission="cmf.ManagePortal"
     />
 
+    <browser:page
+      for="*"
+      name="random-error-test"
+      class=".errortest.RandomErrorTestView"
+      permission="cmf.ManagePortal"
+    />
+
     <browser:resource
         name="logbook.png"
         file="logbook.png"

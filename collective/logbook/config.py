@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
+import re
 import logging
 
 PACKAGENAME = "collective.logbook"
 
 LOGGER = logging.getLogger(PACKAGENAME)
+LOGLEVEL = "info"
 
-
-# Gets True when the SiteErrorLog monkey patch gets applied
-PATCH_APPLIED = False
+# Regular expression to match the hex values of tracebacks
+HEX_REGEX = re.compile(r'0x[0-9a-fA-F]+')
 
 # 0 - all errors get saved in the log
 #     (WARNING: this might cause an NotifyTraceback event flooding)

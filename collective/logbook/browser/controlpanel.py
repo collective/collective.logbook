@@ -5,18 +5,18 @@ from zope import schema
 
 from plone.z3cform import layout
 
-from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
 from plone.app.registry.browser.controlpanel import RegistryEditForm
+from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
 
+from collective.logbook.utils import log
 from collective.logbook.utils import check_email
+from collective.logbook.monkey import install_monkey
+from collective.logbook.monkey import uninstall_monkey
 from collective.logbook import logbookMessageFactory as _
-
-__author__ = 'Ramon Bartl <rb@ridingbytes.com>'
-__docformat__ = 'plaintext'
 
 
 class ILogbookSchema(interface.Interface):
-    """ Combined schema for the adapter lookup.
+    """Schema for the Logbook Control Panel Form
     """
 
     logbook_enabled = schema.Bool(title=_(u'Enable Logbook logging'),
@@ -54,6 +54,24 @@ class LogbookControlPanelForm(RegistryEditForm):
     label = _(u"Logbook settings")
     description = _(u"Logbook settings.")
     form_name = _(u"Logbook settings")
+
+    # def updateFields(self):
+    #     super(LogbookControlPanelForm, self).updateFields()
+    #     log("LogbookControlPanelForm::updateFields")
+
+    # def update(self):
+    #     super(LogbookControlPanelForm, self).update()
+    #     log("LogbookControlPanelForm::update")
+
+    def applyChanges(self, data):
+        super(LogbookControlPanelForm, self).applyChanges(data)
+        log("LogbookControlPanelForm::applyChanges:data=%r" % data)
+
+        logbook_enabled = data.get("logbook_enabled")
+        if logbook_enabled:
+            install_monkey()
+        else:
+            uninstall_monkey()
 
 
 LogbookControlPanelView = layout.wrap_form(

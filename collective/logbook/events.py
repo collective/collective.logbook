@@ -8,7 +8,8 @@ from zope import interface
 
 from Acquisition import aq_parent
 
-from config import LOGGER
+from collective.logbook.utils import log
+from collective.logbook.config import LOGGER
 
 from interfaces import IErrorRaisedEvent
 from interfaces import INotifyTraceback
@@ -30,7 +31,7 @@ class NotifyTraceback(object):
 
     def __init__(self, error):
         self.error = error
-        LOGGER.info("***** Notify new traceback %s" % error.get('id', 0))
+        log("***** Notify new traceback %s" % error.get('id', 0))
 
 
 def mailHandler(event):
@@ -40,8 +41,8 @@ def mailHandler(event):
         return event.error['context'].restrictedTraverse(
             '@@logbook_mail')(event)
     except Exception, e:
-        LOGGER.error(
-            "An error occured while notifying recipients: %s" % str(e))
+        log("An error occured while notifying recipients: {}".format(
+            str(e)), level="error")
 
 
 def webhookHandler(event):
@@ -51,8 +52,8 @@ def webhookHandler(event):
         return event.error['context'].restrictedTraverse(
             '@@logbook_webhook')(event)
     except Exception, e:
-        LOGGER.error(
-            "An error occured while notifying with webhooks: %s" % str(e))
+        log("An error occured while notifying with webhooks: {}".format(
+            str(e)), level="error")
 
 
 def handleTraceback(object):
@@ -62,7 +63,7 @@ def handleTraceback(object):
     if entry_url is None:
         return
 
-    LOGGER.info("handle traceback [%s]" % entry_url)
+    log("handle traceback [%s]" % entry_url)
     try:
         cleanup_lock.acquire()
         # we don't want to produce any errors here, thus, we'll be nice and die
@@ -82,6 +83,6 @@ def handleTraceback(object):
             cleanup_lock.release()
     # only warning
     except Exception, e:
-        LOGGER.warning("An error occured while handling the traceback")
-        LOGGER.warning("%s" % e)
+        log("An error occured while handling the traceback", level="warning")
+        log("%s" % e, level="warning")
         LOGGER.exception(e)

@@ -5,16 +5,16 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="collective.logbook">
 
-    <include package="Products.CMFCore" />
+  <include package="Products.CMFCore" />
 
-    <i18n:registerTranslations directory="locales" />
+  <i18n:registerTranslations directory="locales" />
 
-    <five:registerPackage package="." initialize=".initialize" />
+  <five:registerPackage package="." initialize=".initialize" />
 
-    <include package=".browser" />
+  <include package=".browser" />
 
-    <!-- Register the installation GenericSetup extension profile -->
-    <genericsetup:registerProfile
+  <!-- Register the installation GenericSetup extension profile -->
+  <genericsetup:registerProfile
       name="default"
       title="collective.logbook"
       directory="profiles/default"
@@ -22,7 +22,7 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
-    <genericsetup:registerProfile
+  <genericsetup:registerProfile
       name="uninstall"
       title="collective.logbook uninstall profile"
       directory="profiles/uninstall"
@@ -30,7 +30,7 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
-    <genericsetup:upgradeStep
+  <genericsetup:upgradeStep
       title="Migrate storage"
       description="Migrate storage from PersistentDict to OOBTree"
       handler=".upgradehandlers.migrate_storage"
@@ -39,25 +39,25 @@
       profile="collective.logbook:default"
       />
 
-    <!-- default storage adapter -->
-    <adapter
-        for="*"
-        factory=".storage.LogBookStorage"
+  <!-- default storage adapter -->
+  <adapter
+      for="*"
+      factory=".storage.LogBookStorage"
       />
 
-    <subscriber
-        for=".interfaces.IErrorRaisedEvent"
-        handler=".events.handleTraceback"
+  <subscriber
+      for=".interfaces.IErrorRaisedEvent"
+      handler=".events.handleTraceback"
       />
 
-    <subscriber
-        for=".interfaces.INotifyTraceback"
-        handler=".events.mailHandler"
+  <subscriber
+      for=".interfaces.INotifyTraceback"
+      handler=".events.mailHandler"
       />
 
-    <subscriber
-        for=".interfaces.INotifyTraceback"
-        handler=".events.webhookHandler"
+  <subscriber
+      for=".interfaces.INotifyTraceback"
+      handler=".events.webhookHandler"
       />
 
 </configure>

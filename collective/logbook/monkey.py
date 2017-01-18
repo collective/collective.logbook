@@ -4,36 +4,36 @@ from zope.event import notify
 
 from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
 
-from config import LOGGER
-from events import ErrorRaisedEvent
-
+from collective.logbook.utils import log
+from collective.logbook.utils import is_patch_applied
+from collective.logbook.events import ErrorRaisedEvent
+from collective.logbook.utils import is_logbook_enabled
 
 _raising = SiteErrorLog.raising
 
 
 def install_monkey():
-    from collective.logbook.config import PATCH_APPLIED
-
-    if not PATCH_APPLIED:
-        LOGGER.info(">>> Installing Monkey Patch for Products.SiteErrorLog")
+    if not is_patch_applied():
+        log(">>> Installing Monkey Patch for Products.SiteErrorLog")
         SiteErrorLog.raising = raising
-        PATCH_APPLIED = True
     else:
-        LOGGER.info(">>> Monkey Patch for Products.SiteErrorLog already applied")
+        log(">>> Monkey Patch for Products.SiteErrorLog already applied")
 
 
 def uninstall_monkey():
-    from collective.logbook.config import PATCH_APPLIED
-
-    if PATCH_APPLIED:
-        LOGGER.info(">>> Uninstalling Monkey for Products.SiteErrorLog")
+    if is_patch_applied():
+        log(">>> Uninstalling Monkey for Products.SiteErrorLog")
         SiteErrorLog.raising = _raising
-        PATCH_APPLIED = False
     else:
-        LOGGER.info(">>> Monkey Patch for Products.SiteErrorLog already already deactivated")
+        log(">>> Monkey Patch for Products.SiteErrorLog already deactivated")
 
 
 def raising(self, info):
+    # Uninstall the monkey if logbook logging is disabled to avoid any kind of
+    # performance issues when this package is installed only to avoid any kind
+    # of performance issues when logging is disabled.
+    if not is_logbook_enabled():
+        return uninstall_monkey()
     enty_url = _raising(self, info)
     notify(ErrorRaisedEvent(self, enty_url))
     return enty_url

@@ -1,28 +1,118 @@
 # -*- coding: utf-8 -*-
 
 import re
+import types
+import logging
 
-from email.MIMEText import MIMEText
-from email.Header import Header
-from email.Utils import parseaddr, formataddr
-from socket import gaierror
+from plone import api as ploneapi
 
-from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
-
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_unicode
-
-from config import LOGGER
+from collective.logbook.config import LOGGER
+from collective.logbook.config import LOGLEVEL
+from collective.logbook.config import HEX_REGEX
 
 
-REGEX = re.compile(r'0x[0-9a-fA-F]+')
+def get_portal():
+    """Get the portal object
 
-
-def hexfilter(text):
-    """ unify hex numbers
+    :returns: Portal object
+    :rtype: object
     """
-    return REGEX.sub('0x0000000', text)
+    return ploneapi.portal.getSite()
+
+
+def get_plone_version():
+    """Get the Plone version
+
+    :returns: Plone version
+    :rtype: str or list
+    """
+    return ploneapi.env.plone_version()
+
+
+def is_plone5():
+    """Check for Plone 5 series
+
+    :returns: True if Plone 5
+    :rtype: boolean
+    """
+    version = get_plone_version()
+    return version.startswith("5")
+
+
+def is_patch_applied():
+    """Checks if the monkey patch was already applied
+    """
+    from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
+    from collective.logbook.monkey import raising
+
+    return SiteErrorLog.raising.im_func is raising
+
+
+def is_logbook_enabled():
+    """Checks if logbook logging is enabled
+    """
+    return ploneapi.portal.get_registry_record("logbook.logbook_enabled")
+
+
+def is_logbook_large_site_enabled():
+    """Checks if logbook logging is enabled
+    """
+    return ploneapi.portal.get_registry_record("logbook.logbook_large_site")
+
+
+def get_logbook_log_mails():
+    """Returns the emails to notify on new errors
+    """
+    return ploneapi.portal.get_registry_record('logbook.logbook_log_mails')
+
+
+def log(msg, level=LOGLEVEL):
+    """Log the message
+    """
+    # get the numeric value of the level. defaults to 0 (NOTSET)
+    level = logging._levelNames.get(level.upper(), 0)
+    LOGGER.log(level, msg)
+
+
+def send_email(message, subject, recipients):
+    """Send the message to the list of recipients
+    """
+    log("Sending Email to %r" % recipients)
+
+    # Handle a single recipient address gracefully
+    if not is_list(recipients):
+        recipients = [recipients]
+
+    # Send email to all of the recipients
+    for recipient in recipients:
+        try:
+            # Note: `plone.api.portal.send_email` takes care about the fetching
+            #       the correct sender name and email address
+            ploneapi.portal.send_email(
+                recipient=recipient,
+                subject=subject,
+                body=message,
+            )
+        # Do not create another logbook error during the message sending
+        except Exception, exc:
+            log("Failed sending email to recipient(s): {} with error: {}".format(
+                ",".join(recipients),
+                str(exc)), level="error")
+
+
+def is_list(thing):
+    """ checks if an object is a list type
+
+        >>> is_list([])
+        True
+        >>> is_list(list())
+        True
+        >>> is_list("[]")
+        False
+        >>> is_list({})
+        False
+    """
+    return isinstance(thing, types.ListType)
 
 
 def filtered_error_tail(error):
@@ -34,83 +124,15 @@ def filtered_error_tail(error):
     return filtered_tail
 
 
-# this is stolen from http://grok.zope.org/documentation/how-to/automatic-form-generation
-expr = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+"
-                  r"@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}"
-                  r"\.){3}[0-9]{1,3})$", re.IGNORECASE)
-
-check_email = expr.match
-
-
-def send(portal, message, subject, recipients=[]):
-    """Send an email.
-
-    this is taken from Products.eXtremeManagement
+def hexfilter(text):
+    """ unify hex numbers
     """
-    # Weed out any empty strings.
-    recipients = [r for r in recipients if r]
-    if not recipients:
-        LOGGER.warn("No recipients to send the mail to, not sending.")
-        return
+    return HEX_REGEX.sub('0x0000000', text)
 
-    charset = portal.getProperty('email_charset', 'ISO-8859-1')
-    # Header class is smart enough to try US-ASCII, then the charset we
-    # provide, then fall back to UTF-8.
-    header_charset = charset
 
-    # We must choose the body charset manually
-    for body_charset in 'US-ASCII', charset, 'UTF-8':
-        try:
-            message = message.encode(body_charset)
-        except UnicodeError:
-            pass
-        else:
-            break
+# this is stolen from http://grok.zope.org/documentation/how-to/automatic-form-generation
+email_expr = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+"
+                        r"@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}"
+                        r"\.){3}[0-9]{1,3})$", re.IGNORECASE)
 
-    # Get the 'From' address.
-    registry = getUtility(IRegistry)
-    sender_name = registry.get('plone.email_from_name')
-    sender_addr = registry.get('plone.email_from_address')
-
-    # We must always pass Unicode strings to Header, otherwise it will
-    # use RFC 2047 encoding even on plain ASCII strings.
-    sender_name = str(Header(safe_unicode(sender_name), header_charset))
-    # Make sure email addresses do not contain non-ASCII characters
-    sender_addr = sender_addr.encode('ascii')
-    email_from = formataddr((sender_name, sender_addr))
-
-    formatted_recipients = []
-    for recipient in recipients:
-        # Split real name (which is optional) and email address parts
-        recipient_name, recipient_addr = parseaddr(recipient)
-        recipient_name = str(Header(safe_unicode(recipient_name),
-                                    header_charset))
-        recipient_addr = recipient_addr.encode('ascii')
-        formatted = formataddr((recipient_name, recipient_addr))
-        formatted_recipients.append(formatted)
-    email_to = ', '.join(formatted_recipients)
-
-    # Make the subject a nice header
-    subject = Header(safe_unicode(subject), header_charset)
-
-    # Create the message ('plain' stands for Content-Type: text/plain)
-
-    # plone4 should use 'text/plain' according to the docs, but this should work for us
-    # http://plone.org/documentation/manual/upgrade-guide/version/upgrading-plone-3-x-to-4.0/updating-add-on-products-for-plone-4.0/mailhost.securesend-is-now-deprecated-use-send-instead/
-    msg = MIMEText(message, 'html', body_charset)
-    msg['From'] = email_from
-    msg['To'] = email_to
-    msg['Subject'] = subject
-    msg = msg.as_string()
-
-    # Finally send it out.
-    mailhost = getToolByName(portal, 'MailHost')
-    try:
-        LOGGER.info("Begin sending email to %r " % formatted_recipients)
-        LOGGER.info("Subject: %s " % subject)
-        mailhost.send(msg)
-    except gaierror, exc:
-        LOGGER.error("Failed sending email to %r" % formatted_recipients)
-        LOGGER.error("Reason: %s: %r" % (exc.__class__.__name__, str(exc)))
-    else:
-        LOGGER.info("Succesfully sent email to %r" % formatted_recipients)
+check_email = email_expr.match

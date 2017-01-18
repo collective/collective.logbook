@@ -1,26 +1,28 @@
 # -*- coding: utf-8 -*-
 
-from Products.CMFCore.utils import getToolByName
-from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
 
-from collective.logbook.utils import send
+from collective.logbook.utils import get_portal
+from collective.logbook.utils import send_email
+from collective.logbook.utils import get_logbook_log_mails
 
 
 class MailView(object):
+    """
+    """
 
     def __call__(self, event):
         error = event.error
-        portal = getToolByName(self.context, 'portal_url').getPortalObject()
-        registry = getUtility(IRegistry)
-        emails = registry.get('logbook.logbook_log_mails')
+        portal = get_portal()
+        emails = get_logbook_log_mails()
 
         if not emails:
             return
 
         recipients = [mail for mail in emails if mail]
+
         subject = "[collective.logbook] NEW TRACEBACK: '%s'" % (
             error.get("value"))
+
         self.__dict__.update(
             date=error.get("time").strftime("%Y-%m-%d %H:%M:%S"),
             traceback=error.get("tb_text"),
@@ -33,4 +35,4 @@ class MailView(object):
         )
 
         message = self.index()
-        send(portal, message, subject, recipients)
+        send_email(message, subject, recipients)

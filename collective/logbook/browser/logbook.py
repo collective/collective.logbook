@@ -5,11 +5,9 @@ from Acquisition import aq_inner
 from zExceptions import Forbidden
 
 from zope import interface
-from zope.component import getUtility
 
 from plone import api as ploneapi
 from plone.memoize.instance import memoize
-from plone.registry.interfaces import IRegistry
 
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
@@ -18,9 +16,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.logbook.interfaces import ILogBook
 from collective.logbook.interfaces import ILogBookStorage
 from collective.logbook import logbookMessageFactory as _
-
-__author__ = 'Ramon Bartl <rb@ridingbytes.com>'
-__docformat__ = 'plaintext'
+from collective.logbook.utils import is_logbook_large_site_enabled
 
 
 class LogBook(BrowserView):
@@ -38,8 +34,7 @@ class LogBook(BrowserView):
         self.storage = ILogBookStorage(self.portal)
 
     def is_large_site_enabled(self):
-        registry = getUtility(IRegistry)
-        return registry.get('logbook.logbook_large_site')
+        return is_logbook_large_site_enabled()
 
     def show_all_tracebacks(self):
         if self.has_errors():
@@ -51,19 +46,19 @@ class LogBook(BrowserView):
 
     @property
     def error_count(self):
-        """ see ILogBook
+        """ number of logged errors
         """
         return self.storage.error_count
 
     @property
     def reference_count(self):
-        """ see ILogBook
+        """ number of referenced logged errors
         """
         return self.storage.reference_count
 
     @memoize
     def error_log(self):
-        """ see ILogBook
+        """ zope error log object
         """
         error_log_path = '/'.join(
             ['/'.join(self.portal.getPhysicalPath()), 'error_log'])
@@ -80,7 +75,7 @@ class LogBook(BrowserView):
         return error
 
     def save_error(self, err_id, context=None):
-        """ see ILogBook
+        """ save error to the storage
         """
         error = self.error(err_id)
         if context is not None:
@@ -88,26 +83,28 @@ class LogBook(BrowserView):
         return self.storage.save_error(error)
 
     def delete_error(self, err_id):
-        """ see ILogBook
+        """ delete error from storage by id
         """
         return self.storage.delete_error(err_id)
 
     def delete_all_errors(self):
-        """ see ILogBook
+        """ delete all errors
         """
         return self.storage.delete_all_errors()
 
     def delete_all_references(self):
-        """ see ILogBook
+        """ delete all referenced errors
         """
         return self.storage.delete_all_references()
 
     def has_errors(self):
+        """ checks for existing errors
+        """
         return self.storage.error_count
 
     @property
     def saved_errors(self):
-        """ see ILogBook
+        """ saved errors in the storage
         """
         errors = self.storage.get_all_errors()
         out = []
@@ -124,7 +121,7 @@ class LogBook(BrowserView):
         return sorted(out, key=lambda x: x["counter"], reverse=True)
 
     def search_error(self, err_id):
-        """ see ILogBook
+        """ search an error by id
         """
         return self.storage.get_error(err_id)
 
