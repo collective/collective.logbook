@@ -5,6 +5,9 @@ Changelog
 0.8 (unreleased)
 ----------------
 
+- Complete Code Rework, Cleanup and Refactoring for Plone 4/5 Compatibility.
+  [ramonski]
+
 - add Plone 5.0 pypi classifier, update README.rst to mention Plone 5 compatibility
   [tkimnguyen]
 
