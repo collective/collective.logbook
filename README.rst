@@ -9,7 +9,7 @@ advanced persistent error logging for the `open source Plone CMS <http://plone.o
 Plone version compatibility
 ---------------------------
 
-collective.logbook works with Plone 5
+collective.logbook works with Plone 4 and Plone 5.
 
 Installation
 ------------
@@ -72,7 +72,7 @@ The same error will be referenced::
     >>> "There are 1 saved (unique) Tracebacks and 1 referenced Tracebacks" in browser.contents
     True
 
-.. Note:: There is also a `@@random-error-test` view, which randomly selects different tracebacks for testing.
+There is also a `@@random-error-test` view, which randomly selects different tracebacks for testing.
 
 Logbook logging can be deactivated on purpose in the `@@logbook-controlpanel` view::
 
