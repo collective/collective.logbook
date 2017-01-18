@@ -10,10 +10,10 @@
     <metal:main metal:fill-slot="main">
 
         <style type="text/css">
-         .collapsibleContent {
+         .logbookErrorContent {
              display: none;
          }
-         .collapsibleContent.in {
+         .logbookErrorContent.in {
              display: block;
          }
         </style>
@@ -21,7 +21,7 @@
         <script type="text/javascript">
          jQuery(document).ready(function() {
             window.toggle_logbook_error = function(id) {
-                el = jQuery("#" + id);
+                el = jQuery("#logboogErrorContent-" + id);
                 el.toggleClass("in");
                 console.debug("Toggle Error with ID", id, el);
             };
@@ -68,10 +68,10 @@
                     referenced Tracebacks
                 </div>
 
-                <table class="listing">
+                <table class="logboogErrorListing">
                     <tal:entries repeat="entry view/saved_errors">
                         <tr>
-                            <td>
+                            <td style="vertical-align: top;">
                                 <input class="noborder"
                                        type="checkbox"
                                        value="True"
@@ -80,15 +80,15 @@
                                                        onchange string:toggle_logbook_error('${repeat/entry/index}');"
                                 />
                             </td>
-                            <td>
+                            <td style="padding: 0 1em;">
                                 <a name="entry/id" tal:attributes="name entry/id"></a>
-                                <dl class="collapsible collapsedOnLoad" style="margin: 0;">
-                                    <dt class="collapsibleHeader">
+                                <dl style="margin: 0;">
+                                    <dt class="logboogErrorHeader">
                                         <span tal:replace="entry/tb/type" />
                                         <!-- occured -->
                                         <span i18n:translate="">(Reference Count: <span tal:replace="entry/counter" i18n:name="counter"  />)</span>
                                     </dt>
-                                    <dd tal:attributes="id string:${repeat/entry/index};" class="collapsibleContent">
+                                    <dd tal:attributes="id string:logboogErrorContent-${repeat/entry/index};" class="logbookErrorContent">
                                         <table>
                                             <tr>
                                                 <th align="left" valign="top" i18n:translate="">Time</th>
