@@ -91,6 +91,13 @@ Errors should not be logged anymore::
     >>> "There are 1 saved (unique) Tracebacks and 1 referenced Tracebacks" in browser.contents
     True
 
+Finally, we remove all errors::
+
+    >>> browser.open(logbook_url)
+    >>> browser.getControl(name="form.button.deleteall").click()
+    >>> 'Congratulations, there are 0 Errors in your Plone Site!' in browser.contents
+    True
+
 
 Settings
 ~~~~~~~~

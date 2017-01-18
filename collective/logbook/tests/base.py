@@ -35,6 +35,10 @@ class TestLayer(PloneSandboxLayer):
         xmlconfig.file('configure.zcml', collective.logbook,
                        context=configurationContext)
 
+    def tearDownZope(self, app):
+        # Uninstall product
+        z2.uninstallProduct(app, 'collective.logbook')
+
     def setUpPloneSite(self, portal):
         quickInstallProduct(portal, "collective.logbook")
 
