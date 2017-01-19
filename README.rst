@@ -1,15 +1,31 @@
-Introduction
-------------
+collective.logbook
+==================
 
-``collective.logbook`` add-on provides
-advanced persistent error logging for the `open source Plone CMS <http://plone.org>`_.
+:Author: Ramon Bartl
+:Version: 0.8
 
-.. contents :: :local:
+``collective.logbook`` add-on provides advanced persistent error logging for the
+`open source Plone CMS <http://plone.org>`_.
 
-Plone version compatibility
----------------------------
+.. contents:: Table of Contents
+   :depth: 2
+
+
+Lastest Build Status
+--------------------
+
+Master Branch https://github.com/collective/collective.logbook
+
+.. image:: https://api.travis-ci.org/collective/collective.logbook.png?branch=master
+    :target: https://travis-ci.org/collective/collective.logbook
+    :alt: Build Status
+
+
+Compatibility
+-------------
 
 `collective.logbook` works with Plone 4 and Plone 5.
+
 
 Installation
 ------------
@@ -27,6 +43,7 @@ Add collective.logbook to that list. Your list will look something like this::
 Run buildout.
 
 Activate the add-on via Site Setup > Add ons.
+
 
 Usage
 -----
@@ -102,7 +119,8 @@ Finally, we remove all errors::
 Settings
 ~~~~~~~~
 
-See Site Setup for log book settings.
+See Site Setup for logbook settings at http://your-plone-site/@@logbook-controlpanel
+
 
 Inspecting errors
 ~~~~~~~~~~~~~~~~~~
@@ -110,6 +128,7 @@ Inspecting errors
 After install, go to http://your-plone-site/@@logbook
 
 The errors are logged there. You can tune some parameters.
+
 
 Testing
 ~~~~~~~
@@ -123,6 +142,7 @@ First visit ``@@error-test`` and make sure the error appears in ``@@logbook`` vi
 
     You might need to turn on both Logbook enabled and Large site in Logbook Site Setup.
     This may be a bug regarding new Plone versions and production mode.
+
 
 Web hooks
 ---------
@@ -175,17 +195,11 @@ before your customer mails this error number to you?
 If you think that this would be cool, collective.logbook is what you want:)
 
 
-Under the Hood
---------------
-
-No, you won't get DOOOOMED when you install collective.logbook :)
-
-
 SiteErrorLog Patch
 ~~~~~~~~~~~~~~~~~~
 
-collective.logbook patches the raising method of
-Products.SiteErrorLog.SiteErrorLog::
+`collective.logbook` patches the raising method of
+`Products.SiteErrorLog.SiteErrorLog`::
 
     from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
 
@@ -196,8 +210,8 @@ Products.SiteErrorLog.SiteErrorLog::
         notify(ErrorRaisedEvent(self, enty_url))
         return enty_url
 
-The patch fires an 'ErrorRaisedEvent' event before it returns the enty_url.
-The entry url is the link to the standard SiteErrorLog like::
+The patch fires an `ErrorRaisedEvent` event before it returns the enty_url. The
+entry url is the link to the standard SiteErrorLog like::
 
     http://your-plone-site/error_log/showEntry?id=1237283091.10.529903983894
 
