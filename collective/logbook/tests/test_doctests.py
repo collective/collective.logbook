@@ -13,7 +13,7 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTests([
         ztc.ZopeDocFileSuite(
-            '../../../Readme.rst',
+            '../../../README.rst',
             test_class=LogBookTestCase,
             optionflags=doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE,
         ),
