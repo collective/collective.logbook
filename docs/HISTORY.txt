@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-0.8 (unreleased)
+0.8 (2017-01-27)
 ----------------
 
 - Complete Code Rework, Cleanup and Refactoring for Plone 4/5 Compatibility.
