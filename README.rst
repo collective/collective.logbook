@@ -21,10 +21,89 @@ Master Branch https://github.com/collective/collective.logbook
     :alt: Build Status
 
 
-Compatibility
--------------
+Introduction
+------------
 
-`collective.logbook` works with Plone 4 and Plone 5.
+For anonymous users Plone generates an Error Page which contains an error
+number. But what to do with this error number?
+
+You have to log into your plone site, go to the ZMI, check the error_log object
+and probably construct the url by hand to get the proper error with this error
+number, e.g.:
+
+http://localhost:8080/Plone/error_log/showEntry?id=1237283091.10.529903983894
+
+If you are lucky, you will find the error. If not, then the number of occured
+errors might have exceeded the number of exceptions to keep or maybe a cronjob
+restarted your zope instance.
+
+Not really smooth this behaviour.
+
+Wouldn't it be better to have a nice frontend where you can paste the error
+number to a field and search for it? Keep all logged error messages persistent,
+also when Zope restarts? Keep only unique errors and not a thousand times the
+same Error? Get an Email when if a new, unique error occured, so you know
+already what's going on before your client mails this error number to you?
+
+If you think that this would be cool, `collective.logbook` is what you want.
+
+
+Quickstart
+----------
+
+After installation, you can configure your logbook settings in the controlpanel:
+
+http://localhost:8080/Plone/@@logbook-controlpanel
+
+All occured errors get listed in the logbook view:
+
+http://localhost:8080/Plone/@@logbook
+
+As the logbook view diplays real errors that occured in your Plone site, it will
+probably be empty at the first time.
+
+To raise an error by intent, `collective.logbook` ships with two URL routes,
+that do this job for you for testing purpose:
+
+http://localhost:8080/Plone/@@error-test
+
+This will raise an expected `RuntimeError`, which should be logged in the
+logbook view. Calling this URL multiple times, should reference the error,
+because of the same error signature.
+
+This means, if you have configured Email notification, you will just be notified
+once. The same is true for the webhooks, which will be described later.
+
+To simulate different errors, you can browse this URL::
+
+http://localhost:8080/Plone/@@random-error-test
+
+This raises different errors, and multiple calls fills up the logbook view
+sorted by the most often happened errors or to be more precisely, the errors
+that are referenced most often.
+
+
+Web hooks
+---------
+
+`collective.logbook` provides ability to HTTP POST error message to any web
+service when an error happens in Plone. This behavior is called a web hook.
+
+Use cases
+
+- `Showing Plone errors real-time in Skype chat <https://github.com/opensourcehacker/sevabot>`_
+
+- `Routing errors to different websites and services via Zapier <https://zapier.com/>`_
+
+In Site Setup > Logbook you can enter URLs where HTTP POST will be asynchronously
+performed on a traceback. HTTP POST payload is an message from Logbook,
+containing a link for further information.
+
+..note::
+
+    Currently repeated errros (same traceback signature) are not POST'ed again.
+    You will receive message only once unless until you clear logbook contents
+    in @@logbook management view.
 
 
 Installation
@@ -45,8 +124,14 @@ Run buildout.
 Activate the add-on via Site Setup > Add ons.
 
 
-Usage
------
+Compatibility
+-------------
+
+This extension works with Plone 4 and Plone 5.
+
+
+BRowser Testing
+---------------
 
 With `collective.logbook` enabled, it is simple to see all errors occured in your Plone site::
 
@@ -67,7 +152,7 @@ Browse to the `@@logbook` view::
     >>> 'Congratulations, there are 0 Errors in your Plone Site!' in browser.contents
     True
 
-Now lets create an error with the `@@error-test` view::
+Now lets create an error with the `@@error-test` view, which raises an expected `RuntimeError`::
 
     >>> browser.open(logbook_test_error_url)
     Traceback (most recent call last):
@@ -78,7 +163,7 @@ Now lets create an error with the `@@error-test` view::
     >>> "There are 1 saved (unique) Tracebacks and 0 referenced Tracebacks" in browser.contents
     True
 
-The same error will be referenced::
+The same error will be referenced and not logged again::
 
     >>> browser.open(logbook_test_error_url)
     Traceback (most recent call last):
@@ -116,83 +201,10 @@ Finally, we remove all errors::
     True
 
 
-Settings
-~~~~~~~~
+Technical Details
+-----------------
 
-See Site Setup for logbook settings at http://your-plone-site/@@logbook-controlpanel
-
-
-Inspecting errors
-~~~~~~~~~~~~~~~~~~
-
-After install, go to http://your-plone-site/@@logbook
-
-The errors are logged there. You can tune some parameters.
-
-
-Testing
-~~~~~~~
-
-``collective.logbook`` provides a view ``error-test`` which Site managers can access to
-generate a test traceback.
-
-First visit ``@@error-test`` and make sure the error appears in ``@@logbook`` view.
-
-.. note ::
-
-    You might need to turn on both Logbook enabled and Large site in Logbook Site Setup.
-    This may be a bug regarding new Plone versions and production mode.
-
-
-Web hooks
----------
-
-``collective.logbook`` provides ability to HTTP POST
-error message to any web service when an error happens in Plone.
-This behavior is called a web hook.
-
-Use cases
-
-* `Showing Plone errors real-time in Skype chat <https://github.com/opensourcehacker/sevabot>`_
-
-* `Routing errors to different websites and services via Zapier <https://zapier.com/>`_
-
-In Site Setup > Logbook you can enter URLs where HTTP POST will be asynchronously
-performed on a traceback. HTTP POST payload is an message from Logbook,
-containing a link for further information.
-
-.. note ::
-
-    Currently repeated errros (same traceback signature) are not POST'ed again.
-    You will receive message only once unless until you clear logbook contents in
-    @@logbook management view.
-
-
-Motivation
-----------
-
-For anonymous users Plone generates an Error Page which contains an error
-number. But what to do with this error number?
-
-You have to log into your plone site, go to the ZMI, check the error_log
-object and probably construct the url by hand to get the proper error with
-this error number, like::
-
-    http://your-plone-site/error_log/showEntry?id=1237283091.10.529903983894
-
-If you are lucky, you will find the error. If not, and the number of occured
-errors exceeded the number of exceptions to keep, or maybe a cronjob restarted
-your zope instance, then....
-
-Hmm, not really smooth this behaviour.
-
-Wouldn't it be better to have a nice frontend where you can paste the error
-number to a field and search for it? Keep all log persistent, also when zope
-restarts? Keep only unique errors and not thousand times the same Error? Get
-an email when a new, unique error occured, so you know already what's going on
-before your customer mails this error number to you?
-
-If you think that this would be cool, collective.logbook is what you want:)
+This section gives an overview how `collective.logbook` works.
 
 
 SiteErrorLog Patch
@@ -211,9 +223,9 @@ SiteErrorLog Patch
         return enty_url
 
 The patch fires an `ErrorRaisedEvent` event before it returns the enty_url. The
-entry url is the link to the standard SiteErrorLog like::
+entry url is the link to the standard SiteErrorLog like:
 
-    http://your-plone-site/error_log/showEntry?id=1237283091.10.529903983894
+    http://localhost:8080/Plone/error_log/showEntry?id=1237283091.10.529903983894
 
 The patch gets _only_ then installed, when you install collective.logbook over
 the portal_quickinstaller tool and removes the patch, when you uninstall it.
