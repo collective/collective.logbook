@@ -24,7 +24,7 @@ Master Branch https://github.com/collective/collective.logbook
 Introduction
 ------------
 
-For anonymous users Plone generates an Error Page which contains an error
+For anonymous users Plone generates an Error Page, which contains an error
 number. But what to do with this error number?
 
 You have to log into your plone site, go to the ZMI, check the error_log object
@@ -33,15 +33,15 @@ number, e.g.:
 
 http://localhost:8080/Plone/error_log/showEntry?id=1237283091.10.529903983894
 
-If you are lucky, you will find the error. If not, then maybe number of occured
-errors might have exceeded the number of exceptions to keep or you are on the
-wrong instance in case you run a Zope cluster setup with a ZEO server or maybe
-the Zope instance was restarted in between which causes a reset of all logged
-errors.
+If you are lucky, you will find the error by this number for further
+investigation. If not, then maybe number of occured errors have exceeded the
+number of exceptions to keep, or you are on the wrong Zope instance if you run a
+cluster setup with a ZEO server, or maybe the Zope instance was restarted in
+between, which caused a reset of all logged errors.
 
 Not really smooth this behaviour.
 
-Wouldn't it be better to have a *nice frontend* where you can paste the error
+Would it not be better to have a *nice frontend* where you can paste the error
 number to a field and search for it? Keep all logged error messages
 *persistent*, also when Zope restarts? Keep only *unique errors* and not a
 thousand times the same Error? Get an *email notification* when a new, unique
@@ -104,9 +104,9 @@ containing a link for further information.
 
 .. note::
 
-    Currently repeated errros (same traceback signature) are not POST'ed again.
-    You will receive message only once unless until you clear logbook contents
-    in @@logbook management view.
+    Currently repeated errros (same traceback signature, which get referenced in
+    logbook) are not POST'ed again. You will receive a message only once, unless
+    you clear logbook contents in the @@logbook management view.
 
 
 Installation
