@@ -78,9 +78,9 @@ To simulate different errors, you can browse this URL::
 
 http://localhost:8080/Plone/@@random-error-test
 
-This raises different errors, and multiple calls fills up the logbook view
-sorted by the most often happened errors or to be more precisely, the errors
-that are referenced most often.
+This raises different errors, and multiple calls to this URL fills up the
+logbook view with the occured errors, sorted by the most often happened errors
+or to be more precisely, the errors that are referenced most often appear first.
 
 
 Web hooks
