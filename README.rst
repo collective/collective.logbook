@@ -130,7 +130,7 @@ Compatibility
 This extension works with Plone 4 and Plone 5.
 
 
-BRowser Testing
+Browser Testing
 ---------------
 
 With `collective.logbook` enabled, it is simple to see all errors occured in your Plone site::
