@@ -33,17 +33,20 @@ number, e.g.:
 
 http://localhost:8080/Plone/error_log/showEntry?id=1237283091.10.529903983894
 
-If you are lucky, you will find the error. If not, then the number of occured
-errors might have exceeded the number of exceptions to keep or maybe a cronjob
-restarted your zope instance.
+If you are lucky, you will find the error. If not, then maybe number of occured
+errors might have exceeded the number of exceptions to keep or you are on the
+wrong instance in case you run a Zope cluster setup with a ZEO server or maybe
+the Zope instance was restarted in between which causes a reset of all logged
+errors.
 
 Not really smooth this behaviour.
 
-Wouldn't it be better to have a nice frontend where you can paste the error
-number to a field and search for it? Keep all logged error messages persistent,
-also when Zope restarts? Keep only unique errors and not a thousand times the
-same Error? Get an Email when if a new, unique error occured, so you know
-already what's going on before your client mails this error number to you?
+Wouldn't it be better to have a *nice frontend* where you can paste the error
+number to a field and search for it? Keep all logged error messages
+*persistent*, also when Zope restarts? Keep only *unique errors* and not a
+thousand times the same Error? Get an *email notification* when a new, unique
+error occured, so that you know already what's going on before your client mails
+this error number to you?
 
 If you think that this would be cool, `collective.logbook` is what you want.
 
