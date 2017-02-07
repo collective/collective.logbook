@@ -5,7 +5,8 @@ Changelog
 0.8.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix #12: Error while trying to login into the ZMI.
+  [rafaelbco]
 
 
 0.8 (2017-01-27)

@@ -8,6 +8,7 @@ from collective.logbook.utils import log
 from collective.logbook.utils import is_patch_applied
 from collective.logbook.events import ErrorRaisedEvent
 from collective.logbook.utils import is_logbook_enabled
+from zope.component.interfaces import ComponentLookupError
 
 _raising = SiteErrorLog.raising
 
@@ -32,8 +33,17 @@ def raising(self, info):
     # Uninstall the monkey if logbook logging is disabled to avoid any kind of
     # performance issues when this package is installed only to avoid any kind
     # of performance issues when logging is disabled.
-    if not is_logbook_enabled():
-        return uninstall_monkey()
+    try:
+        if not is_logbook_enabled():
+            return uninstall_monkey()
+    except ComponentLookupError:
+        # This error will occur when the Plone registry is not available yet.
+        # Example: trying to login as Zope admin in the ZMI and Unauthorized is
+        # raised.
+        # We cannot uninstall the monley patch unless we are sure logbook it is
+        # disabled, otherwise we'll miss errors until logbook is enabled again.
+        pass
+
     enty_url = _raising(self, info)
     notify(ErrorRaisedEvent(self, enty_url))
     return enty_url
