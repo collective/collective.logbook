@@ -5,6 +5,9 @@ Changelog
 0.8.1 (unreleased)
 ------------------
 
+- Fix #11 by adding upgrade step to create registry records.
+  [rafaelbco]
+
 - Fix #12: Error while trying to login into the ZMI.
   [rafaelbco]
 

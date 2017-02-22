@@ -39,6 +39,15 @@
       profile="collective.logbook:default"
       />
 
+  <genericsetup:upgradeStep
+      title="Create registry records"
+      description="Create registry records"
+      handler=".upgradehandlers.run_registry_import_step"
+      source="2"
+      destination="3"
+      profile="collective.logbook:default"
+      />
+
   <!-- default storage adapter -->
   <adapter
       for="*"
