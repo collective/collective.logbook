@@ -30,9 +30,7 @@ def uninstall_monkey():
 
 
 def raising(self, info):
-    # Uninstall the monkey if logbook logging is disabled to avoid any kind of
-    # performance issues when this package is installed only to avoid any kind
-    # of performance issues when logging is disabled.
+    # Uninstall the monkey if logbook logging is disabled in the Plone Registry.
     try:
         if not is_logbook_enabled():
             return uninstall_monkey()
@@ -42,6 +40,7 @@ def raising(self, info):
         # raised.
         # We cannot uninstall the monley patch unless we are sure logbook it is
         # disabled, otherwise we'll miss errors until logbook is enabled again.
+        log(">>> Catched ComponentLookupError: No Plone Site installed?", "ERROR")
         pass
 
     enty_url = _raising(self, info)

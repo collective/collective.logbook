@@ -2,7 +2,7 @@ collective.logbook
 ==================
 
 :Author: Ramon Bartl
-:Version: 0.8
+:Version: 0.9.0
 
 ``collective.logbook`` add-on provides advanced persistent error logging for the
 `open source Plone CMS <http://plone.org>`_.
