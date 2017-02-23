@@ -77,7 +77,7 @@ because of the same error signature.
 This means, if you have configured Email notification, you will just be notified
 once. The same is true for the webhooks, which will be described later.
 
-To simulate different errors, you can browse this URL::
+To simulate different errors, you can browse this URL:
 
 http://localhost:8080/Plone/@@random-error-test
 
