@@ -47,6 +47,9 @@ TEST_FIXTURE = TestLayer()
 INTEGRATION_TESTING = IntegrationTesting(
     bases=(TEST_FIXTURE,),
     name="collective.logbook:Integration")
+FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(TEST_FIXTURE,),
+    name="collective.logbook:Functional")
 
 ROBOT_TESTING = FunctionalTesting(
     bases=(TEST_FIXTURE, AUTOLOGIN_LIBRARY_FIXTURE, z2.ZSERVER_FIXTURE),
@@ -81,3 +84,7 @@ class LogBookTestCase(unittest.TestCase):
 
     def getRequest(self):
         return self.layer.get("request")
+
+
+class LogBookFunctionalTestCase(LogBookTestCase):
+    layer = FUNCTIONAL_TESTING

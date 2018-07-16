@@ -6,6 +6,7 @@ from thread import allocate_lock
 
 from zope import interface
 
+from Acquisition import aq_base
 from Acquisition import aq_parent
 
 from collective.logbook.utils import log
@@ -75,7 +76,7 @@ def handleTraceback(object):
             # get the generated error url from Products.SiteErrorLog
             err_id = urllib.splitvalue(entry_url)[1]
             # save error
-            logbook.save_error(err_id, context=aq_parent(context))
+            logbook.save_error(err_id, context=aq_base(aq_parent(context)))
             transaction.get().note('collective.logbook traceback [%s]' %
                                    entry_url)
             transaction.commit()
