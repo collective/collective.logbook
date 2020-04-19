@@ -2,6 +2,12 @@ Changelog
 =========
 
 
+0.9.1 (2018-07-17)
+------------------
+
+- Fix #17 by making sure the context of a log entry is not acquisition-wrapped.
+  [rafaelbco]
+
 0.9.0 (2017-02-23)
 ------------------
 
