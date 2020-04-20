@@ -15,6 +15,8 @@ from collective.logbook.config import LOGGER
 from interfaces import IErrorRaisedEvent
 from interfaces import INotifyTraceback
 
+from zope.publisher.interfaces import IView
+
 
 cleanup_lock = allocate_lock()
 
@@ -57,9 +59,9 @@ def webhookHandler(event):
             str(e)), level="error")
 
 
-def handleTraceback(object):
-    context = object.context
-    entry_url = object.entry_url
+def handleTraceback(event):
+    context = event.context
+    entry_url = event.entry_url
 
     if entry_url is None:
         return
@@ -76,7 +78,7 @@ def handleTraceback(object):
             # get the generated error url from Products.SiteErrorLog
             err_id = urllib.splitvalue(entry_url)[1]
             # save error
-            logbook.save_error(err_id, context=aq_base(aq_parent(context)))
+            logbook.save_error(err_id, context=_getErrorContext(event))
             transaction.get().note('collective.logbook traceback [%s]' %
                                    entry_url)
             transaction.commit()
@@ -87,3 +89,16 @@ def handleTraceback(object):
         log("An error occured while handling the traceback", level="warning")
         log("%s" % e, level="warning")
         LOGGER.exception(e)
+
+
+def _getErrorContext(event):
+    error_log = event.context
+    error_context = aq_parent(error_log)
+
+    # If the error context is a view then we must get the context of the view.
+    # Otherwise an error will occur because views are cannot be persisted.
+    if IView.providedBy(error_context):
+        error_context = error_context.context
+
+    # The error context will be persisted, so it must be acquisition unwrapped.
+    return aq_base(error_context)

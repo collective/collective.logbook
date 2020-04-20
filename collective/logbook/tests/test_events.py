@@ -6,8 +6,6 @@ import unittest
 
 from Acquisition import ImplicitAcquisitionWrapper
 from Acquisition import aq_acquire
-from Acquisition.interfaces import IAcquisitionWrapper
-
 
 from collective.logbook.interfaces import ILogBookStorage
 from collective.logbook.tests.base import LogBookFunctionalTestCase
@@ -41,6 +39,21 @@ class TestEvents(LogBookFunctionalTestCase):
         self._simulate_error(prefix + '0')
         self.assertEqual(len(self._get_errors_by_prefix(prefix)), 1)
         self._simulate_error(prefix + '1', context=aq_wrapped_folder)
+        self.assertEqual(len(self._get_errors_by_prefix(prefix)), 2)
+
+    def test_error_is_logged_when_acessing_view_method_directly(self):
+        # Note: this is a regression test for issue #19: "Cannot handle traceback when error occurs
+        # when accessing a method of a view".
+
+        view = self.portal.unrestrictedTraverse('@@plone_portal_state')
+        aq_wrapped_view = ImplicitAcquisitionWrapper(view, self.portal)
+        prefix = 'test1_'
+        self.assertEqual(len(self._get_errors_by_prefix(prefix)), 0)
+        self._simulate_error(prefix + '0')
+        self.assertEqual(len(self._get_errors_by_prefix(prefix)), 1)
+
+        # Simulate the failure mode by setting the error context as the view itself.
+        self._simulate_error(prefix + '1', context=aq_wrapped_view)
         self.assertEqual(len(self._get_errors_by_prefix(prefix)), 2)
 
     def _simulate_error(self, msg='Dummy error', context=None):
