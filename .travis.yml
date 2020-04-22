@@ -1,5 +1,8 @@
 version: ~> 1.0
 import: collective/buildout.plonetest:travis/default.yml
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
 matrix:
   include:
     - python: "2.7"
