@@ -39,7 +39,7 @@ setup(name="collective.logbook",
       install_requires=[
           "setuptools",
           "plone.api",
-          "six",
+          "six>=1.14.0",
       ],
       extras_require={
           "test": [
