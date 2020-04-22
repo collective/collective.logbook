@@ -2,7 +2,7 @@ collective.logbook
 ==================
 
 :Author: Ramon Bartl
-:Version: 0.9.1
+:Version: 0.9.2
 
 ``collective.logbook`` add-on provides advanced persistent error logging for the
 `open source Plone CMS <http://plone.org>`_.
@@ -142,6 +142,16 @@ With `collective.logbook` enabled, it is simple to see all errors occured in you
     >>> browser = self.getBrowser()
     >>> browser.addHeader('Authorization', 'Basic admin:secret')
 
+    >>> def simulate_error(msg='Test error'):
+    ...     try:
+    ...         raise RuntimeError(msg)
+    ...     except RuntimeError:
+    ...         # Acquire the error_log object the same way Zope does. See module: Zope2.App.startup
+    ...         import sys
+    ...         from Acquisition import aq_acquire
+    ...         error_log = aq_acquire(self.portal, '__error_log__', containment=1)
+    ...         error_log.raising(sys.exc_info())
+
 Remember some URLs::
 
     >>> portal_url = portal.absolute_url()
@@ -157,22 +167,14 @@ Browse to the `@@logbook` view::
 
 Now lets create an error with the `@@error-test` view, which raises an expected `RuntimeError`::
 
-    >>> browser.open(logbook_test_error_url)
-    Traceback (most recent call last):
-    ...
-    HTTPError: HTTP Error 500: Internal Server Error
-
+    >>> simulate_error()
     >>> browser.open(logbook_url)
     >>> "There are 1 saved (unique) Tracebacks and 0 referenced Tracebacks" in browser.contents
     True
 
 The same error will be referenced and not logged again::
 
-    >>> browser.open(logbook_test_error_url)
-    Traceback (most recent call last):
-    ...
-    HTTPError: HTTP Error 500: Internal Server Error
-
+    >>> simulate_error()
     >>> browser.open(logbook_url)
     >>> "There are 1 saved (unique) Tracebacks and 1 referenced Tracebacks" in browser.contents
     True
@@ -187,11 +189,7 @@ Logbook logging can be deactivated on purpose in the `@@logbook-controlpanel` vi
 
 Errors should not be logged anymore::
 
-    >>> browser.open(logbook_test_error_url)
-    Traceback (most recent call last):
-    ...
-    HTTPError: HTTP Error 500: Internal Server Error
-
+    >>> simulate_error()
     >>> browser.open(logbook_url)
     >>> "There are 1 saved (unique) Tracebacks and 1 referenced Tracebacks" in browser.contents
     True

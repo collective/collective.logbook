@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from Products.CMFCore.utils import getToolByName
-from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
-
-from collective.logbook.config import LOGGER
-
 import threading
 import urllib
-import urllib2
+from six.moves import urllib
+
+from collective.logbook.config import LOGGER
+from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
+from zope.component import getUtility
 
 
 class WebhookView(object):
@@ -69,7 +68,7 @@ class UrlThread(threading.Thread):
     def run(self):
         try:
             self.data = urllib.urlencode(self.data)
-            r = urllib2.urlopen(self.url, self.data)
+            r = urllib.urlopen(self.url, self.data)
             r.read()
         except Exception as e:
             LOGGER.error(e)

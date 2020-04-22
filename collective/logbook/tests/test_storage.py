@@ -2,11 +2,10 @@
 
 import unittest
 
-from zope import interface
-
-from collective.logbook.tests.base import LogBookTestCase
-from collective.logbook.storage import LogBookStorage
 from collective.logbook.interfaces import ILogBookStorage
+from collective.logbook.storage import LogBookStorage
+from collective.logbook.tests.base import LogBookTestCase
+from zope import interface
 
 # errors
 MockError1 = dict(id=111, tb_text="Traceback1")

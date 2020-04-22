@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from zope import interface
 
-from collective.logbook.interfaces import ILogBook
 from collective.logbook.browser.logbook import LogBook
+from collective.logbook.interfaces import ILogBook
 from collective.logbook.tests.base import LogBookTestCase
+from zope.interface import verify
 
 
 class TestViews(LogBookTestCase):
@@ -20,7 +20,7 @@ class TestViews(LogBookTestCase):
         self.assertTrue(ILogBook.providedBy(view))
 
     def test_view_class_fulfills_interface_contract(self):
-        self.assertTrue(interface.verify.verifyClass(ILogBook, LogBook))
+        self.assertTrue(verify.verifyClass(ILogBook, LogBook))
 
 
 def test_suite():

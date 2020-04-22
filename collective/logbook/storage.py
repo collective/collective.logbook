@@ -1,28 +1,26 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from zope import event
-from zope import interface
-from zope.annotation.interfaces import IAnnotations
 
 from BTrees.OOBTree import OOBTree
-
-from collective.logbook.utils import filtered_error_tail
+from collective.logbook.config import INDEX_KEY
+from collective.logbook.config import REFERENCE_ERRORS
+from collective.logbook.config import STORAGE_KEY
 from collective.logbook.events import NotifyTraceback
 from collective.logbook.interfaces import ILogBookStorage
-from collective.logbook.config import STORAGE_KEY
-from collective.logbook.config import INDEX_KEY
-
-from collective.logbook.config import REFERENCE_ERRORS
+from collective.logbook.utils import filtered_error_tail
+from zope import event
+from zope.annotation.interfaces import IAnnotations
+from zope.interface import implementer
 
 logger = logging.getLogger("collective.logbook")
 
 
+@implementer(ILogBookStorage)
 class LogBookStorage(object):
     """ A LogBookStorage implementation based on Annotation Storage which is
     capable to handle same errors as references.
     """
-    interface.implements(ILogBookStorage)
 
     def __init__(self, portal):
         self.portal = portal

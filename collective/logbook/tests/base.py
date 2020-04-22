@@ -3,20 +3,18 @@
 import pkg_resources
 
 import unittest2 as unittest
-
-from plone.testing import z2
-from plone.testing.z2 import Browser
-
-from plone.app.testing import login
-from plone.app.testing import setRoles
-from plone.app.testing import PloneSandboxLayer
+from collective.logbook.monkey import install_monkey
+from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import FunctionalTesting
-from plone.app.testing.layers import IntegrationTesting
+from plone.app.testing import PloneSandboxLayer
+from plone.app.testing import login
 from plone.app.testing import quickInstallProduct
+from plone.app.testing import setRoles
+from plone.app.testing.layers import IntegrationTesting
+from plone.testing import z2
+from plone.testing.z2 import Browser
 from zope.configuration import xmlconfig
-
-from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
 
 try:
     pkg_resources.get_distribution('plone.protect')
@@ -69,6 +67,8 @@ class LogBookTestCase(unittest.TestCase):
         # Disable auto protection for tests
         if HAS_PLONE_PROTECT:
             plone.protect.auto.CSRF_DISABLED = True
+
+        install_monkey()
 
     def getBrowser(self, handleErrors=False):
         browser = Browser(self.app)
