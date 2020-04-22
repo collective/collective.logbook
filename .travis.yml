@@ -1,8 +1,10 @@
 version: ~> 1.0
 import: collective/buildout.plonetest:travis/default.yml
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+# TravisCI fails with this message:
+# The command "sh -e /etc/init.d/xvfb start" failed and exited with 127 during .
+# before_script:
+#   - export DISPLAY=:99.0
+#   - sh -e /etc/init.d/xvfb start
 matrix:
   include:
     - python: "2.7"
