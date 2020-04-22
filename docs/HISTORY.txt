@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0.0 (unreleased)
+1.0.0 (2020-04-22)
 ------------------
 
 - Python 3 compatibility
