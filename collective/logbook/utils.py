@@ -43,9 +43,8 @@ def is_patch_applied():
     """
     from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
     from collective.logbook.monkey import raising
-    if hasattr(SiteErrorLog.raising, "im_func"):
-        return SiteErrorLog.raising.im_func is raising
-    return SiteErrorLog.raising is raising
+    actual_raising = getattr(SiteErrorLog.raising, 'im_func', SiteErrorLog.raising)
+    return actual_raising is raising
 
 
 def is_logbook_enabled():
