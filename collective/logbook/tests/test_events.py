@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 
-from plone import api
 import sys
 import unittest
 
 from Acquisition import ImplicitAcquisitionWrapper
 from Acquisition import aq_acquire
-
 from collective.logbook.interfaces import ILogBookStorage
 from collective.logbook.tests.base import LogBookFunctionalTestCase
+from plone import api
 
 
 class TestEvents(LogBookFunctionalTestCase):
     """ Test the event handlers
 
-    Implementation note: Since the `events.handleTraceback` calls `transaction.commit` these tests
-    must belong to the functional test layer, even if no test browser stuff is used. If these
-    tests were in the integration layer some isolation issues would arise.
+    Implementation note: Since the `events.handleTraceback` calls
+    `transaction.commit` these tests must belong to the functional test layer,
+    even if no test browser stuff is used. If these tests were in the
+    integration layer some isolation issues would arise.
     """
 
     def test_error_is_logged(self):
@@ -28,10 +28,12 @@ class TestEvents(LogBookFunctionalTestCase):
         self.assertEqual(len(self._get_errors_by_prefix(prefix)), 2)
 
     def test_error_is_logged_with_acquisition_wrapped_context(self):
-        # Note: this is a regression test for issue #11: "Error in unknown conditions: TypeError:
-        # Can't pickle objects in acquisition wrappers"
+        # Note: this is a regression test for issue #11:
+        # Error in unknown conditions: TypeError:
+        #   Can't pickle objects in acquisition wrappers
 
-        folder = api.content.create(container=self.portal, type='Folder', title='Folder 0')
+        folder = api.content.create(
+            container=self.portal, type='Folder', title='Folder 0')
         aq_wrapped_folder = ImplicitAcquisitionWrapper(folder, self.portal)
 
         prefix = 'test1_'
@@ -60,10 +62,8 @@ class TestEvents(LogBookFunctionalTestCase):
         try:
             raise RuntimeError(msg)
         except RuntimeError:
-            context = context if (context is not None) else self.portal
-
             # Acquire the error_log object the same way Zope does. See module: Zope2.App.startup
-            error_log = aq_acquire(context, '__error_log__', containment=1)
+            error_log = aq_acquire(self.portal, '__error_log__', containment=1)
             error_log.raising(sys.exc_info())
 
     def _get_errors_by_prefix(self, prefix):

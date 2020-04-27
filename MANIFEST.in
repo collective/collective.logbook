@@ -1,5 +1,5 @@
-recursive-include collective *
+global-include .py .zcml .txt .rst
+recursive-include src *
 recursive-include docs *
-include *
-global-exclude *.pyc
-global-exclude GPATH GRTAGS GTAGS
+global-exclude *pyc
+exclude MANIFEST.in

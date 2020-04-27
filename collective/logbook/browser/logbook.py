@@ -1,28 +1,24 @@
 # -*- coding: utf-8 -*-
 
-from DateTime import DateTime
 from Acquisition import aq_inner
-from zExceptions import Forbidden
-
-from zope import interface
-
-from plone import api as ploneapi
-from plone.memoize.instance import memoize
-
-from Products.Five.browser import BrowserView
-from Products.statusmessages.interfaces import IStatusMessage
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
+from collective.logbook import logbookMessageFactory as _
 from collective.logbook.interfaces import ILogBook
 from collective.logbook.interfaces import ILogBookStorage
-from collective.logbook import logbookMessageFactory as _
 from collective.logbook.utils import is_logbook_large_site_enabled
+from DateTime import DateTime
+from plone import api as ploneapi
+from plone.memoize.instance import memoize
+from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.statusmessages.interfaces import IStatusMessage
+from zExceptions import Forbidden
+from zope.interface import implementer
 
 
+@implementer(ILogBook)
 class LogBook(BrowserView):
     """ Logbook Form
     """
-    interface.implements(ILogBook)
 
     template = ViewPageTemplateFile('logbook.pt')
 

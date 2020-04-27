@@ -3,10 +3,8 @@
 import doctest
 
 import unittest2 as unittest
-
+from collective.logbook.tests.base import LogBookFunctionalTestCase
 from Testing import ZopeTestCase as ztc
-
-from collective.logbook.tests.base import LogBookTestCase
 
 
 def test_suite():
@@ -14,7 +12,7 @@ def test_suite():
     suite.addTests([
         ztc.ZopeDocFileSuite(
             '../../../README.rst',
-            test_class=LogBookTestCase,
+            test_class=LogBookFunctionalTestCase,
             optionflags=doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE,
         ),
     ])

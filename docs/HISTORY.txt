@@ -2,11 +2,17 @@ Changelog
 =========
 
 
-0.9.2 (unreleased)
+1.0.0 (2020-04-22)
 ------------------
 
-- Nothing changed yet.
+- Python 3 compatibility
+  [ramonski]
 
+- Updated build system and fixed TravisCI
+  [ramonski]
+
+- Fix #19: Cannot handle traceback when error occurs when accessing a method of a view
+  [rafaelbco]
 
 0.9.1 (2018-07-17)
 ------------------

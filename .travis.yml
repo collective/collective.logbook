@@ -1,26 +1,15 @@
-language: python
-python: 2.7
-sudo: false
-cache:
-  directories:
-  - eggs
-  - parts/node
-env:
-- PLONE_VERSION=4.3
-- PLONE_VERSION=5.0
+version: ~> 1.0
+import: collective/buildout.plonetest:travis/default.yml
+# TravisCI fails with this message:
+# The command "sh -e /etc/init.d/xvfb start" failed and exited with 127 during .
+# before_script:
+#   - export DISPLAY=:99.0
+#   - sh -e /etc/init.d/xvfb start
 matrix:
-  fast_finish: true
-install:
-- sed -ie "s#test-5.0#test-$PLONE_VERSION#" buildout.cfg
-- python bootstrap.py
-- bin/buildout annotate
-- bin/buildout -Nq
-script:
-- bin/code-analysis
-- bin/test \!robot
-after_success:
-- bin/createcoverage
-- pip install -q coveralls
-- coveralls
-# notifications:
-#   irc: irc.freenode.org#plone-testing
+  include:
+    - python: "2.7"
+      env: PLONE_VERSION="4.3"
+    - python: "2.7"
+      env: PLONE_VERSION="5.2"
+    - python: "3.8"
+      env: PLONE_VERSION="5.2"

@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import logging
 import re
 import types
-import logging
 
-from plone import api as ploneapi
-
+from collective.logbook.config import HEX_REGEX
 from collective.logbook.config import LOGGER
 from collective.logbook.config import LOGLEVEL
-from collective.logbook.config import HEX_REGEX
+from plone import api as ploneapi
 
 
 def get_portal():
@@ -44,8 +43,8 @@ def is_patch_applied():
     """
     from Products.SiteErrorLog.SiteErrorLog import SiteErrorLog
     from collective.logbook.monkey import raising
-
-    return SiteErrorLog.raising.im_func is raising
+    actual_raising = getattr(SiteErrorLog.raising, 'im_func', SiteErrorLog.raising)
+    return actual_raising is raising
 
 
 def is_logbook_enabled():
@@ -70,7 +69,7 @@ def log(msg, level=LOGLEVEL):
     """Log the message
     """
     # get the numeric value of the level. defaults to 0 (NOTSET)
-    level = logging._levelNames.get(level.upper(), 0)
+    level = logging.getLevelName(level.upper()) or 0
     LOGGER.log(level, msg)
 
 
@@ -94,10 +93,9 @@ def send_email(message, subject, recipients):
                 body=message,
             )
         # Do not create another logbook error during the message sending
-        except Exception, exc:
-            log("Failed sending email to recipient(s): {} with error: {}".format(
-                ",".join(recipients),
-                str(exc)), level="error")
+        except Exception as exc:
+            log("Failed sending email to recipient(s): {} with error: {}"
+                .format(",".join(recipients), str(exc)), level="error")
 
 
 def is_list(thing):
@@ -120,7 +118,7 @@ def filtered_error_tail(error):
     """
     tb_text = error.get('tb_text', '')
     tail = tb_text.splitlines()[-5:]
-    filtered_tail = map(hexfilter, tail)
+    filtered_tail = list(map(hexfilter, tail))
     return filtered_tail
 
 
@@ -130,9 +128,10 @@ def hexfilter(text):
     return HEX_REGEX.sub('0x0000000', text)
 
 
-# this is stolen from http://grok.zope.org/documentation/how-to/automatic-form-generation
-email_expr = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+"
-                        r"@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}"
-                        r"\.){3}[0-9]{1,3})$", re.IGNORECASE)
+# http://grok.zope.org/documentation/how-to/automatic-form-generation
+email_expr = re.compile(
+    r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+"
+    r"@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}"
+    r"\.){3}[0-9]{1,3})$", re.IGNORECASE)
 
 check_email = email_expr.match
