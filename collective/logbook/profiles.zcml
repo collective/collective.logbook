@@ -1,0 +1,64 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="collective.logbook">
+
+  <!-- Install -->
+
+  <genericsetup:registerProfile
+      name="default"
+      title="collective.logbook"
+      directory="profiles/default"
+      description="Install collective.logbook"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:importStep
+      name="collective.logbook.import_various"
+      title="collective.logbook.import_various"
+      description="collective.logbook.import_various"
+      handler=".setuphandlers.import_various">
+
+  </genericsetup:importStep>
+
+  <!-- Uninstall -->
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="collective.logbook uninstall profile"
+      directory="profiles/uninstall"
+      description="Uninstall collective.logbook."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:importStep
+      name="collective.logbook.uninstall"
+      title="collective.logbook.uninstall"
+      description="collective.logbook.uninstall"
+      handler=".setuphandlers.uninstall">
+
+  </genericsetup:importStep>
+
+  <!-- Upgrade -->
+
+  <genericsetup:upgradeStep
+      title="Migrate storage"
+      description="Migrate storage from PersistentDict to OOBTree"
+      handler=".upgradehandlers.migrate_storage"
+      source="0.3.1"
+      destination="2"
+      profile="collective.logbook:default"
+      />
+
+  <genericsetup:upgradeStep
+      title="Create registry records"
+      description="Create registry records"
+      handler=".upgradehandlers.run_registry_import_step"
+      source="2"
+      destination="3"
+      profile="collective.logbook:default"
+      />
+
+</configure>

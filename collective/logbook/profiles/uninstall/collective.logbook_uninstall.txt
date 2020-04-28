@@ -1,0 +1,1 @@
+# This file must be presente in order to the custom import step of the uninstall profile to run.
