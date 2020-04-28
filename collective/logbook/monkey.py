@@ -15,18 +15,18 @@ _raising = SiteErrorLog.raising
 
 def install_monkey():
     if not is_patch_applied():
-        log(">>> Installing Monkey Patch for Products.SiteErrorLog")
+        log('>>> Installing Monkey Patch for Products.SiteErrorLog')
         SiteErrorLog.raising = raising
     else:
-        log(">>> Monkey Patch for Products.SiteErrorLog already applied")
+        log('>>> Monkey Patch for Products.SiteErrorLog already applied')
 
 
 def uninstall_monkey():
     if is_patch_applied():
-        log(">>> Uninstalling Monkey for Products.SiteErrorLog")
+        log('>>> Uninstalling Monkey for Products.SiteErrorLog')
         SiteErrorLog.raising = _raising
     else:
-        log(">>> Monkey Patch for Products.SiteErrorLog already deactivated")
+        log('>>> Monkey Patch for Products.SiteErrorLog already deactivated')
 
 
 def raising(self, info):
@@ -40,7 +40,7 @@ def raising(self, info):
         # raised.
         # We cannot uninstall the monley patch unless we are sure logbook it is
         # disabled, otherwise we'll miss errors until logbook is enabled again.
-        log("Catched ComponentLookupError: No Plone Site installed?", "ERROR")
+        log('Catched ComponentLookupError: No Plone Site installed?', 'ERROR')
         pass
 
     enty_url = _raising(self, info)

@@ -114,7 +114,7 @@ class LogBook(BrowserView):
                     refs=refs
                 )
             )
-        return sorted(out, key=lambda x: x["counter"], reverse=True)
+        return sorted(out, key=lambda x: x['counter'], reverse=True)
 
     def search_error(self, err_id):
         """ search an error by id
@@ -139,7 +139,7 @@ class LogBook(BrowserView):
                 err_id = form.get('errornumber', None)
                 error = self.search_error(err_id)
                 if not error:
-                    IStatusMessage(self.request).addStatusMessage(_(u"Could not find error"), type='warning')
+                    IStatusMessage(self.request).addStatusMessage(_(u'Could not find error'), type='warning')
                 self.request.set('entry', error)
 
             if delete_traceback_button:
@@ -147,17 +147,17 @@ class LogBook(BrowserView):
                 for entry in entries:
                     err_id = entry.get('id')
                     if self.delete_error(err_id):
-                        IStatusMessage(self.request).addStatusMessage(_(u"Traceback %s deleted") % err_id, type='info')
+                        IStatusMessage(self.request).addStatusMessage(_(u'Traceback %s deleted') % err_id, type='info')
                     else:
-                        IStatusMessage(self.request).addStatusMessage(_(u"could not delete %s") % err_id, type='warning')
+                        IStatusMessage(self.request).addStatusMessage(_(u'could not delete %s') % err_id, type='warning')
 
             if delete_all_button:
                 self.delete_all_errors()
-                IStatusMessage(self.request).addStatusMessage(_(u"Deleted all Errors"), type='info')
+                IStatusMessage(self.request).addStatusMessage(_(u'Deleted all Errors'), type='info')
 
             if delete_refs_button:
                 self.delete_all_references()
-                IStatusMessage(self.request).addStatusMessage(_(u"Deleted all referenced Error"), type='info')
+                IStatusMessage(self.request).addStatusMessage(_(u'Deleted all referenced Error'), type='info')
 
         return self.template()
 

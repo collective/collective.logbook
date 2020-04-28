@@ -44,10 +44,10 @@ class TestUpgrade(LogBookTestCase):
         u"""Run the upgrade steps for an add-on.
 
         Arguments:
-        add_on_name -- Add-on name. Eg.: "my.package".
-        profile -- Generic Setup profile. Eg.: "default".
-        source -- Source version (string). Eg.: "1".
-        destination -- Destination version (string). Eg.: "2".
+        add_on_name -- Add-on name. Eg.: 'my.package'.
+        profile -- Generic Setup profile. Eg.: 'default'.
+        source -- Source version (string). Eg.: '1'.
+        destination -- Destination version (string). Eg.: '2'.
 
         Return: boolean which is true if and only if at least one upgrade step
                 ran.

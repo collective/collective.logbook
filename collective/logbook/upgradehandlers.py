@@ -28,8 +28,8 @@ def run_import_step(profile_id, import_step):
     u"""Run an import step.
 
     Arguments:
-    profile_id -- Profile ID. Eg.: "profile-my.package:default"
-    import_step -- Import step IP. Eg.: "actions".
+    profile_id -- Profile ID. Eg.: 'profile-my.package:default'
+    import_step -- Import step IP. Eg.: 'actions'.
     """
     setup = api.portal.get_tool('portal_setup')
     setup.runImportStepFromProfile(profile_id, import_step)

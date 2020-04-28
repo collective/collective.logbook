@@ -50,24 +50,16 @@ class ILogbookSchema(interface.Interface):
 
 class LogbookControlPanelForm(RegistryEditForm):
     schema = ILogbookSchema
-    schema_prefix = "logbook"
-    label = _(u"Logbook settings")
-    description = _(u"Logbook settings.")
-    form_name = _(u"Logbook settings")
-
-    # def updateFields(self):
-    #     super(LogbookControlPanelForm, self).updateFields()
-    #     log("LogbookControlPanelForm::updateFields")
-
-    # def update(self):
-    #     super(LogbookControlPanelForm, self).update()
-    #     log("LogbookControlPanelForm::update")
+    schema_prefix = 'logbook'
+    label = _(u'Logbook settings')
+    description = _(u'Logbook settings.')
+    form_name = _(u'Logbook settings')
 
     def applyChanges(self, data):
         super(LogbookControlPanelForm, self).applyChanges(data)
-        log("LogbookControlPanelForm::applyChanges:data=%r" % data)
+        log('LogbookControlPanelForm::applyChanges:data=%r' % data)
 
-        logbook_enabled = data.get("logbook_enabled")
+        logbook_enabled = data.get('logbook_enabled')
         if logbook_enabled:
             install_monkey()
         else:

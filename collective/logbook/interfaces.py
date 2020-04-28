@@ -8,9 +8,9 @@ class ILogBook(Interface):
     """ The LogBook API
     """
 
-    error_count = Attribute(u"number of logged errors")
-    reference_count = Attribute(u"number of referenced logged errors")
-    saved_errors = Attribute(u"Saved Errors in storage")
+    error_count = Attribute(u'number of logged errors')
+    reference_count = Attribute(u'number of referenced logged errors')
+    saved_errors = Attribute(u'Saved Errors in storage')
 
     def error_log():
         """ zope error log object
@@ -45,8 +45,8 @@ class ILogBookStorage(Interface):
     """ The Logbook Storage
     """
 
-    error_count = Attribute(u"number of logged errors")
-    reference_count = Attribute(u"number of referenced logged errors")
+    error_count = Attribute(u'number of logged errors')
+    reference_count = Attribute(u'number of referenced logged errors')
 
     def save_error(error):
         """ save error to storage

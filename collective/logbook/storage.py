@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import logging
-
 from BTrees.OOBTree import OOBTree
 from collective.logbook.config import INDEX_KEY
+from collective.logbook.config import LOGGER
 from collective.logbook.config import REFERENCE_ERRORS
 from collective.logbook.config import STORAGE_KEY
 from collective.logbook.events import NotifyTraceback
@@ -12,8 +11,6 @@ from collective.logbook.utils import filtered_error_tail
 from zope import event
 from zope.annotation.interfaces import IAnnotations
 from zope.interface import implementer
-
-logger = logging.getLogger("collective.logbook")
 
 
 @implementer(ILogBookStorage)
@@ -190,10 +187,10 @@ class LogBookStorage(object):
         orphane_keys = []
         for k, v in self._index.items():
             if v not in existing:
-                logger.info("+ Found orphaned Index %s" % k)
+                LOGGER.info('+ Found orphaned Index %s' % k)
                 orphane_keys.append(k)
 
         if len(orphane_keys):
             for k in orphane_keys:
-                logger.info("- Erasing orphaned Index %s" % k)
+                LOGGER.info('- Erasing orphaned Index %s' % k)
                 del self._index[k]

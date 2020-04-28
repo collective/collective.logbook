@@ -21,17 +21,17 @@ class MailView(object):
         recipients = [mail for mail in emails if mail]
 
         subject = "[collective.logbook] NEW TRACEBACK: '%s'" % (
-            error.get("value"))
+            error.get('value'))
 
         self.__dict__.update(
-            date=error.get("time").strftime("%Y-%m-%d %H:%M:%S"),
-            traceback=error.get("tb_text"),
-            error_number=error.get("id"),
-            error_url=error.get("url"),
+            date=error.get('time').strftime('%Y-%m-%d %H:%M:%S'),
+            traceback=error.get('tb_text'),
+            error_number=error.get('id'),
+            error_url=error.get('url'),
             logbook_url=(
-                portal.absolute_url() + "/@@logbook?errornumber=%s" %
-                error.get("id")),
-            req_html=error.get("req_html"),
+                portal.absolute_url() + '/@@logbook?errornumber=%s' %
+                error.get('id')),
+            req_html=error.get('req_html'),
         )
 
         message = self.index()

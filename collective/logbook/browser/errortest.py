@@ -14,7 +14,7 @@ class ErrorTestView(object):
         self.request = request
 
     def __call__(self):
-        raise RuntimeError("collective.logbook test error")
+        raise RuntimeError('collective.logbook test error')
 
 
 class RandomErrorTestView(object):
@@ -26,4 +26,4 @@ class RandomErrorTestView(object):
         self.request = request
 
     def __call__(self):
-        raise random.choice(ERRORS)("collective.logbook test error")
+        raise random.choice(ERRORS)('collective.logbook test error')

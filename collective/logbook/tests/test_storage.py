@@ -8,14 +8,14 @@ from collective.logbook.tests.base import LogBookTestCase
 from zope import interface
 
 # errors
-MockError1 = dict(id=111, tb_text="Traceback1")
-MockError2 = dict(id=222, tb_text="Traceback2")
-MockError3 = dict(id=333, tb_text="Traceback3")
+MockError1 = dict(id=111, tb_text='Traceback1')
+MockError2 = dict(id=222, tb_text='Traceback2')
+MockError3 = dict(id=333, tb_text='Traceback3')
 
 # errors which occured twice (same traceback)
-MockError11 = dict(id=444, tb_text="Traceback1")
-MockError22 = dict(id=555, tb_text="Traceback2")
-MockError33 = dict(id=666, tb_text="Traceback3")
+MockError11 = dict(id=444, tb_text='Traceback1')
+MockError22 = dict(id=555, tb_text='Traceback2')
+MockError33 = dict(id=666, tb_text='Traceback3')
 
 
 class TestStorage(LogBookTestCase):
@@ -43,13 +43,13 @@ class TestStorage(LogBookTestCase):
         adapter = ILogBookStorage(self.portal)
         adapter.save_error(MockError1)
         self.assertEqual(adapter.error_count, 1)
-        self.assertTrue(adapter.delete_error(MockError1.get("id")))
+        self.assertTrue(adapter.delete_error(MockError1.get('id')))
         self.assertEqual(adapter.error_count, 0)
 
     def test_get_error(self):
         adapter = ILogBookStorage(self.portal)
         adapter.save_error(MockError1)
-        self.assertTrue(adapter.get_error(MockError1.get("id")))
+        self.assertTrue(adapter.get_error(MockError1.get('id')))
 
     def test_get_all_errors(self):
         adapter = ILogBookStorage(self.portal)
@@ -97,7 +97,7 @@ class TestStorage(LogBookTestCase):
         self.assertEqual(adapter.reference_count, 1)
 
         # delete referenced error
-        self.assertTrue(adapter.delete_error(MockError1.get("id")))
+        self.assertTrue(adapter.delete_error(MockError1.get('id')))
 
         # check
         self.assertEqual(adapter.error_count, 2)

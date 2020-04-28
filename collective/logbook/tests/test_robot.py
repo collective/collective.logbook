@@ -12,7 +12,7 @@ def test_suite():
     # Disabling for Travis due to this failure (see .travis.yml):
     # The command "sh -e /etc/init.d/xvfb start" failed and exited with 127 during .
     # suite.addTests([
-    #     layered(robotsuite.RobotTestSuite("robot_tests.txt"),
+    #     layered(robotsuite.RobotTestSuite('robot_tests.txt'),
     #             layer=ROBOT_TESTING),
     # ])
     return suite

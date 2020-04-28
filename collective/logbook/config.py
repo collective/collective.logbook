@@ -3,10 +3,10 @@
 import re
 import logging
 
-PACKAGENAME = "collective.logbook"
+PACKAGENAME = 'collective.logbook'
 
 LOGGER = logging.getLogger(PACKAGENAME)
-LOGLEVEL = "info"
+LOGLEVEL = 'info'
 
 # Regular expression to match the hex values of tracebacks
 HEX_REGEX = re.compile(r'0x[0-9a-fA-F]+')
@@ -18,5 +18,5 @@ HEX_REGEX = re.compile(r'0x[0-9a-fA-F]+')
 REFERENCE_ERRORS = 1
 
 # used for annotation storage
-STORAGE_KEY = "LOGBOOK"
-INDEX_KEY = "REFINDEX"
+STORAGE_KEY = 'LOGBOOK'
+INDEX_KEY = 'REFINDEX'

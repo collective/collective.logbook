@@ -30,7 +30,7 @@ class NotifyTraceback(object):
 
     def __init__(self, error):
         self.error = error
-        log("***** Notify new traceback %s" % error.get('id', 0))
+        log('***** Notify new traceback %s' % error.get('id', 0))
 
 
 def mailHandler(event):
@@ -40,8 +40,8 @@ def mailHandler(event):
         return event.error['context'].restrictedTraverse(
             '@@logbook_mail')(event)
     except Exception as e:
-        log("An error occured while notifying recipients: {}".format(
-            str(e)), level="error")
+        log('An error occured while notifying recipients: {}'.format(
+            str(e)), level='error')
 
 
 def webhookHandler(event):
@@ -51,8 +51,8 @@ def webhookHandler(event):
         return event.error['context'].restrictedTraverse(
             '@@logbook_webhook')(event)
     except Exception as e:
-        log("An error occured while notifying with webhooks: {}".format(
-            str(e)), level="error")
+        log('An error occured while notifying with webhooks: {}'.format(
+            str(e)), level='error')
 
 
 def handleTraceback(event):
@@ -62,7 +62,7 @@ def handleTraceback(event):
     if entry_url is None:
         return
 
-    log("handle traceback [%s]" % entry_url)
+    log('handle traceback [%s]' % entry_url)
     try:
         cleanup_lock.acquire()
         # we don't want to produce any errors here, thus, we'll be nice and die
@@ -82,8 +82,8 @@ def handleTraceback(event):
             cleanup_lock.release()
     # only warning
     except Exception as e:
-        log("An error occured while handling the traceback", level="warning")
-        log("%s" % e, level="warning")
+        log('An error occured while handling the traceback', level='warning')
+        log('%s' % e, level='warning')
         LOGGER.exception(e)
 
 
