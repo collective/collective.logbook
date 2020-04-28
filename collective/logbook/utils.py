@@ -35,7 +35,7 @@ def is_plone5():
     :rtype: boolean
     """
     version = get_plone_version()
-    return version.startswith("5")
+    return version.startswith('5')
 
 
 def is_patch_applied():
@@ -50,13 +50,13 @@ def is_patch_applied():
 def is_logbook_enabled():
     """Checks if logbook logging is enabled
     """
-    return ploneapi.portal.get_registry_record("logbook.logbook_enabled")
+    return ploneapi.portal.get_registry_record('logbook.logbook_enabled')
 
 
 def is_logbook_large_site_enabled():
     """Checks if logbook logging is enabled
     """
-    return ploneapi.portal.get_registry_record("logbook.logbook_large_site")
+    return ploneapi.portal.get_registry_record('logbook.logbook_large_site')
 
 
 def get_logbook_log_mails():
@@ -76,7 +76,7 @@ def log(msg, level=LOGLEVEL):
 def send_email(message, subject, recipients):
     """Send the message to the list of recipients
     """
-    log("Sending Email to %r" % recipients)
+    log('Sending Email to %r' % recipients)
 
     # Handle a single recipient address gracefully
     if not is_list(recipients):
@@ -94,8 +94,8 @@ def send_email(message, subject, recipients):
             )
         # Do not create another logbook error during the message sending
         except Exception as exc:
-            log("Failed sending email to recipient(s): {} with error: {}"
-                .format(",".join(recipients), str(exc)), level="error")
+            log('Failed sending email to recipient(s): {} with error: {}'
+                .format(','.join(recipients), str(exc)), level='error')
 
 
 def is_list(thing):
@@ -105,7 +105,7 @@ def is_list(thing):
         True
         >>> is_list(list())
         True
-        >>> is_list("[]")
+        >>> is_list('[]')
         False
         >>> is_list({})
         False

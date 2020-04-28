@@ -27,22 +27,22 @@ class WebhookView(object):
             return
 
         subject = "[collective.logbook] NEW TRACEBACK: '%s'" % (
-            error.get("value"))
-        date = error.get("time").strftime("%Y-%m-%d %H:%M:%S"),
-        traceback = "\n".join(error.get("tb_text").split("\n")[-3:])
-        # error_number = error.get("id")
-        error_url = error.get("url")
+            error.get('value'))
+        date = error.get('time').strftime('%Y-%m-%d %H:%M:%S'),
+        traceback = '\n'.join(error.get('tb_text').split('\n')[-3:])
+        # error_number = error.get('id')
+        error_url = error.get('url')
         logbook_url = (
-            portal.absolute_url() + "/@@logbook?errornumber=%s" %
-            error.get("id"))
-        # req_html = error.get("req_html")
+            portal.absolute_url() + '/@@logbook?errornumber=%s' %
+            error.get('id'))
+        # req_html = error.get('req_html')
 
-        message = "%s\n%s\n%s\n%s\n%s\n" % (
+        message = '%s\n%s\n%s\n%s\n%s\n' % (
             subject, date, traceback,
             error_url, logbook_url)
 
-        LOGGER.info("Calling webhooks")
-        LOGGER.info("Webhook urls:\n%s" % ("\n".join(urls)))
+        LOGGER.info('Calling webhooks')
+        LOGGER.info('Webhook urls:\n%s' % ('\n'.join(urls)))
 
         for url in urls:
 

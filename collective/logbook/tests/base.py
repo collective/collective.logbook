@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import pkg_resources
-
-import unittest2 as unittest
+from collective.logbook.config import PACKAGENAME
 from collective.logbook.monkey import install_monkey
 from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
-from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import FunctionalTesting
+from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import login
 from plone.app.testing import quickInstallProduct
@@ -15,6 +13,8 @@ from plone.app.testing.layers import IntegrationTesting
 from plone.testing import z2
 from plone.testing.z2 import Browser
 from zope.configuration import xmlconfig
+import pkg_resources
+import unittest2 as unittest
 
 try:
     pkg_resources.get_distribution('plone.protect')
@@ -35,31 +35,31 @@ class TestLayer(PloneSandboxLayer):
 
     def tearDownZope(self, app):
         # Uninstall product
-        z2.uninstallProduct(app, 'collective.logbook')
+        z2.uninstallProduct(app, PACKAGENAME)
 
     def setUpPloneSite(self, portal):
-        quickInstallProduct(portal, "collective.logbook")
+        quickInstallProduct(portal, PACKAGENAME)
 
 
 TEST_FIXTURE = TestLayer()
 INTEGRATION_TESTING = IntegrationTesting(
     bases=(TEST_FIXTURE,),
-    name="collective.logbook:Integration")
+    name='{}:Integration'.format(PACKAGENAME))
 FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(TEST_FIXTURE,),
-    name="collective.logbook:Functional")
+    name='{}:Functional'.format(PACKAGENAME))
 
 ROBOT_TESTING = FunctionalTesting(
     bases=(TEST_FIXTURE, AUTOLOGIN_LIBRARY_FIXTURE, z2.ZSERVER_FIXTURE),
-    name="collective.logbook:Robot")
+    name='{}:Robot'.format(PACKAGENAME))
 
 
 class LogBookTestCase(unittest.TestCase):
     layer = INTEGRATION_TESTING
 
     def setUp(self):
-        self.app = self.layer.get("app")
-        self.portal = portal = self.layer.get("portal")
+        self.app = self.layer.get('app')
+        self.portal = portal = self.layer.get('portal')
         portal.acl_users.userFolderAddUser('admin', 'secret', ['Manager', ], [])
         setRoles(portal, 'admin', ['Manager'])
         login(portal, 'admin')
@@ -77,13 +77,13 @@ class LogBookTestCase(unittest.TestCase):
         return browser
 
     def getApp(self):
-        return self.layer.get("app")
+        return self.layer.get('app')
 
     def getPortal(self):
-        return self.layer.get("portal")
+        return self.layer.get('portal')
 
     def getRequest(self):
-        return self.layer.get("request")
+        return self.layer.get('request')
 
 
 class LogBookFunctionalTestCase(LogBookTestCase):

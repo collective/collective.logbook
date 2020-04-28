@@ -18,8 +18,8 @@ def install(portal):
     # install monkey
     install_monkey()
 
-    LOGGER.info("*** INSTALLED collective.logbook ***")
-    return "Ran all import steps."
+    LOGGER.info('*** INSTALLED collective.logbook ***')
+    return 'Ran all import steps.'
 
 
 def uninstall(portal):
@@ -32,16 +32,16 @@ def uninstall(portal):
     # remove storages
     uninstall_storages(portal)
 
-    LOGGER.info("*** UNINSTALLED collective.logbook ***")
-    return "Ran all uninstall steps."
+    LOGGER.info('*** UNINSTALLED collective.logbook ***')
+    return 'Ran all uninstall steps.'
 
 
 def uninstall_storages(portal):
     annotations = IAnnotations(portal)
     if annotations.get(STORAGE_KEY):
-        LOGGER.info("*** UNINSTALL collective.logbook Logstorage ***")
+        LOGGER.info('*** UNINSTALL collective.logbook Logstorage ***')
         del annotations[STORAGE_KEY]
 
     if annotations.get(INDEX_KEY):
-        LOGGER.info("*** UNINSTALL collective.logbook Indexstorage ***")
+        LOGGER.info('*** UNINSTALL collective.logbook Indexstorage ***')
         del annotations[INDEX_KEY]
