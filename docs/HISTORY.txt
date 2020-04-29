@@ -1,9 +1,14 @@
 Changelog
 =========
 
-
-1.0.0 (2020-04-22)
+1.0.0 (2020-04-29)
 ------------------
+
+- Clean installation/uninstallation
+  [rafaelbco]
+
+- Code cleanup
+  [rafaelbco]
 
 - Python 3 compatibility
   [ramonski]
