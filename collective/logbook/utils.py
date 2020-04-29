@@ -2,7 +2,7 @@
 
 import logging
 import re
-import types
+from email.mime.text import MIMEText
 
 from collective.logbook.config import HEX_REGEX
 from collective.logbook.config import LOGGER
@@ -82,6 +82,9 @@ def send_email(message, subject, recipients):
     if not is_list(recipients):
         recipients = [recipients]
 
+    # convert to HTML email
+    body = MIMEText(message, _subtype="html", _charset="utf8")
+
     # Send email to all of the recipients
     for recipient in recipients:
         try:
@@ -90,7 +93,7 @@ def send_email(message, subject, recipients):
             ploneapi.portal.send_email(
                 recipient=recipient,
                 subject=subject,
-                body=message,
+                body=body,
             )
         # Do not create another logbook error during the message sending
         except Exception as exc:
@@ -110,7 +113,7 @@ def is_list(thing):
         >>> is_list({})
         False
     """
-    return isinstance(thing, types.ListType)
+    return isinstance(thing, (list, tuple))
 
 
 def filtered_error_tail(error):
