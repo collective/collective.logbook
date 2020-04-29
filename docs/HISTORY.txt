@@ -4,6 +4,9 @@ Changelog
 1.0.0 (2020-04-29)
 ------------------
 
+- Fix Emails are generated in HTML but sent in plain text
+  [ramonski]
+
 - Clean installation/uninstallation
   [rafaelbco]
 
