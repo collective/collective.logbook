@@ -11,6 +11,7 @@ from collective.logbook.config import LOGGER
 from collective.logbook.interfaces import IErrorRaisedEvent
 from collective.logbook.interfaces import INotifyTraceback
 from collective.logbook.utils import log
+from plone import api
 from zope.interface import implementer
 from zope.publisher.interfaces import IView
 
@@ -37,8 +38,8 @@ def mailHandler(event):
     """ notify this error
     """
     try:
-        return event.error['context'].restrictedTraverse(
-            '@@logbook_mail')(event)
+        portal = api.portal.get()
+        return portal.restrictedTraverse('@@logbook_mail')(event)
     except Exception as e:
         log('An error occured while notifying recipients: {}'.format(
             str(e)), level='error')
@@ -48,8 +49,8 @@ def webhookHandler(event):
     """ Travese to webhook handler and let it deal with the error.
     """
     try:
-        return event.error['context'].restrictedTraverse(
-            '@@logbook_webhook')(event)
+        portal = api.portal.get()
+        portal.restrictedTraverse('@@logbook_webhook')(event)
     except Exception as e:
         log('An error occured while notifying with webhooks: {}'.format(
             str(e)), level='error')
