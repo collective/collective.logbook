@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-from .config import PACKAGENAME
-from .monkey import install_monkey
-from .monkey import uninstall_monkey
+
 from collective.logbook.config import INDEX_KEY
 from collective.logbook.config import STORAGE_KEY
 from zope.annotation.interfaces import IAnnotations
+
+from .config import PACKAGENAME
+from .monkey import install_monkey
+from .monkey import uninstall_monkey
 
 
 def import_various(context):

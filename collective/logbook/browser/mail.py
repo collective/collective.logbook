@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-
+from collective.logbook.utils import get_logbook_log_mails
 from collective.logbook.utils import get_portal
 from collective.logbook.utils import send_email
-from collective.logbook.utils import get_logbook_log_mails
 
 
 class MailView(object):
-    """
+    """Send logbook error via Email
     """
 
     def __call__(self, event):
